@@ -1,7 +1,6 @@
 ﻿Flask==3.0.3
 Flask-Sock==0.7.0
 gpiozero==2.0
-RPi.GPIO==0.7.1
 SQLAlchemy==2.0.35
 alembic==1.13.2
 gunicorn==21.2.0
