@@ -5,19 +5,211 @@
   <title>Probenverdünner</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="stylesheet" href="/static/style.css" />
-</head>
+  <style>
+    /* Page layout */
+    .page {
+      max-width: 960px;
+      margin: 2rem auto;
+      padding: 0 1rem;
+    }
+    .headline {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1rem;
+    }
+    :root { --padY: 32px; --rowGap: 18px; }
+
+    .grid-area {
+      display: grid;
+      grid-template-columns: 240px 1fr;
+      gap: 24px;
+      align-items: stretch; /* sorgt dafür, dass linke Controls die gleiche Höhe wie die Platte haben */
+    }
+
+    /* Left controls */
+    .controls {
+      height: 100%; /* gleiche Höhe wie die Platte */
+      display: grid;
+      grid-template-rows: repeat(4, 1fr); /* 4 Reihen wie auf der Platte */
+      row-gap: var(--rowGap); /* wie .well-grid */
+      padding: var(--padY) 0; /* entspricht dem vertikalen Padding der Platte */
+    }
+    .control-row {
+      display: grid;
+      grid-template-columns: 160px 120px 28px; /* Label | Faktor | Checkbox exakt */
+      column-gap: 16px;
+      align-items: center;
+    }
+    .label {
+      font-weight: 600;
+      color: #333;
+      line-height: 1.1;
+    }
+    .nice-checkbox {
+      --size: 22px;
+      position: relative;
+      width: var(--size);
+      height: var(--size);
+      border-radius: 6px;
+      border: 2px solid #bdbdbd;
+      background: #f3f3f3;
+      cursor: pointer;
+      transition: all .15s ease;
+      display: grid; place-items: center;
+    }
+    .nice-checkbox.checked {
+      border-color: #3d7bfd;
+      background: #e7f0ff;
+      box-shadow: inset 0 0 0 4px #e7f0ff;
+    }
+    .nice-checkbox::after {
+      content: '';
+      width: 10px; height: 10px;
+      border-right: 3px solid transparent;
+      border-bottom: 3px solid transparent;
+      transform: rotate(45deg);
+      transition: border-color .15s ease;
+    }
+    .nice-checkbox.checked::after {
+      border-right-color: #3d7bfd;
+      border-bottom-color: #3d7bfd;
+    }
+
+    .input {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: #f7f7f7;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      padding: 6px 10px;
+    }
+    .input input {
+      width: 90px;
+      border: none;
+      outline: none;
+      background: transparent;
+      font-size: 14px;
+    }
+    .spacer { width: 22px; height: 22px; }
+    .nice-checkbox.disabled { opacity:.5; pointer-events:none; }
+
+    /* Plate */
+    .plate-wrap { display: grid; gap: 18px; }
+    .plate {
+      width: 100%;
+      aspect-ratio: 5 / 3.7; /* ähnliches Seitenverhältnis wie im Bild */
+      max-width: 560px;
+      background: #dcdcdc;
+      border-radius: 8px;
+      box-shadow: 0 0 0 1px rgba(0,0,0,0.05) inset;
+      display: grid; /* Container für well-grid */
+      padding: var(--padY) 40px; /* Innenabstand definiert den nutzbaren Bereich für die Wells */
+      margin: 0 auto;
+    }
+    .well-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      grid-template-rows: repeat(4, 1fr);
+      gap: var(--rowGap) 24px; /* vertikale Lücke: 18px -> Controls nutzen row-gap:18px */
+      width: 100%;
+      height: 100%;
+    }
+    .well {
+      width: 100%;
+      aspect-ratio: 1/1;
+      border-radius: 50%;
+      background: #e5aeb0; /* inaktiv rötlich */
+      box-shadow: inset 0 -4px 0 rgba(0,0,0,0.06);
+      transition: transform .1s ease, background .15s ease, opacity .15s ease;
+      opacity: .9;
+    }
+    .well.active-red { background: #d92727; }
+    .well.active-green { background: #39c24a; }
+    .well.inactive { background: #e5e5e5; }
+    .well.inactive-green { background: #cfeecf; }
+    .well.clickable { cursor: pointer; }
+    .well.clickable:active { transform: scale(0.97); }
+    .well.disabled { opacity: .45; filter: grayscale(.2); }
+
+    /* Footer buttons */
+    .actions {
+      display: flex;
+      justify-content: center;
+      gap: 24px;
+      margin-top: 8px;
+    }
+    .btn {
+      appearance: none;
+      border: none;
+      border-radius: 8px;
+      padding: 10px 22px;
+      font-weight: 700;
+      letter-spacing: .02em;
+      background: #e5e5e5;
+      color: #222;
+      box-shadow: 0 2px 0 rgba(0,0,0,0.12);
+      cursor: pointer;
+      transition: transform .05s ease, filter .1s ease, background .1s ease;
+    }
+    .btn:active { transform: translateY(1px); }
+    .btn.primary { background: #2f7bfd; color: #fff; }
+    .btn.danger { background: #efefef; color: #111; }
+
+    .hint { text-align: center; font-size: 12px; color: #666; }
+  </style>
+  <script defer src="/static/app.js"></script>
+  <script>
+    window.GUI_CONFIG = {
+      rows: 4,
+      cols: 5,
+      rowLabels: ["Verdünnung 3", "Verdünnung 2", "Verdünnung 1", "Stammlösung"],
+    };
+  </script>
+  </head>
 <body>
-  <h1>Probenverdünner Steuerung</h1>
-  <section>
-    <h2>Programm starten</h2>
-    <label>Verdünnungsfaktor: <input id="factor" type="number" value="10" min="1" /></label>
-    <label>Volumen (ml): <input id="volume" type="number" value="5" step="0.1" /></label>
-    <button id="startBtn">Starten</button>
-  </section>
-  <section>
-    <h2>Aktive Tasks</h2>
-    <div id="tasks"></div>
-  </section>
-  <script src="/static/app.js"></script>
-</body>
-</html>
+  <div class="page">
+    <div class="headline">
+      <h1>Probenverdünner</h1>
+    </div>
+
+    <div class="grid-area">
+      <!-- Left side controls -->
+      <div class="controls">
+        <div class="control-row">
+          <div class="label">Verdünnung 3</div>
+          <div class="input"><input id="factor-0" type="number" min="1" step="1" placeholder="Faktor" /></div>
+          <div class="nice-checkbox" data-row="0" id="rowCheck-0" role="checkbox" aria-checked="false" tabindex="0"></div>
+        </div>
+        <div class="control-row">
+          <div class="label">Verdünnung 2</div>
+          <div class="input"><input id="factor-1" type="number" min="1" step="1" placeholder="Faktor" /></div>
+          <div class="nice-checkbox" data-row="1" id="rowCheck-1" role="checkbox" aria-checked="true" tabindex="0"></div>
+        </div>
+        <div class="control-row">
+          <div class="label">Verdünnung 1</div>
+          <div class="input"><input id="factor-2" type="number" min="1" step="1" placeholder="Faktor" /></div>
+          <div class="spacer" aria-hidden="true"></div>
+        </div>
+        <div class="control-row">
+          <div class="label">Stammlösung (ml)</div>
+          <div class="input"><input id="stockVolume" type="number" min="0" step="0.1" value="1.0" /></div>
+        </div>
+      </div>
+
+      <!-- Plate with wells -->
+      <div class="plate-wrap">
+        <div class="plate">
+          <div id="wellGrid" class="well-grid" aria-label="Verdünnungs-Plate"></div>
+        </div>
+        <div class="actions">
+          <button class="btn danger" id="cancelBtn">CANCEL</button>
+          <button class="btn primary" id="startBtn">START</button>
+        </div>
+        <div class="hint">Tipp: Klicke in der untersten Reihe auf die Kreise, um die gesamte Spalte zu aktivieren/deaktivieren.</div>
+      </div>
+    </div>
+  </div>
+  </body>
+  </html>

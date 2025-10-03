@@ -15,6 +15,19 @@ def run_program():
     params = data.get("params", {})
     if program != "dilute":
         return jsonify({"error": "unknown program"}), 400
+
+    # optional: Layout-Infos entgegennehmen
+    grid = params.get("grid")
+    stock_volume = params.get("stockVolume")
+    # Minimalvalidierung (nicht blockierend fürs MVP)
+    if grid is not None and not isinstance(grid, list):
+        return jsonify({"error": "grid must be a 2D list"}), 400
+    if stock_volume is not None:
+        try:
+            float(stock_volume)
+        except Exception:  # noqa: BLE001
+            return jsonify({"error": "stockVolume must be a number"}), 400
+
     task_id = str(uuid.uuid4())
     state = TaskState(name=program, params=params)
     runner.start_task(task_id, example_dilute, state)
