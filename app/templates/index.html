@@ -1,0 +1,23 @@
+﻿<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <title>Probenverdünner</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="/static/style.css" />
+</head>
+<body>
+  <h1>Probenverdünner Steuerung</h1>
+  <section>
+    <h2>Programm starten</h2>
+    <label>Verdünnungsfaktor: <input id="factor" type="number" value="10" min="1" /></label>
+    <label>Volumen (ml): <input id="volume" type="number" value="5" step="0.1" /></label>
+    <button id="startBtn">Starten</button>
+  </section>
+  <section>
+    <h2>Aktive Tasks</h2>
+    <div id="tasks"></div>
+  </section>
+  <script src="/static/app.js"></script>
+</body>
+</html>
