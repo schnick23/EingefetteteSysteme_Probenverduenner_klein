@@ -134,34 +134,56 @@
     }
   }
 
-  async function startProgram() {
-    const payload = {
-      program: 'dilute',
-      params: {
-        grid: state,
-        stockVolume: parseFloat(document.getElementById('stockVolume').value || '0')
-      }
-    };
-    const res = await fetch('/api/run', {
+  function collectFactors() {
+    // Mapping: row index -> factor value (nur für Reihen 0..2)
+    const factors = {};
+    for (let r = 0; r < rows - 1; r++) {
+      const el = document.getElementById(`factor-${rows - 1 - r}`) || document.getElementById(`factor-${r}`);
+      // aufgrund manueller Umbenennungen im Template robust lesen
+      const val = el && el.value !== '' ? Number(el.value) : null;
+      if (val !== null && !Number.isNaN(val)) factors[r] = val;
+    }
+    return factors;
+  }
+
+  function collectEnabledRows() {
+    const enabled = {};
+    for (let r = 0; r < rows - 1; r++) enabled[r] = isRowEnabled(r);
+    enabled[rows - 1] = true; // Stammlösung
+    return enabled;
+  }
+
+  async function callApi(url, payload) {
+    const res = await fetch(url, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload)
     });
-    const data = await res.json();
-    if (data.task_id) {
-      notify('Task gestartet: ' + data.task_id);
-    } else {
-      notify('Fehler: ' + (data.error || JSON.stringify(data)), true);
-    }
+    return res.json();
+  }
+
+  async function startProgram() {
+    const payload = {
+      grid: state,
+      enabledRows: collectEnabledRows(),
+      factors: collectFactors(),
+      stockVolume: parseFloat(document.getElementById('stockVolume').value || '0')
+    };
+    const data = await callApi('/api/start', payload);
+    if (data && data.ok) notify('Start gesendet'); else notify('Start fehlgeschlagen', true);
   }
 
   function notify(msg, isErr=false) {
     console[isErr ? 'error' : 'log'](msg);
   }
 
-  function cancelProgram() {
-    // Placeholder: Könnte später aktiven Task abbrechen
-    notify('Cancel gedrückt – Implementierung folgt');
+  async function cancelProgram() {
+    const payload = {
+      reason: 'user',
+      timestamp: Date.now()
+    };
+    const data = await callApi('/api/cancel', payload);
+    if (data && data.ok) notify('Cancel gesendet'); else notify('Cancel fehlgeschlagen', true);
   }
 
   function init() {

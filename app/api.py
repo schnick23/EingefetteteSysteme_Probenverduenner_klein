@@ -1,6 +1,7 @@
 ﻿from flask import Blueprint, request, jsonify, current_app
 import uuid
 from .tasks.runner import runner, TaskState, example_dilute
+from .tasks.commands import start_process, cancel_process
 
 bp = Blueprint("api", __name__, url_prefix="/api")
 
@@ -43,4 +44,20 @@ def status(task_id: str):
 @bp.route("/tasks")
 def tasks():
     return runner.list_states()
+
+
+@bp.route("/start", methods=["POST"])
+def api_start():
+    data = request.get_json(force=True, silent=True) or {}
+    # Erwartete Felder: grid, factors (map), enabledRows (map/bool-list), stockVolume
+    # Wir loggen serverseitig in commands.start_process
+    result = start_process(data)
+    return jsonify({"ok": True, **result})
+
+
+@bp.route("/cancel", methods=["POST"])
+def api_cancel():
+    data = request.get_json(force=True, silent=True) or {}
+    result = cancel_process(data)
+    return jsonify({"ok": True, **result})
 
