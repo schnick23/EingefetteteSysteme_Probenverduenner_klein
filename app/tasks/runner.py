@@ -9,6 +9,7 @@ class TaskState:
         self.progress = 0
         self.state = "running"  # running|finished|error|stopped
         self.message = ""
+        self.cancel_requested = False
 
 class TaskRunner:
     def __init__(self):
@@ -36,6 +37,16 @@ class TaskRunner:
 
     def list_states(self) -> Dict[str, Any]:
         return {k: vars(v) for k, v in self._tasks.items()}
+
+    def request_cancel(self, task_id: str) -> bool:
+        st = self._tasks.get(task_id)
+        if not st:
+            return False
+        st.cancel_requested = True
+        st.message = st.message or ""
+        if st.state == "running":
+            st.message = (st.message + " | ").strip(" | ") + "Abbruch angefordert"
+        return True
 
 runner = TaskRunner()
 

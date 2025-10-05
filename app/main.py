@@ -17,6 +17,10 @@ def create_app(config_class=Config):
     def index():
         return render_template("index.html")
 
+    @app.route("/running/<task_id>")
+    def running(task_id: str):
+        return render_template("running.html", task_id=task_id)
+
     return app
 
 if __name__ == "__main__":

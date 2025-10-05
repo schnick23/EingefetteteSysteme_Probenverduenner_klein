@@ -1,7 +1,7 @@
 ﻿from flask import Blueprint, request, jsonify, current_app
 import uuid
 from .tasks.runner import runner, TaskState, example_dilute
-from .tasks.commands import start_process, cancel_process
+from .tasks.commands import start_process, cancel_process, simulate_workflow
 
 bp = Blueprint("api", __name__, url_prefix="/api")
 
@@ -49,15 +49,22 @@ def tasks():
 @bp.route("/start", methods=["POST"])
 def api_start():
     data = request.get_json(force=True, silent=True) or {}
-    # Erwartete Felder: grid, factors (map), enabledRows (map/bool-list), stockVolume
-    # Wir loggen serverseitig in commands.start_process
-    result = start_process(data)
-    return jsonify({"ok": True, **result})
+    # Log (Dummy)
+    start_process(data)
+    # Hintergrund-Task starten (Dummy-Workflow mit Fortschritt)
+    task_id = str(uuid.uuid4())
+    state = TaskState(name="workflow", params=data)
+    runner.start_task(task_id, lambda s: simulate_workflow(s, data), state)
+    return jsonify({"ok": True, "task_id": task_id})
 
 
 @bp.route("/cancel", methods=["POST"])
 def api_cancel():
     data = request.get_json(force=True, silent=True) or {}
+    task_id = data.get("task_id")
+    runner_ack = False
+    if task_id:
+        runner_ack = runner.request_cancel(task_id)
     result = cancel_process(data)
-    return jsonify({"ok": True, **result})
+    return jsonify({"ok": True, "cancel_ack": runner_ack, **result})
 

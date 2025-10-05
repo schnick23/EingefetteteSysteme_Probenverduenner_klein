@@ -10,6 +10,7 @@
   const grid = document.getElementById('wellGrid');
   const btnStart = document.getElementById('startBtn');
   const btnCancel = document.getElementById('cancelBtn');
+  // Loader-UI wurde auf eine separate Seite ausgelagert
 
   function wellId(r, c) { return `well-${r}-${c}`; }
 
@@ -170,7 +171,13 @@
       stockVolume: parseFloat(document.getElementById('stockVolume').value || '0')
     };
     const data = await callApi('/api/start', payload);
-    if (data && data.ok) notify('Start gesendet'); else notify('Start fehlgeschlagen', true);
+    if (data && data.ok && data.task_id) {
+      notify('Start gesendet');
+      // Weiterleitung auf die Laufzeit-Seite mit nur Ladebalken/Abbrechen
+      window.location.href = `/running/${encodeURIComponent(data.task_id)}`;
+    } else {
+      notify('Start fehlgeschlagen', true);
+    }
   }
 
   function notify(msg, isErr=false) {
@@ -185,6 +192,8 @@
     const data = await callApi('/api/cancel', payload);
     if (data && data.ok) notify('Cancel gesendet'); else notify('Cancel fehlgeschlagen', true);
   }
+
+  // In-Page-Polling entfällt, da die Laufzeit-Seite dies übernimmt
 
   function init() {
     attachRowCheckboxes();
