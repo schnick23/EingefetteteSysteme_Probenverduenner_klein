@@ -1,0 +1,67 @@
+\documentclass{common/hausarbeit}
+
+
+%General stuff
+\graphicspath{{images/}}
+\addbibresource{quellen.bib}
+
+% Nak-Farben (einmalig definieren)
+\definecolor{NAKblue}{RGB}{0,58,121}
+\definecolor{NAKblueDark}{RGB}{0,48,100}  
+
+
+\begin{document}
+
+%Titelseite
+\input{common/cover}
+\newpage
+
+% Vorspann mit römischen Seitenzahlen
+\frontmatterformat
+
+
+% Inhaltsverzeichnis
+\renewcommand{\contentsname}{Inhaltsverzeichnis}%
+\tableofcontents
+\clearpage
+
+% Verzeichnisse:
+%\printfiguresintoc
+%\printtablesintoc
+
+% Abkürzungen
+\section{Abkürzungsverzeichnis}
+\input{section/Abkuerzungen}
+\newpage
+
+
+\newcounter{romanlast}
+\setcounter{romanlast}{\value{page}} % römische Seite merken
+
+
+
+% Hauptteil mit arabischen Seitenzahlen
+\mainmatterformat
+
+%Sectionen hinzufügen
+\foreach \i in {0,...,99}{%
+  \edef\FileName{section/file\ifnum\i<10 0\fi\i.tex}% Zero-Padding + Endung
+  \IfFileExists{\FileName}{\input{\FileName}}{}% <- leere ELSE-Klammer nicht vergessen!
+}
+
+
+\clearpage
+\backmatterformat                
+\setcounter{page}{\value{romanlast}}       % fortsetzen, wo Abkürzungen aufhören
+
+\printbibliography[heading=bibintoc,title=Literaturverzeichnis]
+\clearpage
+
+%\input{common/KI_Prozessdoku}
+%\clearpage
+
+\input{common/Eigenständigkeitserklärung}
+\clearpage
+
+
+\end{document}

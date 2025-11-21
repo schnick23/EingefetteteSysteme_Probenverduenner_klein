@@ -1,0 +1,91 @@
+{
+% --- Helfer  für Tabelle---
+
+\renewcommand\arraystretch{1.22}        % etwas mehr Zeilenhöhe
+\setlength\extrarowheight{1.5pt}        % kleine Kopf-/Fußluft in Zellen
+\renewcommand\theadfont{\bfseries\color{white}}  % Header-Schrift
+\renewcommand\theadalign{cc}            % Header zentriert
+% Spaltentyp P: linksbündig, automatischer Umbruch
+\newcolumntype{P}[1]{>{\raggedright\arraybackslash}p{#1}}
+
+\newcommand{\htabhead}[2][3.2cm]{%
+  \multicolumn{1}{|c|}{%
+    \parbox[c][2.8\baselineskip][c]{#1}{\centering\bfseries\color{white} #2}%
+  }%
+}
+
+% Tabellen-Feintuning
+\renewcommand\arraystretch{1.30}
+\setlength{\tabcolsep}{6pt}
+\setlength{\arrayrulewidth}{0.6pt}
+\arrayrulecolor{NAKblue}
+
+% makecell: Stil für Header
+\renewcommand\theadfont{\bfseries\color{white}}
+\renewcommand\theadalign{cc}
+
+
+% --- Ende Helfer für Tabelle ---
+
+
+
+\section{Prozessdokumentation}
+\vspace{0.25em}
+{\bfseries Für die Nutzung von Künstlicher Intelligenz (KI) in Prüfungs-, Transfer- und Studienleistungen\par}
+\vspace{1em}
+
+% Farben (lokal gültig durch die umschließenden { ... })
+\definecolor{NAKblue}{HTML}{1F6FB2}   % Header-/Linienfarbe
+\definecolor{NAKblueDark}{HTML}{154F91}
+\definecolor{NAKgray}{HTML}{F2F6FA}   % optionaler Hintergrund
+
+% Falls P noch nicht definiert ist, ENTKOMMENTIEREN:
+% \usepackage{array,longtable,xcolor,colortbl}
+% \newcolumntype{P}[1]{>{\raggedright\arraybackslash}p{#1}}
+
+\begin{center}
+\begin{longtable}{|P{3.2cm}|P{4.6cm}|P{4.6cm}|P{3.2cm}|}
+\arrayrulecolor{NAKblue}\hline
+\rowcolor{NAKblueDark}
+\multicolumn{1}{|m{3.2cm}|}{\centering\bfseries\color{white} Anfrage an folgende KI* (inkl. Abrufdatum)} &
+\multicolumn{1}{m{4.6cm}|}{\centering\bfseries\color{white} Grund für die Verwendung der KI} &
+\multicolumn{1}{m{4.6cm}|}{\centering\bfseries\color{white} Bewertung der Qualität des KI-Outputs} &
+\multicolumn{1}{m{3.2cm}|}{\centering\bfseries\color{white} Verwendete Software und Versionsnummer} \\
+\hline
+\endfirsthead
+
+\arrayrulecolor{NAKblue}\hline
+\rowcolor{NAKblueDark}
+\multicolumn{1}{|m{3.2cm}|}{\centering\bfseries\color{white} Anfrage an folgende KI* (inkl. Abrufdatum)} &
+\multicolumn{1}{m{4.6cm}|}{\centering\bfseries\color{white} Grund für die Verwendung der KI} &
+\multicolumn{1}{m{4.6cm}|}{\centering\bfseries\color{white} Bewertung der Qualität des KI-Outputs} &
+\multicolumn{1}{m{3.2cm}|}{\centering\bfseries\color{white} Verwendete Software und Versionsnummer} \\
+\hline
+\endhead
+
+% ---- Fuß – Zwischenseiten ----
+\hline
+\multicolumn{4}{r}{\small Fortsetzung auf nächster Seite} \\
+\endfoot
+
+% ---- Fuß – letzte Seite ----
+\hline
+\endlastfoot
+
+% ---------- TABELLENINHALT ----------
+Beispiel: "kannst du mir helfen diesen Text wissenschaftlich korrekt umzuschreiben ..."  25.\,09.–16.\,10.\,2025 (durchgängig) &
+Unterstützung bei der Formulierung und Strukturierung wissenschaftlicher Texte zum Thema „Software-Defined Networking (SDN)“ &
+Sprachlich wissenschaftlich angemessen; Texte wurden überprüft und angepasst &
+ChatGPT (Web-Version), GPT-5 \\
+\hline
+
+
+
+\end{longtable}
+\end{center}
+
+
+\vspace{0.75em}
+\footnotesize
+\noindent\textit{*Bitte formulieren Sie Ihre Anfrage und nennen Sie die verwendete KI.}
+}
