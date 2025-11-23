@@ -63,12 +63,22 @@
 
   // Left side nice checkboxes toggle entire rows (except stock volume input row)
   function attachRowCheckboxes() {
+    // Ensure bottom row (stock) is active before propagating initial row states
+    state[rows - 1].fill(true);
+    // Verdünnung 1 (r=2) muss immer aktiv sein -> setze initialen Zustand (wird beschränkt auf aktive Spalten)
+    if (rows >= 3) {
+      for (let c = 0; c < cols; c++) state[2][c] = true && state[rows - 1][c];
+    }
+
     for (let r = 0; r < rows - 1; r++) {
       const el = document.getElementById(`rowCheck-${r}`);
       if (!el) continue;
       const initial = el.getAttribute('aria-checked') === 'true';
       if (initial) el.classList.add('checked');
-      state[r].fill(initial);
+      // When initializing a row, only enable columns that themselves are enabled (bottom row)
+      for (let c = 0; c < cols; c++) {
+        state[r][c] = initial ? !!state[rows - 1][c] : false;
+      }
       el.addEventListener('click', () => toggleRowCheckbox(el, r));
       el.addEventListener('keydown', (e) => {
         if (e.key === ' ' || e.key === 'Enter') {
@@ -77,10 +87,6 @@
         }
       });
     }
-    // Verdünnung 1 (r=2) muss immer aktiv sein -> setze state[2] auf true (Checkbox existiert nicht)
-    if (rows >= 3) state[2].fill(true);
-    // Stammlösung (unterste Reihe) initial aktiv
-    state[rows - 1].fill(true);
   }
 
   function toggleRowCheckbox(el, r) {
@@ -101,7 +107,9 @@
       if (v2 && v2.getAttribute('aria-checked') !== 'true') {
         v2.setAttribute('aria-checked', 'true');
         v2.classList.add('checked');
-        state[1].fill(true);
+        for (let c = 0; c < cols; c++) {
+          state[1][c] = !!state[rows - 1][c];
+        }
       }
     }
 
@@ -112,7 +120,10 @@
 
     el.setAttribute('aria-checked', String(checked));
     el.classList.toggle('checked', checked);
-    state[r].fill(checked);
+    // When toggling a row on, only enable cells for columns that are enabled (bottom row)
+    for (let c = 0; c < cols; c++) {
+      state[r][c] = checked ? !!state[rows - 1][c] : false;
+    }
 
     // Nach Änderung: Spaltenstatus beschneiden gemäß erlaubten Reihen
     constrainColumnsToEnabledRows();
