@@ -1,7 +1,7 @@
 ﻿from flask import Blueprint, request, jsonify, current_app
 import uuid
 from .tasks.runner import runner, TaskState, example_dilute
-from .tasks.commands import start_process, cancel_process, simulate_workflow
+from .tasks.commands import start_process, cancel_process, simulate_workflow, check_factors
 
 bp = Blueprint("api", __name__, url_prefix="/api")
 
@@ -49,6 +49,10 @@ def tasks():
 @bp.route("/start", methods=["POST"])
 def api_start():
     data = request.get_json(force=True, silent=True) or {}
+    # check factors
+    factors = check_factors(data)
+    if factors is False:
+        return jsonify({"error": "factors do not match grid configuration or are out of valid ranges"}), 400
     # Log (Dummy)
     start_process(data)
     # Hintergrund-Task starten (Dummy-Workflow mit Fortschritt)
