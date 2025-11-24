@@ -1,4 +1,5 @@
 ﻿from pprint import pformat
+from itertools import product
 from typing import Any, Dict
 import time
 
@@ -46,3 +47,63 @@ def simulate_workflow(state: TaskState, payload: Dict[str, Any] | None = None) -
                 return
             time.sleep(0.1)
     # Der Runner setzt state.state am Ende auf finished, solange keine Exception geworfen wird
+
+
+def steps(dilutionfactor: int) -> int:
+    """Berechnet die Anzahl der Verdünnungsschritte basierend auf dem Verdünnungsfaktor."""
+    count = 0
+    factor = dilutionfactor
+    while factor > 9:
+        factor %= 10
+        count += 1
+    return count
+
+
+def prime_factors(dilutionfactor: int) -> list[int]:
+    factors = []
+    d = 2
+
+    # solange d*d <= n, prüfen wir Teilbarkeit
+    while d * d <= n:
+        while n % d == 0:
+            factors.append(d)
+            n //= d
+        d += 1
+
+    # wenn am Ende n > 1 ist, ist es selbst ein Primfaktor
+    if n > 1:
+        factors.append(n)
+
+    return factors
+
+
+def split_into_three_numbers_limited(factors, min_val=2, max_val=19):
+    """
+    Teilt Faktoren in 3 Gruppen auf → ergibt drei Zahlen a,b,c.
+    Bedingungen:
+      - jede Zahl > min_val-1 (also ≥2)
+      - jede Zahl ≤ max_val
+    """
+    solutions = set()
+
+    # Für jede mögliche Zuordnung (jede Zahl bekommt Gruppe 0,1,2)
+    for assignment in product(range(3), repeat=len(factors)):
+        groups = [1, 1, 1]
+
+        for factor, group in zip(factors, assignment):
+            groups[group] *= factor
+
+        # Bedingungen prüfen
+        if all(min_val <= g <= max_val for g in groups):
+            solutions.add(tuple(sorted(groups)))  # sortiert = Duplikate vermeiden
+
+    return sorted(solutions)
+
+
+def calculating_solution(endproduct: int, dilutionfactor: int):
+    base_amount = endproduct / dilutionfactor
+    return base_amount
+
+def calculating_solution(endproduct: int, base_amount: int):
+    dilution = endproduct - base_amount
+    return dilution
