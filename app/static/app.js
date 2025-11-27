@@ -128,6 +128,30 @@
     // Nach Änderung: Spaltenstatus beschneiden gemäß erlaubten Reihen
     constrainColumnsToEnabledRows();
     renderGrid();
+    setEnabledInputs();
+  }
+
+  function setEnabledInputs() {
+    // Enable/disable input fields based on checkbox state
+    // Rows 0 and 1 have checkboxes that control their inputs
+    for (let r = 0; r < 2; r++) {
+      const checkboxEl = document.getElementById(`rowCheck-${r}`);
+      const factorEl   = document.getElementById(`factor-${r}`);
+      const fillEl     = document.getElementById(`fill-${r}`);
+
+      if (!checkboxEl || !factorEl || !fillEl) continue;
+
+      const isChecked = checkboxEl.getAttribute('aria-checked') === 'true';
+
+      // Real enabling/disabling
+      factorEl.disabled = !isChecked;
+      fillEl.disabled   = !isChecked;
+
+      // Optional: keep aria-disabled in sync for accessibility
+      factorEl.setAttribute('aria-disabled', String(!isChecked));
+      fillEl.setAttribute('aria-disabled', String(!isChecked));
+    }
+    
   }
 
   function isRowEnabled(r) {
@@ -209,6 +233,7 @@
   function init() {
     attachRowCheckboxes();
     renderGrid();
+    setEnabledInputs();
     btnStart.addEventListener('click', startProgram);
     btnCancel.addEventListener('click', cancelProgram);
   }

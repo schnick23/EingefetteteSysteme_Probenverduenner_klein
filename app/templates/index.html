@@ -11,15 +11,17 @@
       --padY: 32px;           /* vertikales Innen-Padding der Platte und der linken Spalte */
       --rowGap: 18px;         /* vertikaler Zeilenabstand */
       --gridGapX: 40px;       /* Abstand zwischen linker Spalte und Platte */
-      --labelCol: 180px;      /* Breite der Labelspalte links */
+      --labelCol: 200px;      /* Breite der Labelspalte links */
+      --ratioCol: 20px;      /* Breite der "1 :" Spalte */
       --factorCol: 120px;     /* Breite der Faktor-Eingabe */
+      --fillCol: 120px;     /* Breite der Faktor-Eingabe */
       --checkCol: 28px;       /* Breite der Checkbox */
       --ctrlGap: 16px;        /* Abstand zwischen Label/Faktor/Checkbox */
-      --leftCol: calc(var(--labelCol) + var(--factorCol) + var(--checkCol) + (2 * var(--ctrlGap)) + 12px);
+      --leftCol: calc(var(--labelCol) + var(--factorCol) + var(--checkCol) + var(--fillCol) + (2 * var(--ctrlGap)) + 12px);
     }
 
     /* Page layout */
-    .page { max-width: 960px; margin: 2rem auto; padding: 0 1rem; }
+    .page { max-width: 1200px; margin: 2rem auto; padding: 0 1rem; }
     .headline { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem; }
 
     /* Zwei-Spalten-Layout */
@@ -40,13 +42,15 @@
     }
     .control-row {
       display: grid;
-      grid-template-columns: var(--labelCol) var(--factorCol) var(--checkCol);
+      grid-template-columns: var(--labelCol) var(--ratioCol) var(--factorCol) var(--fillCol) var(--checkCol);
       column-gap: var(--ctrlGap);
       align-items: center;
     }
+    .ratio-label { font-weight: 600; color: #666; font-size: 14px; width: 20px; text-align: right; }
     .label { font-weight: 600; color: #333; line-height: 1.1; }
     .input { display: inline-flex; align-items: center; gap: 8px; background: #f7f7f7; border: 1px solid #ddd; border-radius: 8px; padding: 6px 10px; }
     .input input { width: calc(var(--factorCol) - 20px); border: none; outline: none; background: transparent; font-size: 14px; }
+    .input input { width: calc(var(--fillCol) - 20px); border: none; outline: none; background: transparent; font-size: 14px; }
     .spacer { width: var(--checkCol); height: 22px; }
 
     /* Checkbox */
@@ -88,7 +92,7 @@
 
     /* Responsive */
     @media (max-width: 1000px) {
-      :root { --labelCol: 140px; --factorCol: 100px; --leftCol: calc(var(--labelCol) + var(--factorCol) + var(--checkCol) + (2 * var(--ctrlGap)) + 12px); }
+      :root { --labelCol: 200px; --ratioCol:20px; --factorCol: 100px; --fillCol: 120px; --leftCol: calc(var(--labelCol) + var(--ratioCol) + var(--factorCol) + var(--fillCol) + var(--checkCol) + (2 * var(--ctrlGap)) + 12px); }
     }
   </style>
   <script defer src="/static/app.js"></script>
@@ -111,21 +115,28 @@
       <div class="controls">
         <div class="control-row">
           <div class="label">Verdünnungsfaktor 3</div>
-          <div class="input"><input id="factor-3" type="number" min="1" step="1" placeholder="Faktor 3" /></div>
+          <div class="ratio-label">1 :</div>
+          <div class="input"><input id="factor-0" type="number" min="1" step="1" placeholder="Faktor 3" /></div>
+          <div class="input"><input id="fill-0" type="number" min="1" step="1" placeholder="Füllung 3" /></div>
           <div class="nice-checkbox" data-row="0" id="rowCheck-0" role="checkbox" aria-checked="false" tabindex="0"></div>
         </div>
         <div class="control-row">
           <div class="label">Verdünnungsfaktor 2</div>
-          <div class="input"><input id="factor-2" type="number" min="1" step="1" placeholder="Faktor 2" /></div>
+          <div class="ratio-label">1 :</div>
+          <div class="input"><input id="factor-1" type="number" min="1" step="1" placeholder="Faktor 2" /></div>
+          <div class="input"><input id="fill-1" type="number" min="1" step="1" placeholder="Füllung 2" /></div>
           <div class="nice-checkbox" data-row="1" id="rowCheck-1" role="checkbox" aria-checked="true" tabindex="0"></div>
         </div>
         <div class="control-row">
           <div class="label">Verdünnungsfaktor 1</div>
-          <div class="input"><input id="factor-1" type="number" min="1" step="1" placeholder="Faktor 1" /></div>
+          <div class="ratio-label">1 :</div>
+          <div class="input"><input id="factor-2" type="number" min="1" step="1" placeholder="Faktor 1" /></div>
+          <div class="input"><input id="fill-2" type="number" min="1" step="1" placeholder="Füllung 1" /></div>
           <div class="spacer" aria-hidden="true"></div>
         </div>
         <div class="control-row">
-          <div class="label">Stammlösung (ml)</div>
+          <div class="label">Stammlösung (ml)</div>          
+          <div class="ratio-label"></div>
           <div class="input"><input id="stockVolume" type="number" min="0" step="0.1" value="1.0" /></div>
         </div>
       </div>
