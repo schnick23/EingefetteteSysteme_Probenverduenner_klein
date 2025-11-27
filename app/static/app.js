@@ -228,14 +228,36 @@
     if (data && data.ok) notify('Cancel gesendet'); else notify('Cancel fehlgeschlagen', true);
   }
 
+
+  function getCoverCheckboxValue() {
+    const el = document.getElementById("cover");
+    return el.getAttribute("aria-checked") === "true";
+  }
+
+  function toggleCoverCheckbox(el) {
+    const checked = !(el.getAttribute('aria-checked') === 'true');
+    el.setAttribute('aria-checked', String(checked));
+    el.classList.toggle('checked', checked);
+  }
+
+  function setCoverCheckbox(value) {
+    const el = document.getElementById("cover");
+    el.setAttribute('aria-checked', String(value));
+    el.classList.toggle('checked', value);
+  }
+
   // In-Page-Polling entfällt, da die Laufzeit-Seite dies übernimmt
 
   function init() {
     attachRowCheckboxes();
     renderGrid();
     setEnabledInputs();
+    setCoverCheckbox(getCoverCheckboxValue());
     btnStart.addEventListener('click', startProgram);
     btnCancel.addEventListener('click', cancelProgram);
+    document.getElementById("cover").addEventListener("click", () => {
+    toggleCoverCheckbox(document.getElementById("cover"));
+    });
   }
 
   document.addEventListener('DOMContentLoaded', init);
