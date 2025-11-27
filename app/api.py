@@ -51,8 +51,8 @@ def api_start():
     data = request.get_json(force=True, silent=True) or {}
     # check factors
     factors = check_factors(data)
-    if factors is False:
-        return jsonify({"error": "factors do not match grid configuration or are out of valid ranges"}), 400
+    if isinstance(factors, tuple) and factors[0] is False:
+        return jsonify({"error": factors[1]}), 400
     # Log (Dummy)
     start_process(data)
     # Hintergrund-Task starten (Dummy-Workflow mit Fortschritt)

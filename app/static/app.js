@@ -199,6 +199,7 @@
   }
 
   async function startProgram() {
+    clearError();
     const payload = {
       grid: state,
       enabledRows: collectEnabledRows(),
@@ -206,6 +207,11 @@
       stockVolume: parseFloat(document.getElementById('stockVolume').value || '0')
     };
     const data = await callApi('/api/start', payload);
+
+    if (data.error) {
+      showError(data.error);     // ← 🔥 show ANY returned message
+      return;
+    }
     if (data && data.ok && data.task_id) {
       notify('Start gesendet');
       // Weiterleitung auf die Laufzeit-Seite mit nur Ladebalken/Abbrechen
@@ -244,6 +250,18 @@
     const el = document.getElementById("cover");
     el.setAttribute('aria-checked', String(value));
     el.classList.toggle('checked', value);
+  }
+
+  function showError(msg) {
+    const box = document.getElementById("errorBox");
+    box.textContent = msg;
+    box.style.display = "block";
+  }
+
+  function clearError() {
+    const box = document.getElementById("errorBox");
+    box.textContent = "";
+    box.style.display = "none";
   }
 
   // In-Page-Polling entfällt, da die Laufzeit-Seite dies übernimmt

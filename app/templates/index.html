@@ -73,6 +73,26 @@
     .well.clickable:active { transform: scale(0.97); }
     .well.disabled { opacity: .45; filter: grayscale(.2); }
 
+    /* Error Box */
+    .error-box {
+    grid-column: 2 / 3;
+    grid-row: 2 / 3;
+    padding: 12px 16px;
+    border-radius: 8px;
+    background: #ffe5e5;
+    color: #b20000;
+    font-weight: 600;
+    font-size: 14px;
+    text-align: center;
+    display: none; /* hidden until needed */
+    overflow-wrap: break-word;
+    align-content: center;
+    border: 1px solid #ffb3b3;  }
+
+    .error-spacer {
+    height: 60px;   /* adjust if you want more space */
+}
+
     /* Buttons */
     .actions { display: flex; justify-content: center; gap: 24px; margin-top: 8px; }
     .btn { appearance: none; border: none; border-radius: 8px; padding: 10px 22px; font-weight: 700; letter-spacing: .02em; background: #e5e5e5; color: #222; box-shadow: 0 2px 0 rgba(0,0,0,0.12); cursor: pointer; transition: transform .05s ease, filter .1s ease, background .1s ease; }
@@ -150,12 +170,13 @@
         <div class="plate">
           <div id="wellGrid" class="well-grid" aria-label="Verdünnungs-Plate"></div>
         </div>
+        <div class="hint">Tipp: Klicke in der untersten Reihe auf die Kreise, um die gesamte Spalte zu aktivieren/deaktivieren.</div>
         <div class="actions">
           <button class="btn danger" id="cancelBtn">CANCEL</button>
           <button class="btn primary" id="startBtn">START</button>
         </div>
-        <div class="hint">Tipp: Klicke in der untersten Reihe auf die Kreise, um die gesamte Spalte zu aktivieren/deaktivieren.</div>
       </div>
+      <div class="error-box" id="errorBox" aria-live="polite"></div>
     </div>
   </div>
   </body>
