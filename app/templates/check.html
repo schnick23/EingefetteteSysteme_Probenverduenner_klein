@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="de">
+
+<head>
+    <meta charset="utf-8">
+    <title>Prüfseite</title>
+    <meta name="viewport" content="width=device-width, initial-scale=2">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background-color: #f7f9fc/*#e3fcf0*/;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 90vh;
+            margin: 0;
+        }
+
+        .page{
+            min-width: 600px;
+            max-width: 600px;
+            box-shadow: 2px 2px 4px rgba(128, 128, 128, 0.358);
+            border-radius: 10px;
+            background-color: #ffffff;
+            padding : 20px 40px 40px 40px;
+            border-radius: 10px;
+            font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+            font-size: 18px;
+            color: #000000/*#2ECC71*/;
+
+        }
+        button{
+            margin-top: 20px;
+            padding: 10px;
+            font-size: 16px;            
+            border-radius: 5px;
+            box-shadow: 0px 2px 4px rgba(128, 128, 128, 0.358);;
+            cursor: pointer;
+            border: none;
+            width: 200px;
+        }
+        #button1:hover {
+            background-color: #5e5e5ed0;
+            color: white;
+        }
+        #button2:hover {
+            background-color: #2ECC71;
+            color: white
+        }
+        .button-group {
+            display: flex;
+            justify-content: space-between;
+        }
+
+    </style>
+</head>
+
+<body>
+    <div class="page">
+        <header class="page-header">
+            <h1>Verdünnung bereit</h1>
+        
+        </header>
+
+        <main class="page-main">
+            <p>Bitte prüfe die Parameter ein letztes Mal:</p>
+            <ul>
+                <li>Startvolumen: {{ start_volume }} ml</li>
+                <li>Zielvolumen: {{ target_volume }} ml</li>
+                <li>Verdünnung: {{ verdünnung }} </li>
+
+        </main>
+        <div class="button-group">
+            <button id="button1" onclick="window. location.href='index.html'" >Änderungen vornehmen</button>
+            <button id="button2" onclick="window.location.href='running.html'"
+                >weiter</button>
+        </div>
+    </div>
+</body>
+
+</html>

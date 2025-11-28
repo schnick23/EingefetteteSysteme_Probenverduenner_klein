@@ -185,7 +185,7 @@
     if (data && data.ok && data.task_id) {
       notify('Start gesendet');
       // Weiterleitung auf die Laufzeit-Seite mit nur Ladebalken/Abbrechen
-      window.location.href = `/running/${encodeURIComponent(data.task_id)}`;
+      window.location.href = `/check/${encodeURIComponent(data.task_id)}`;
     } else {
       notify('Start fehlgeschlagen', true);
     }

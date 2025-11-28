@@ -1,9 +1,7 @@
 ﻿from flask import Flask, render_template
 from .config import Config
 from . import api
-import os
-
-# Hardware backend dynamisch laden
+import os# Hardware backend dynamisch laden
 from .hw import mock_impl, rpi_impl  # noqa: F401
 
 def create_app(config_class=Config):
@@ -16,10 +14,15 @@ def create_app(config_class=Config):
     @app.route("/")
     def index():
         return render_template("index.html")
+    
+    @app.route("/check/<task_id>")
+    def check_page(task_id: str):
+        return render_template("check.html", task_id=task_id)
 
     @app.route("/running/<task_id>")
     def running(task_id: str):
         return render_template("running.html", task_id=task_id)
+    
 
     return app
 
