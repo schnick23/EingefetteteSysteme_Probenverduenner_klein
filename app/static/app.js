@@ -128,6 +128,83 @@
     // Nach Änderung: Spaltenstatus beschneiden gemäß erlaubten Reihen
     constrainColumnsToEnabledRows();
     renderGrid();
+    setEnabledInputs();
+  }
+
+  function setInputClass(el, notEnabled){
+    if (notEnabled) {
+      el.classList.add("input-disabled");
+      el.classList.remove("input-enabled");
+    } else {
+      el.classList.add("input-enabled");
+      el.classList.remove("input-disabled");
+    }
+  }
+
+  function setEnabledInputs() {
+    // Enable/disable input fields based on checkbox state
+    // Rows 0 and 1 have checkboxes that control their inputs
+
+
+      const checkbox3El = document.getElementById(`rowCheck-0`);
+      const factor3El   = document.getElementById(`factor-0`);
+      const fill3El     = document.getElementById(`fill-0`);
+
+      const checkbox2El = document.getElementById(`rowCheck-1`);
+      const factor2El   = document.getElementById(`factor-1`);
+      const fill2El     = document.getElementById(`fill-1`);
+
+      const factor1El   = document.getElementById(`factor-2`);
+      const fill1El   = document.getElementById(`fill-2`);
+
+      const v3 = checkbox3El.getAttribute('aria-checked') === 'true'
+      const v2 = checkbox2El.getAttribute('aria-checked') === 'true'
+
+      
+      factor3El.disabled   = !v3;
+      factor3El.setAttribute('aria-disabled', String(!v3));
+      setInputClass(factor3El, !v3);
+      factor2El.disabled   = !v2;
+      factor2El.setAttribute('aria-disabled', String(!v2));
+      setInputClass(factor2El, !v2);
+      setInputClass(factor1El, false)
+
+      if(v3 === true){
+        fill3El.disabled = false;
+        fill2El.disabled = true;
+        fill1El.disabled = true;
+        fill3El.setAttribute('aria-disabled', String(false));
+        fill2El.setAttribute('aria-disabled', String(true));
+        fill1El.setAttribute('aria-disabled', String(true));
+        setInputClass(fill3El, false);
+        setInputClass(fill2El, true);
+        setInputClass(fill1El, true);
+
+
+      }
+      else if (v3 === false && v2 === true) {
+        fill3El.disabled = true;
+        fill2El.disabled = false;
+        fill1El.disabled = true;
+        fill3El.setAttribute('aria-disabled', String(true));
+        fill2El.setAttribute('aria-disabled', String(false));
+        fill1El.setAttribute('aria-disabled', String(true));
+        setInputClass(fill3El, true);
+        setInputClass(fill2El, false);
+        setInputClass(fill1El, true);
+      } 
+      else if (v3 === false && v2 === false) {
+        fill3El.disabled = true;
+        fill2El.disabled = true;
+        fill1El.disabled = false;
+        fill3El.setAttribute('aria-disabled', String(true));
+        fill2El.setAttribute('aria-disabled', String(true));
+        fill1El.setAttribute('aria-disabled', String(false));
+        setInputClass(fill3El, true);
+        setInputClass(fill2El, true);
+        setInputClass(fill1El, false);
+      }
+    
   }
 
   function isRowEnabled(r) {
@@ -175,6 +252,7 @@
   }
 
   async function startProgram() {
+    clearError();
     const payload = {
       grid: state,
       enabledRows: collectEnabledRows(),
@@ -182,6 +260,11 @@
       stockVolume: parseFloat(document.getElementById('stockVolume').value || '0')
     };
     const data = await callApi('/api/start', payload);
+
+    if (data.error) {
+      showError(data.error);     // ← 🔥 show ANY returned message
+      return;
+    }
     if (data && data.ok && data.task_id) {
       notify('Start gesendet');
       // Weiterleitung auf die Laufzeit-Seite mit nur Ladebalken/Abbrechen
@@ -204,13 +287,48 @@
     if (data && data.ok) notify('Cancel gesendet'); else notify('Cancel fehlgeschlagen', true);
   }
 
+
+  function getCoverCheckboxValue() {
+    const el = document.getElementById("cover");
+    return el.getAttribute("aria-checked") === "true";
+  }
+
+  function toggleCoverCheckbox(el) {
+    const checked = !(el.getAttribute('aria-checked') === 'true');
+    el.setAttribute('aria-checked', String(checked));
+    el.classList.toggle('checked', checked);
+  }
+
+  function setCoverCheckbox(value) {
+    const el = document.getElementById("cover");
+    el.setAttribute('aria-checked', String(value));
+    el.classList.toggle('checked', value);
+  }
+
+  function showError(msg) {
+    const box = document.getElementById("errorBox");
+    box.textContent = msg;
+    box.style.display = "block";
+  }
+
+  function clearError() {
+    const box = document.getElementById("errorBox");
+    box.textContent = "";
+    box.style.display = "none";
+  }
+
   // In-Page-Polling entfällt, da die Laufzeit-Seite dies übernimmt
 
   function init() {
     attachRowCheckboxes();
     renderGrid();
+    setEnabledInputs();
+    setCoverCheckbox(getCoverCheckboxValue());
     btnStart.addEventListener('click', startProgram);
     btnCancel.addEventListener('click', cancelProgram);
+    document.getElementById("cover").addEventListener("click", () => {
+    toggleCoverCheckbox(document.getElementById("cover"));
+    });
   }
 
   document.addEventListener('DOMContentLoaded', init);
