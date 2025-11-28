@@ -51,6 +51,10 @@
     .input { display: inline-flex; align-items: center; gap: 8px; background: #f7f7f7; border: 1px solid #ddd; border-radius: 8px; padding: 6px 10px; }
     .input input { width: calc(var(--factorCol) - 20px); border: none; outline: none; background: transparent; font-size: 14px; }
     .input input { width: calc(var(--fillCol) - 20px); border: none; outline: none; background: transparent; font-size: 14px; }
+    .input-enabled { background: #ffffff; }
+    .input-disabled { background: #e5e5e5; color: #9d9d9d; }
+    .input-enabled::placeholder { color: #999999; opacity: 1; }
+    .input-disabled::placeholder { color: #aaaaaa; opacity: 0.6; }
     .spacer { width: var(--checkCol); height: 22px; }
 
     /* Checkbox */

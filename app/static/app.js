@@ -131,26 +131,79 @@
     setEnabledInputs();
   }
 
+  function setInputClass(el, notEnabled){
+    if (notEnabled) {
+      el.classList.add("input-disabled");
+      el.classList.remove("input-enabled");
+    } else {
+      el.classList.add("input-enabled");
+      el.classList.remove("input-disabled");
+    }
+  }
+
   function setEnabledInputs() {
     // Enable/disable input fields based on checkbox state
     // Rows 0 and 1 have checkboxes that control their inputs
-    for (let r = 0; r < 2; r++) {
-      const checkboxEl = document.getElementById(`rowCheck-${r}`);
-      const factorEl   = document.getElementById(`factor-${r}`);
-      const fillEl     = document.getElementById(`fill-${r}`);
 
-      if (!checkboxEl || !factorEl || !fillEl) continue;
 
-      const isChecked = checkboxEl.getAttribute('aria-checked') === 'true';
+      const checkbox3El = document.getElementById(`rowCheck-0`);
+      const factor3El   = document.getElementById(`factor-0`);
+      const fill3El     = document.getElementById(`fill-0`);
 
-      // Real enabling/disabling
-      factorEl.disabled = !isChecked;
-      fillEl.disabled   = !isChecked;
+      const checkbox2El = document.getElementById(`rowCheck-1`);
+      const factor2El   = document.getElementById(`factor-1`);
+      const fill2El     = document.getElementById(`fill-1`);
 
-      // Optional: keep aria-disabled in sync for accessibility
-      factorEl.setAttribute('aria-disabled', String(!isChecked));
-      fillEl.setAttribute('aria-disabled', String(!isChecked));
-    }
+      const factor1El   = document.getElementById(`factor-2`);
+      const fill1El   = document.getElementById(`fill-2`);
+
+      const v3 = checkbox3El.getAttribute('aria-checked') === 'true'
+      const v2 = checkbox2El.getAttribute('aria-checked') === 'true'
+
+      
+      factor3El.disabled   = !v3;
+      factor3El.setAttribute('aria-disabled', String(!v3));
+      setInputClass(factor3El, !v3);
+      factor2El.disabled   = !v2;
+      factor2El.setAttribute('aria-disabled', String(!v2));
+      setInputClass(factor2El, !v2);
+      setInputClass(factor1El, false)
+
+      if(v3 === true){
+        fill3El.disabled = false;
+        fill2El.disabled = true;
+        fill1El.disabled = true;
+        fill3El.setAttribute('aria-disabled', String(false));
+        fill2El.setAttribute('aria-disabled', String(true));
+        fill1El.setAttribute('aria-disabled', String(true));
+        setInputClass(fill3El, false);
+        setInputClass(fill2El, true);
+        setInputClass(fill1El, true);
+
+
+      }
+      else if (v3 === false && v2 === true) {
+        fill3El.disabled = true;
+        fill2El.disabled = false;
+        fill1El.disabled = true;
+        fill3El.setAttribute('aria-disabled', String(true));
+        fill2El.setAttribute('aria-disabled', String(false));
+        fill1El.setAttribute('aria-disabled', String(true));
+        setInputClass(fill3El, true);
+        setInputClass(fill2El, false);
+        setInputClass(fill1El, true);
+      } 
+      else if (v3 === false && v2 === false) {
+        fill3El.disabled = true;
+        fill2El.disabled = true;
+        fill1El.disabled = false;
+        fill3El.setAttribute('aria-disabled', String(true));
+        fill2El.setAttribute('aria-disabled', String(true));
+        fill1El.setAttribute('aria-disabled', String(false));
+        setInputClass(fill3El, true);
+        setInputClass(fill2El, true);
+        setInputClass(fill1El, false);
+      }
     
   }
 
