@@ -66,15 +66,17 @@
         <main class="page-main">
             <p>Bitte prüfe die Parameter ein letztes Mal:</p>
             <ul>
-                <li>Startvolumen: {{ start_volume }} ml</li>
+                <li>Stammlösungstartvolumen: {{ start_volume }} ml</li>
                 <li>Zielvolumen: {{ target_volume }} ml</li>
-                <li>Verdünnung: {{ verdünnung }} </li>
+                <li>Verdünnung 1: {{ dilution1 }} </li>
+                <li>Verdünnung 2: {{ dilution2 }} </li>
+                <li>Verdünnung 3: {{ dilution3 }} </li>
+            </ul>
 
         </main>
         <div class="button-group">
-            <button id="button1" onclick="window. location.href='index.html'" >Änderungen vornehmen</button>
-            <button id="button2" onclick="window.location.href='running.html'"
-                >weiter</button>
+            <button id="button1" onclick="window.location.href='/'">Änderungen vornehmen</button>
+            <button id="button2" onclick="window.location.href='/running/{{ task_id }}'">Weiter</button>
         </div>
     </div>
 </body>

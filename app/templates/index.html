@@ -133,35 +133,35 @@
     <div class="headline">
       <h1>Probenverdünner</h1>
     </div>
-
+    <form action="/check" method="POST">
     <div class="grid-area">
       <!-- Left side controls -->
       <div class="controls">
         <div class="control-row">
           <div class="label">Verdünnungsfaktor 3</div>
           <div class="ratio-label">1 :</div>
-          <div class="input"><input id="factor-0" type="number" min="1" step="1" placeholder="Faktor 3" /></div>
-          <div class="input"><input id="fill-0" type="number" min="1" step="1" placeholder="Füllung 3" /></div>
+          <div class="input"><input id="factor-0" name="factorDilution3" type="number" min="1" step="1" placeholder="Faktor 3" /></div>
+          <div class="input"><input id="fill-0" name="fillDilution3" type="number" min="1" step="1" placeholder="Füllung 3" /></div>
           <div class="nice-checkbox" data-row="0" id="rowCheck-0" role="checkbox" aria-checked="false" tabindex="0"></div>
         </div>
         <div class="control-row">
           <div class="label">Verdünnungsfaktor 2</div>
           <div class="ratio-label">1 :</div>
-          <div class="input"><input id="factor-1" type="number" min="1" step="1" placeholder="Faktor 2" /></div>
-          <div class="input"><input id="fill-1" type="number" min="1" step="1" placeholder="Füllung 2" /></div>
+          <div class="input"><input id="factor-1" name="factorDilution2" type="number" min="1" step="1" placeholder="Faktor 2" /></div>
+          <div class="input"><input id="fill-1" name="fillDilution2" type="number" min="1" step="1" placeholder="Füllung 2" /></div>
           <div class="nice-checkbox" data-row="1" id="rowCheck-1" role="checkbox" aria-checked="true" tabindex="0"></div>
         </div>
         <div class="control-row">
           <div class="label">Verdünnungsfaktor 1</div>
           <div class="ratio-label">1 :</div>
-          <div class="input"><input id="factor-2" type="number" min="1" step="1" placeholder="Faktor 1" /></div>
-          <div class="input"><input id="fill-2" type="number" min="1" step="1" placeholder="Füllung 1" /></div>
+          <div class="input"><input id="factor-2" name="factorDilution1" type="number" min="1" step="1" placeholder="Faktor 1" /></div>
+          <div class="input"><input id="fill-2" name="fillDilution1" type="number" min="1" step="1" placeholder="Füllung 1" /></div>
           <div class="spacer" aria-hidden="true"></div>
         </div>
         <div class="control-row">
           <div class="label">Stammlösung (ml)</div>          
           <div class="ratio-label"></div>
-          <div class="input"><input id="stockVolume" type="number" min="0" step="0.1" value="1.0" /></div>
+          <div class="input"><input id="stockVolume" name="stock_Volume" type="number" min="0" step="0.1" /></div>
         </div>
         <div class="control-row">
           <div class="label">Abdecken am Ende</div>          
@@ -176,8 +176,8 @@
         </div>
         <div class="hint">Tipp: Klicke in der untersten Reihe auf die Kreise, um die gesamte Spalte zu aktivieren/deaktivieren.</div>
         <div class="actions">
-          <button class="btn danger" id="cancelBtn">CANCEL</button>
-          <button class="btn primary" id="startBtn">START</button>
+          <button class="btn danger" id="cancelBtn" type="button">CANCEL</button>
+          <button class="btn primary" id="startBtn" type="button">START</button>
         </div>
       </div>
       <div class="error-box" id="errorBox" aria-live="polite"></div>

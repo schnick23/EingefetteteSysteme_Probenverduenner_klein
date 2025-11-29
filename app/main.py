@@ -15,9 +15,36 @@ def create_app(config_class=Config):
     def index():
         return render_template("index.html")
     
-    @app.route("/check/<task_id>")
-    def check_page(task_id: str):
-        return render_template("check.html", task_id=task_id)
+    # @app.route("/check/<task_id>")
+    # def check_page(task_id: str):
+    #     return render_template("check.html", task_id=task_id)
+    
+    @app.route("/check", methods=["POST"])
+    def check_page():
+        start_volume = request.form.get("stock_Volume")
+
+        targetV3 = request.form.get("fillDilution3")
+        targetV2 = request.form.get("fillDilution2")
+        targetV1 = request.form.get("fillDilution1")
+        if targetV3 is not None:
+            target_volume = targetV3
+        elif targetV2 is not None:
+            target_volume = targetV2
+        elif targetV1 is not None:
+            target_volume = targetV1
+        
+        dilution1   = request.form.get("factorDilution1")
+        dilution2   = request.form.get("factorDilution2")
+        dilution3   = request.form.get("factorDilution3")
+
+        return render_template(
+            "check.html",
+            start_volume=start_volume,
+            target_volume=target_volume,
+            dilution1=dilution1,
+            dilution2=dilution2,
+            dilution3=dilution3
+        )
 
     @app.route("/running/<task_id>")
     def running(task_id: str):

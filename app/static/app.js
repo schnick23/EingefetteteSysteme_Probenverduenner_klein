@@ -262,13 +262,14 @@
     const data = await callApi('/api/start', payload);
 
     if (data.error) {
-      showError(data.error);     // ← 🔥 show ANY returned message
+      showError(data.error);
       return;
     }
     if (data && data.ok && data.task_id) {
       notify('Start gesendet');
       // Weiterleitung auf die Laufzeit-Seite mit nur Ladebalken/Abbrechen
-      window.location.href = `/check/${encodeURIComponent(data.task_id)}`;
+      //window.location.href = `/check`;
+      document.querySelector("form").submit(); // goes to the checking page
     } else {
       notify('Start fehlgeschlagen', true);
     }

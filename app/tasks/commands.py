@@ -25,7 +25,10 @@ def check_factors(data: Dict[str, Any]):
     factor2 = factors.get("2")
     factor3 = factors.get("0")
 
-    if factor1 is None or (grid[0][0] == False and factor3 is not None) or (grid[0][0] == True and factor3 is None) or (grid[1][0] == False and factor2 is not None) or (grid[1][0] == True and factor2 is None):
+    row3off = (grid[0][0]==False and grid[0][1]==False and grid[0][2]==False and grid[0][3]==False and grid[0][4]==False)
+    row2off = (grid[1][0]==False and grid[1][1]==False and grid[1][2]==False and grid[1][3]==False and grid[1][4]==False)
+
+    if factor1 is None or (row3off != False and factor3 is not None) or (row3off != True and factor3 is None) or (row2off != False and factor2 is not None) or (row2off != True and factor2 is None):
         return (False, "Factors do not match grid configuration")
     
     if factor1 > 1 and factor1 <= 10:
