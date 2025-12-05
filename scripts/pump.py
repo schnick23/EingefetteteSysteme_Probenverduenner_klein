@@ -7,21 +7,21 @@ import time
 
 # BCM-PINs für die Relais-Kanäle
 # → diese GPIOs gehen auf IN1, IN2, IN3 des Relaismoduls
-PIN_PUMP_1 = 5    # Beispiel: IN1
-PIN_PUMP_2 = 6    # Beispiel: IN2
-PIN_PUMP_3 = 13   # Beispiel: IN3
+PIN_PUMP_1 = 17    # Beispiel: IN1
+#PIN_PUMP_2 = 6    # Beispiel: IN2
+#PIN_PUMP_3 = 13   # Beispiel: IN3
 
 PUMP_PINS = {
     1: PIN_PUMP_1,
-    2: PIN_PUMP_2,
-    3: PIN_PUMP_3,
+    #2: PIN_PUMP_2,
+    #3: PIN_PUMP_3,
 }
 
 # Viele 8-Kanal-Relais sind "active LOW":
 #   LOW  = Relais zieht an → Verbraucher AN
 #   HIGH = Relais aus      → Verbraucher AUS
-RELAY_ACTIVE_STATE = GPIO.LOW
-RELAY_INACTIVE_STATE = GPIO.HIGH
+RELAY_ACTIVE_STATE = GPIO.HIGH
+RELAY_INACTIVE_STATE = GPIO.LOW	
 
 # ================================
 #   SETUP
@@ -97,14 +97,14 @@ if __name__ == "__main__":
         time.sleep(1)
 
         # Beispiel: Pumpe 2 für 2 Sekunden an
-        pump_for_seconds(2, 2)
-        time.sleep(1)
+        #pump_for_seconds(2, 2)
+        #time.sleep(1)
 
         # Beispiel: Pumpe 3 bleibt 5 Sekunden an, dann manuell aus
-        pump_on(3)
-        print("Pumpe 3 ist jetzt an für 5 Sekunden...")
-        time.sleep(5)
-        pump_off(3)
+        #pump_on(3)
+        #print("Pumpe 3 ist jetzt an für 5 Sekunden...")
+        #time.sleep(5)
+        #pump_off(3)
 
         print("Test beendet.")
 

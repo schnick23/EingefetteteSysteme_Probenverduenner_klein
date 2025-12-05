@@ -75,12 +75,12 @@ def move_cm(cm: float, upwards: bool = True):
 if __name__ == "__main__":
     try:
         print("Motor fährt 7 cm aufwärts...")
-        move_cm(7, upwards=True)
+        move_cm(7, upwards=False)
 
         time.sleep(1)
 
         print("Motor fährt 2 cm zurück...")
-        move_cm(2, upwards=False)
+        move_cm(2, upwards=True)
 
     except KeyboardInterrupt:
         pass

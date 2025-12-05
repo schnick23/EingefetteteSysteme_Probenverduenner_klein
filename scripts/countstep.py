@@ -9,7 +9,7 @@ PIN_STEP = 17
 PIN_DIR = 27
 PIN_EN = 22
 
-STEP_DELAY = 0.0005  # kann langsamer gestellt werden (z.B. 0.001)
+STEP_DELAY = 0.0001  # kann langsamer gestellt werden (z.B. 0.001)
 
 # =====================================
 
@@ -24,7 +24,7 @@ GPIO.output(PIN_EN, GPIO.LOW)  # Motor aktiv
 GPIO.output(PIN_DIR, GPIO.HIGH)  # Richtung egal für Test
 
 
-def test_steps(max_steps=20000):
+def test_steps(max_steps=6000):
     """
     Gibt Schritt für Schritt Impulse aus und zählt mit.
     Stoppe das Script (STRG+C), sobald der Motor genau 1 cm gefahren ist.

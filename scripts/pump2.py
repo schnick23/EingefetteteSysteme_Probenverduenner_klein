@@ -36,7 +36,7 @@ if __name__ == "__main__":
 
         # Beispiel: Pumpe 1 für 3 Sekunden an
         GPIO.output(17, RELAY_ACTIVE_STATE)
-        time.sleep(300)
+        time.sleep(10)
         GPIO.output(17, RELAY_INACTIVE_STATE)
         time.sleep(1)
 
