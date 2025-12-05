@@ -1,0 +1,65 @@
+{
+    
+    "gpio": {
+        "stepper_motors": {
+            "syringe": {
+                "step_pin": 17,
+                "dir_pin": 27,
+                "en_pin": 22
+            },
+            "hub": {
+                "step_pin": 23,
+                "dir_pin": 24,
+                "en_pin": 25
+            },
+            "linear": {
+                "step_pin": 16,
+                "dir_pin": 20,
+                "en_pin": 21
+            }
+        },
+        "endstops": {
+            "syringe": 5,
+            "hub": 6,
+            "linear": 13
+        },
+        "relays": {
+            "pump_1": 12,
+            "pump_2": 1,
+            "pump_3": 7,
+            "pump_4": 8,
+            "pump_5": 18
+        }
+    },
+    "motor_config": {
+        "enable_active_low": true,
+        "microsteps": 16
+    },
+    "axes": {
+        "step_delay": 0.0005,
+        "steps_per_rev_linear": 200,
+        "steps_per_mm_linear": 40,
+        "linear_positions_mm": [
+            0.0,
+            10.0,
+            20.0,
+            30.0,
+            40.0,
+            50.0,
+            60.0,
+            70.0
+        ],
+        "hub_positions_mm": [0.0, 20.0, 40.0, 60.0]
+    },
+    "relays_config": {
+        "active_state": "HIGH",
+        "inactive_state": "LOW",
+        "pump_pins": {
+            "1": 12,
+            "2": 1,
+            "3": 7,
+            "4": 8,
+            "5": 18
+        }
+    }
+}
