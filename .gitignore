@@ -7,3 +7,15 @@ venv/
 node_modules/
 dist/
 build/
+Dokumentation/main.aux
+Dokumentation/main.bbl
+Dokumentation/main.bcf
+Dokumentation/main.blg
+Dokumentation/main.fdb_latexmk
+Dokumentation/main.log
+Dokumentation/main.out
+Dokumentation/main.run.xml
+Dokumentation/main.toc
+Dokumentation/main.synctex.gz
+Dokumentation/main.fls
+Dokumentation/main.pdf
