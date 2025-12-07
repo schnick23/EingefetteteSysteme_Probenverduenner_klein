@@ -1,0 +1,62 @@
+##############################
+###########Vorgehen###########
+##############################
+
+-------Datenverarbeitung------
+Als json --> für Python aufbereiten
+Daten:
+Verdünnungsfaktor
+Verdünnungsschritte
+Anzahl Proben
+
+---------Datenvermittlung--------
+Von Steuerungs-Funktion an Hardware Module
+
+
+------------Programm------------
+
+1. Schritt --> erste Reinigung:
+
+Linear zu Postion "Abfall" fahren
+Hubtisch zu Position "oben fahren 
+Pumpen ansteuern --> Schläuche spühlen
+Hubtisch zu Positon "unten fahren
+
+Linear zu Position "Verdünnungsmittel" --> Spritzköpfe reinigen
+HubTisch Position "oben"
+Spritzen "3ml" - Schritte aufziehen
+Spritzen auf "0ml" drücken
+Hubtischen auf Position "unten" fahren
+
+-2. Schritt --> Reihe befüllen:-
+
+Linear auf Postion "Probenmittel" fahren
+Hubtisch auf Position "oben" fahren
+Spritzen auf berechnete Menge ml ziehen
+Hubtisch auf Position "unten" fahren
+
+Linear zu Position "gewünschte Reihe" fahren
+Hubtisch auf Position "oben" fahren
+Spritzen leeren
+
+Pumpen einschalten
+Pumpen solange wie gewünschter Verdünnungfaktor ansteuern --> ml / sek
+Pumpen ausschalten
+
+-3. Schritt --> Zwischen-Reinigung:-
+(Hubtisch noch oben)
+Spritzen wenige Milliliter aufziehen
+Hubtisch auf Position "unten"
+Linear auf Position "Abfall"
+Hubtisch auf Position "oben"
+Spritzen leeren
+Hubtisch auf Position "unten" fahren
+ 
+-Optional: Schritt 4: Abdeckungsposition:-
+Linear auf Position "Abdeckung" fahren
+Hubtisch auf Position "Abdeckung" fahren 
+
+
+Abfrage: noch ein Durchlauf?
+
+Shutdown
