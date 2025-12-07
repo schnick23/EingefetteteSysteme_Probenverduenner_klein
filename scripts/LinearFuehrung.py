@@ -14,17 +14,17 @@ LIN_PIN_DIR  = 20
 LIN_PIN_EN   = 21   
 
 # Positionen in Schritten (absolut, relativ zur 1. Position)
-# Diese Werte MUSST du selbst kalibrieren!
-# Beispiel: alle 2000 Schritte eine Position weiter.
+# WERTE NOCH KALIBRIEREN
+# POSITIONEN NOCH ZUORDNEN
 LINEAR_POSITIONS = {
-    1: 0,        # Pos 1
-    2: 2000,     # Pos 2
-    3: 4000,     # Pos 3
-    4: 6000,     # Pos 4
-    5: 8000,     # Pos 5
-    6: 10000,    # Pos 6
-    7: 12000,    # Pos 7
-    8: 14000,    # Pos 8
+    1: 0,        # Pos 1 = Anfangsposition
+    2: 2000,     # Pos 2 = 1. Reihe
+    3: 4000,     # Pos 3 = 2. Reihe
+    4: 6000,     # Pos 4 = 3. Reihe
+    5: 8000,     # Pos 5 = 4. Reihe
+    6: 10000,    # Pos 6 = Reinigungsbehälter
+    7: 12000,    # Pos 7 = Abfallbehälter
+    8: 14000,    # Pos 8 = Abdeckungsposition
 }
 
 DIR_HIGH_IS_POSITIVE = True   # ggf. umdrehen, wenn Richtung „falsch herum“
