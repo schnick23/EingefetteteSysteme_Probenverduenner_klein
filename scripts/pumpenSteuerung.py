@@ -16,13 +16,7 @@ class Pumpen:
     """
 
     # BCM-GPIO-Pins für die 5 Pumpen (Beispielwerte, bitte an dein Board anpassen)
-    PUMP_PINS = {
-        1: 17,
-        2: 27,
-        3: 22,
-        4: 23,
-        5: 24,
-    }
+    
 
     # ANNAHME: Relais ist "active LOW"
     # LOW  = Relais zieht an → Pumpe AN
@@ -33,13 +27,20 @@ class Pumpen:
 
 
 
-    def __init__(self):
+    def __init__(self, pump1, pump2, pump3, pump4, pump5):
         """
         seconds_per_ml:
             Wie viele Sekunden muss die Pumpe laufen, um ~1 ml zu fördern?
             → Diesen Wert musst du durch Kalibrieren bestimmen!
         """
-        self.seconds_per_ml = SECONDS_PER_ML 
+        self.seconds_per_ml = SECONDS_PER_ML
+        self.PUMP_PINS = {
+            1: pump1,
+            2: pump2,
+            3: pump3,
+            4: pump4,
+            5: pump5
+        }
 
         GPIO.setmode(GPIO.BCM)
         GPIO.setwarnings(False)
@@ -110,4 +111,3 @@ class Pumpen:
         finally:
             GPIO.cleanup()
         print("GPIO cleaned up.")
-
