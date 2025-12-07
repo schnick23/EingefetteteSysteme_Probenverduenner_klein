@@ -9,9 +9,9 @@ from motorcontroller import Axis
 # ==============================
 
 # GPIO-Nummern (BCM)
-HUB_PIN_STEP = 17
-HUB_PIN_DIR  = 27
-HUB_PIN_EN   = 22  # optional, kann auch None sein, falls nicht verdrahtet
+HUB_PIN_STEP = 23
+HUB_PIN_DIR  = 24
+HUB_PIN_EN   = 25  # optional, kann auch None sein, falls nicht verdrahtet
 
 # Positionen in "Schritten"
 HUB_BOTTOM_STEPS = 0          # unten = 0
