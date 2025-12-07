@@ -2,23 +2,13 @@ import time
 
 from LinearFuehrung import move_linear_to_index
 from HubTisch import move_hub_to_top, move_hub_to_bottom
-from PumpenSteuerung import Pumpen
+from pumpenSteuerung import Pumpen
 
 
 def run_sequence(linear_axis, hub_axis, pumpen: Pumpen):
-    """
-    Führt eine komplette definierte Sequenz automatisch aus.
-    Die Achsen stammen aus deinen bestehenden Klassen.
-    """
-
-    print("\n===============================")
-    print("       STARTE SEQUENZ")
-    print("===============================")
-
     # -----------------------------------------
     # 0) SYSTEM IN GRUNDSTELLUNG FAHREN
     # -----------------------------------------
-    print("\n--- Kalibriere Grundstellung ---")
     move_linear_to_index(linear_axis, 1)   # LINEAR Position 1 (Start)
     move_hub_to_bottom(hub_axis)           # Hub ganz unten
 
