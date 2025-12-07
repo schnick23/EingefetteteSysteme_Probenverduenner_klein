@@ -30,7 +30,16 @@ class Axis:
         if self.pin_en is not None:
             GPIO.setup(self.pin_en, GPIO.OUT)
             GPIO.output(self.pin_en, GPIO.LOW)  # Enable aktiv LOW
-
+            
+    def _set_dir(self, direction: bool):
+        """
+        direction = True  -> "positiv"
+        direction = False -> "negativ"
+        """
+        if self.dir_high_is_positive:
+            GPIO.output(self.pin_dir, GPIO.HIGH if direction else GPIO.LOW)
+        else:
+            GPIO.output(self.pin_dir, GPIO.LOW if direction else GPIO.HIGH)
     
     def _do_step(self, steps: int, direction: bool):
         self._set_dir(direction)
