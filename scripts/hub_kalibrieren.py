@@ -4,6 +4,11 @@ import Spritzkopf
 import time
 import json
 import motorcontroller
+import RPi.GPIO as GPIO
+
+
+GPIO.cleanup()
+print("GPIO cleaned up.")
 
 with open('config.json', 'r') as f:
     config = json.load(f)
@@ -58,3 +63,5 @@ spritzkopf = Spritzkopf.SyringeHead(
 )
 
 spritzkopf.home_syringe()
+GPIO.cleanup()
+print("GPIO cleaned up.")
