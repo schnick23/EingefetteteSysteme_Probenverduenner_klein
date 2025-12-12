@@ -7,10 +7,10 @@ import motorcontroller
 
 with open('config.json', 'r') as f:
     config = json.load(f)
-end_stop_pin = config['gpio']['endstops']['hub']
 hub_step_pin = config['gpio']['hub']['step_pin']
 hub_en_pin = config['gpio']['hub']['en_pin']
 hub_dir_pin = config['motor_pins']['hub']['dir_pin']
+end_stop_pin = config['gpio']['endstops']['hub']
 hub_axis = motorcontroller.Axis(
     name="Hubtisch-Achse",
     step_pin=hub_step_pin,
