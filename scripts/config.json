@@ -19,13 +19,15 @@
             }
         },
         "endstops": {
-            "syringe": 5,
-            "hub": 6,
-            "linear": 13
+            "syringe_links": 5,
+            "syringe_rechts": 6,
+            "hub": 13,
+            "linear_vorne": 19,
+            "linear_hinten": 26
         },
         "relay": {
             "pump_1": 12,
-            "pump_2": 1,
+            "pump_2": 10,
             "pump_3": 7,
             "pump_4": 8,
             "pump_5": 18
