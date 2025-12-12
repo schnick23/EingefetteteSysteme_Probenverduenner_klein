@@ -14,7 +14,7 @@ class SyringeHead:
 
     def __init__(
         self,
-        axis: Axis,
+        axis,
         steps_per_ml: float,
         max_volume_ml: float,
         draw_towards_positive: bool = True,
@@ -27,7 +27,7 @@ class SyringeHead:
         draw_towards_pos  : True, wenn "aufsaugen" (ziehen) in positiver Richtung geschehen soll
         start_volume_ml   : Startfüllung in ml (Default: 0 = leer)
         """
-        self.axis = axis
+        self.AXIS = axis
         self.steps_per_ml = steps_per_ml
         self.max_volume_ml = max_volume_ml
         self.draw_towards_positive = draw_towards_positive
@@ -37,7 +37,7 @@ class SyringeHead:
 
         # Optional: Axis-Position konsistent zum Volumen setzen
         # Referenz: Volumen 0 ml → aktuelle Steps als 0 ansehen
-        self.axis.current_steps = 0
+        self.AXIS.current_steps = 0
 
     # ==============================
     #   HILFSFUNKTIONEN (INTERN)
@@ -76,7 +76,7 @@ class SyringeHead:
             direction = not self.draw_towards_positive
 
         # Achse bewegen
-        self.axis._do_step(steps, direction)
+        self.AXIS._do_step(steps, direction)
 
         # Zustand aktualisieren
         self.current_volume_ml = target_volume

@@ -23,7 +23,7 @@
             "hub": 6,
             "linear": 13
         },
-        "relays": {
+        "relay": {
             "pump_1": 12,
             "pump_2": 1,
             "pump_3": 7,
