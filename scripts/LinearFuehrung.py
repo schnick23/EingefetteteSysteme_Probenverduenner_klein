@@ -96,7 +96,7 @@ class LinearFuehrung:
         print(f"[{self.AXIS.name}] Fahre in Richtung "
               f"{'positiv' if direction else 'negativ'} zum Homing...")
 
-        while GPIO.input(self.END_STOP_PIN_VORNE) == GPIO.HIGH:
+        while GPIO.input(self.END_STOP_PIN_VORNE) == GPIO.HIGH and GPIO.input(self.END_STOP_PIN_HINTEN) == GPIO.HIGH:
             self.AXIS._do_step(1, direction)
 
         print(f"[{self.AXIS.name}] Hinterer Endschalter ausgelöst!")
