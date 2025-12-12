@@ -12,7 +12,7 @@ class LinearFuehrung:
 
     def __init__(self, axis, endstop_pin_vorne: int = None, endstop_pin_hinten: int = None):
         # GPIO-Nummern (BCM)
-
+        GPIO.setmode(GPIO.BCM)
         self.AXIS = axis
         self.END_STOP_PIN_VORNE = endstop_pin_vorne
         self.END_STOP_PIN_HINTEN = endstop_pin_hinten

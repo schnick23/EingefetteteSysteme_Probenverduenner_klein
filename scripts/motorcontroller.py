@@ -16,6 +16,7 @@ class Axis:
         dir_high_is_positive=True,
         home_towards_positive=False,
     ):
+        GPIO.setmode(GPIO.BCM)
         self.name = name
         self.pin_step = pin_step
         self.pin_dir = pin_dir

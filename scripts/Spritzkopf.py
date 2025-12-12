@@ -29,6 +29,7 @@ class SyringeHead:
         draw_towards_pos  : True, wenn "aufsaugen" (ziehen) in positiver Richtung geschehen soll
         start_volume_ml   : Startfüllung in ml (Default: 0 = leer)
         """
+        GPIO.setmode(GPIO.BCM)
         self.AXIS = axis
         self.steps_per_ml = steps_per_ml
         self.max_volume_ml = max_volume_ml

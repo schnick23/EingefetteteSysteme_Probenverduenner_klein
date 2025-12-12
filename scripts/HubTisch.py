@@ -23,6 +23,7 @@ class Hubtisch:
         AXIS,
         endstop_pin: int = None,
     ):
+        GPIO.setmode(GPIO.BCM)
         self.AXIS = AXIS
         self.END_STOP_PIN = endstop_pin
         if self.END_STOP_PIN is not None:
