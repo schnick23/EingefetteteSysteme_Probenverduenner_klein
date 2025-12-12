@@ -19,7 +19,8 @@ class SyringeHead:
         max_volume_ml: float,
         draw_towards_positive: bool = True,
         start_volume_ml: float = 0.0,
-        
+        endstop_pin_links: int = None,
+        endstop_pin_rechts: int = None
     ):
         """
         axis              : Instanz der Axis-Klasse (z.B. name="SYRINGE")
@@ -32,6 +33,12 @@ class SyringeHead:
         self.steps_per_ml = steps_per_ml
         self.max_volume_ml = max_volume_ml
         self.draw_towards_positive = draw_towards_positive
+        self.END_STOP_PIN_LINKS = endstop_pin_links
+        if self.END_STOP_PIN_LINKS is not None:
+            GPIO.setup(self.END_STOP_PIN_LINKS, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+        self.END_STOP_PIN_RECHTS = endstop_pin_rechts
+        if self.END_STOP_PIN_RECHTS is not None:
+            GPIO.setup(self.END_STOP_PIN_RECHTS, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 
         # Interner Zustand
         self.current_volume_ml = float(start_volume_ml)
@@ -119,3 +126,16 @@ class SyringeHead:
 
     def is_full(self) -> bool:
         return self.current_volume_ml >= (self.max_volume_ml - 0.0001)
+    
+    def home_syringe(self):
+        print(f"[{self.AXIS.name}] Homing...")
+        
+        # In Richtung Homing fahren, bis Endstopp erreicht
+        direction = self.draw_towards_positive
+        while GPIO.input(self.END_STOP_PIN_RECHTS) == GPIO.HIGH or GPIO.input(self.END_STOP_PIN_LINKS) == GPIO.HIGH:
+            self.AXIS._do_step(1, direction)
+
+        # Position auf 0 setzen
+        self.AXIS.current_steps = 0
+        self.current_volume_ml = 0.0
+        print(f"[{self.AXIS.name}] Homing abgeschlossen. Position und Volumen auf 0 gesetzt.")

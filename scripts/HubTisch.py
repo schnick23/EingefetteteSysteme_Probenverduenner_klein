@@ -91,7 +91,7 @@ class Hubtisch:
         print(f"[{self.AXIS.name}] Fahre in Richtung "
               f"{'positiv' if direction else 'negativ'} zum Homing...")
         while GPIO.input(self.END_STOP_PIN) == GPIO.HIGH:
-            self.AXIS._do_step(10, direction)
+            self.AXIS._do_step(1, direction)
 
         # Position auf 0 setzen
         self.AXIS.current_steps = 0
