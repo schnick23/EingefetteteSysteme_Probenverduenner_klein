@@ -5,7 +5,7 @@ import time
 import json
 import motorcontroller
 
-with open('/config.json', 'r') as f:
+with open('config.json', 'r') as f:
     config = json.load(f)
 end_stop_pin = config['gpio']['endstops']['hub']
 hub_step_pin = config['gpio']['hub']['step_pin']
