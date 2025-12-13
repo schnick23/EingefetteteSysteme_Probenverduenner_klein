@@ -26,13 +26,13 @@ class LinearFuehrung:
     # WERTE NOCH KALIBRIEREN
     # POSITIONEN NOCH ZUORDNEN
     LINEAR_POSITIONS = {
-        1: 0,        # Pos 1 = Anfangsposition
-        2: 6000,     # Pos 2 = 1. Reihe
-        3: 8000,     # Pos 3 = 2. Reihe
-        4: 10000,     # Pos 4 = 3. Reihe
-        5: 12000,     # Pos 5 = 4. Reihe
-        6: 2000,    # Pos 6 = Reinigungsbehälter
-        7: 4000,    # Pos 7 = Abfallbehälter
+        1: 100000,        # Pos 1 = Anfangsposition
+        2: 74800,     # Pos 2 = 1. Reihe
+        3: 63300,     # Pos 3 = 2. Reihe
+        4: 51000,     # Pos 4 = 3. Reihe
+        5: 39500,     # Pos 5 = 4. Reihe
+        6: 32000,    # Pos 6 = Reinigungsbehälter
+        7: 24000,    # Pos 7 = Abfallbehälter
         8: 14000,    # Pos 8 = Abdeckungsposition
     }
 
