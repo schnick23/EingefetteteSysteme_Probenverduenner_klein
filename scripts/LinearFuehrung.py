@@ -86,7 +86,7 @@ class LinearFuehrung:
             GPIO.output(self.AXIS.pin_en, GPIO.HIGH)  # Motor deaktivieren (Enable HIGH bei aktiv LOW)
         GPIO.cleanup()
     
-    def home_linear(self):
+    def home(self):
         if self.END_STOP_PIN_HINTEN is None:
             print(f"[{self.AXIS.name}] Kein hinterer Endschalter definiert. Homing nicht möglich.")
             return
@@ -100,5 +100,23 @@ class LinearFuehrung:
             self.AXIS._do_step(10, direction)
 
         print(f"[{self.AXIS.name}] Hinterer Endschalter ausgelöst!")
+        self.AXIS.current_steps = self.LINEAR_POSITIONS[8]
+        print(f"[{self.AXIS.name}] Homing abgeschlossen. Position auf 0 gesetzt.")
+    
+    def front(self):
+        if self.END_STOP_PIN_VORNE is None:
+            print(f"[{self.AXIS.name}] Kein vorderer Endschalter definiert. Homing nicht möglich.")
+            return
+
+        print(f"[{self.AXIS.name}] Starte Homing der Linearachse...")
+        direction = True 
+        print(f"[{self.AXIS.name}] Fahre in Richtung "
+              f"{'positiv' if direction else 'negativ'} zum Homing...")
+
+        while GPIO.input(self.END_STOP_PIN_VORNE) == GPIO.HIGH and GPIO.input(self.END_STOP_PIN_HINTEN) == GPIO.HIGH:
+            self.AXIS._do_step(10, direction)
+
+        print(f"[{self.AXIS.name}] Vorderer Endschalter ausgelöst!")
         self.AXIS.current_steps = 0
         print(f"[{self.AXIS.name}] Homing abgeschlossen. Position auf 0 gesetzt.")
+

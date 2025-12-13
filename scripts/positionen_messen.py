@@ -7,6 +7,29 @@ import motorcontroller
 import RPi.GPIO as GPIO
 
 
+def measure_positions(element):
+    element.home()
+    steps = 0
+    while True:
+        command = input("Drücke 'q' um abzubrechen, 'i' für aktuelle steps, 'w' zum vorwärts fahren, 's' zum zurück fahren: ")
+        if command.lower() == 'q':
+            print(steps)
+            break
+        elif command.lower() == 'w':
+            steps += 100
+            element.AXIS._do_step(100, True)
+        elif command.lower() == 'i':
+            print(steps)
+        elif command.lower() == 's':
+            back_steps = input("Wie viele Schritte zurückfahren? ")
+            try:
+                back_steps = int(back_steps)
+                steps -= back_steps
+                element.AXIS._do_step(back_steps, False)
+            except ValueError:
+                print("Ungültige Eingabe. Bitte eine Zahl eingeben.")
+
+
 GPIO.cleanup()
 print("GPIO cleaned up.")
 
@@ -27,7 +50,8 @@ hub_tisch = HubTisch.Hubtisch(
     AXIS=hub_axis,
     endstop_pin=end_stop_pin
 )
-hub_tisch.home_hub()
+
+measure_positions(hub_tisch)
 
 lin_axis = motorcontroller.Axis(
     name="Linear-Achse",
@@ -42,7 +66,8 @@ linear_fuehrung = LinearFuehrung.LinearFuehrung(
     endstop_pin_vorne=end_stop_pin_vorne,
     endstop_pin_hinten=end_stop_pin_hinten
 )
-linear_fuehrung.home_linear()
+
+measure_positions(linear_fuehrung)
 
 syr_axis = motorcontroller.Axis(
     name="Spritzkopf-Achse",
@@ -62,6 +87,6 @@ spritzkopf = Spritzkopf.SyringeHead(
     endstop_pin_rechts=end_stop_pin_rechts
 )
 
-spritzkopf.home_syringe()
+measure_positions(spritzkopf)
 GPIO.cleanup()
 print("GPIO cleaned up.")

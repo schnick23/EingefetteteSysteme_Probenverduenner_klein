@@ -80,7 +80,7 @@ class Hubtisch:
             GPIO.output(self.AXIS.pin_en, GPIO.HIGH)
         GPIO.cleanup()
 
-    def home_hub(self):
+    def home(self):
         print(f"[{self.AXIS.name}] Homing...")
         if self.END_STOP_PIN is None:
             self.AXIS._home()

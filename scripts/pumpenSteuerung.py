@@ -41,8 +41,7 @@ class Pumpen:
             4: pump4,
             5: pump5
         }
-        self.RELAIS_PINS =
-        {
+        self.RELAIS_PINS ={
             6: relais6,
             7: relais7,
             8: relais8
@@ -130,13 +129,13 @@ class Pumpen:
             GPIO.output(pin, self.RELAY_INACTIVE_STATE)
         if dir:
             GPIO.output(self.RELAIS_PINS[7], self.RELAY_ACTIVE_STATE)
-            sleep(0.1)  
+            time.sleep(0.1)  
             GPIO.output(self.RELAIS_PINS[8], self.RELAY_ACTIVE_STATE)
-            sleep(0.1)
+            time.sleep(0.1)
             GPIO.output(self.RELAIS_PINS[6], self.RELAY_ACTIVE_STATE)
         else:
             GPIO.output(self.RELAIS_PINS[6], self.RELAY_INACTIVE_STATE)
-            sleep(0.1)  
+            time.sleep(0.1)  
             GPIO.output(self.RELAIS_PINS[8], self.RELAY_INACTIVE_STATE)
-            sleep(0.1)
+            time.sleep(0.1)
             GPIO.output(self.RELAIS_PINS[7], self.RELAY_INACTIVE_STATE)

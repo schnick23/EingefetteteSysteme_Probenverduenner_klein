@@ -25,12 +25,16 @@
             "linear_vorne": 19,
             "linear_hinten": 26
         },
-        "relay": {
-            "pump_1": 11,
-            "pump_2": 10,
-            "pump_3": 7,
-            "pump_4": 8,
-            "pump_5": 18
+        "relais": {
+            "relais1": 11,
+            "relais2": 10,
+            "relais3": 7,
+            "relais4": 8,
+            "relais5": 18,
+            "relais6": 0,
+            "relais7": 0,
+            "relais8": 0
+
         }
     },
     "motor_config": {
@@ -53,15 +57,26 @@
         ],
         "hub_positions_mm": [0.0, 20.0, 40.0, 60.0]
     },
-    "relays_config": {
-        "active_state": "HIGH",
-        "inactive_state": "LOW",
-        "pump_pins": {
-            "1": 12,
-            "2": 1,
-            "3": 7,
-            "4": 8,
-            "5": 18
+    "positions": {
+        "syringe": {
+            "max_volume_ml": 15.0,
+            "steps_per_ml": 0.0
+        },
+        "hub_tisch": {
+            "bottom": 0,
+            "cleaning": 1,
+            "top": 2
+        },
+        "linear_fuehrung": {
+            "waste_container": 7,
+            "cleaning_container": 6,
+            "stock_solution": 5,
+            "dilution_1": 4,
+            "dilution_2": 3,
+            "dilution_3": 2,
+            "dilution_4": 1,
+            "start_position": 0
         }
     }
+
 }

@@ -15,7 +15,7 @@ class SyringeHead:
     def __init__(
         self,
         axis,
-        steps_per_ml: float,
+        steps_per_ml: int,
         max_volume_ml: float,
         draw_towards_positive: bool = True,
         start_volume_ml: float = 0.0,
@@ -128,7 +128,7 @@ class SyringeHead:
     def is_full(self) -> bool:
         return self.current_volume_ml >= (self.max_volume_ml - 0.0001)
     
-    def home_syringe(self):
+    def home(self):
         print(f"[{self.AXIS.name}] Homing...")
         
         # In Richtung Homing fahren, bis Endstopp erreicht
