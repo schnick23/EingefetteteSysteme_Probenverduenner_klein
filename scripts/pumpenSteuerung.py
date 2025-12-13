@@ -27,7 +27,7 @@ class Pumpen:
 
 
 
-    def __init__(self, pump1, pump2, pump3, pump4, pump5):
+    def __init__(self, pump1, pump2, pump3, pump4, pump5, relais6, relais7, relais8):
         """
         seconds_per_ml:
             Wie viele Sekunden muss die Pumpe laufen, um ~1 ml zu fördern?
@@ -41,6 +41,12 @@ class Pumpen:
             4: pump4,
             5: pump5
         }
+        self.RELAIS_PINS =
+        {
+            6: relais6,
+            7: relais7,
+            8: relais8
+        }
 
         GPIO.setmode(GPIO.BCM)
         GPIO.setwarnings(False)
@@ -48,6 +54,9 @@ class Pumpen:
 
         # Alle Pumpenpins als Ausgang initialisieren und ausschalten
         for pin in self.PUMP_PINS.values():
+            GPIO.setup(pin, GPIO.OUT)
+            GPIO.output(pin, self.RELAY_INACTIVE_STATE)
+        for pin in self.RELAIS_PINS.values():
             GPIO.setup(pin, GPIO.OUT)
             GPIO.output(pin, self.RELAY_INACTIVE_STATE)
 
@@ -111,3 +120,23 @@ class Pumpen:
         finally:
             GPIO.cleanup()
         print("GPIO cleaned up.")
+    
+    def changeDir(self, dir: bool): 
+        """
+            Ändert die Drehrichtung der Pumpen.
+            true = vorwärts, false = rückwärts
+        """
+        for pin in self.PUMP_PINS.values():
+            GPIO.output(pin, self.RELAY_INACTIVE_STATE)
+        if dir:
+            GPIO.output(self.RELAIS_PINS[7], self.RELAY_ACTIVE_STATE)
+            sleep(0.1)  
+            GPIO.output(self.RELAIS_PINS[8], self.RELAY_ACTIVE_STATE)
+            sleep(0.1)
+            GPIO.output(self.RELAIS_PINS[6], self.RELAY_ACTIVE_STATE)
+        else:
+            GPIO.output(self.RELAIS_PINS[6], self.RELAY_INACTIVE_STATE)
+            sleep(0.1)  
+            GPIO.output(self.RELAIS_PINS[8], self.RELAY_INACTIVE_STATE)
+            sleep(0.1)
+            GPIO.output(self.RELAIS_PINS[7], self.RELAY_INACTIVE_STATE)
