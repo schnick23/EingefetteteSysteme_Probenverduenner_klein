@@ -21,8 +21,8 @@ class Pumpen:
     # ANNAHME: Relais ist "active LOW"
     # LOW  = Relais zieht an → Pumpe AN
     # HIGH = Relais aus      → Pumpe AUS
-    RELAY_ACTIVE_STATE = GPIO.LOW
-    RELAY_INACTIVE_STATE = GPIO.HIGH
+    RELAY_ACTIVE_STATE = GPIO.HIGH
+    RELAY_INACTIVE_STATE = GPIO.LOW
 
 
 
