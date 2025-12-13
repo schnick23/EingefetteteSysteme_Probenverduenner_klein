@@ -5,7 +5,7 @@
             "syringe": {
                 "step_pin": 17,
                 "dir_pin": 27,
-                "en_pin": 22
+                "en_pin": 4
             },
             "hub": {
                 "step_pin": 23,
@@ -13,9 +13,9 @@
                 "en_pin": 25
             },
             "linear": {
-                "step_pin": 16,
-                "dir_pin": 20,
-                "en_pin": 21
+                "step_pin": 12,
+                "dir_pin": 16,
+                "en_pin": 20
             }
         },
         "endstops": {
@@ -26,7 +26,7 @@
             "linear_hinten": 26
         },
         "relay": {
-            "pump_1": 12,
+            "pump_1": 11,
             "pump_2": 10,
             "pump_3": 7,
             "pump_4": 8,
