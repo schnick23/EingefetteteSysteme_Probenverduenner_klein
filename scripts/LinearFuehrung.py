@@ -92,7 +92,7 @@ class LinearFuehrung:
             return
 
         print(f"[{self.AXIS.name}] Starte Homing der Linearachse...")
-        direction = True 
+        direction = False 
         print(f"[{self.AXIS.name}] Fahre in Richtung "
               f"{'positiv' if direction else 'negativ'} zum Homing...")
 
