@@ -52,6 +52,7 @@ def run_steps(step_count, direction):
                 print(f"Steps bisher: {i + 1}")
 
     except KeyboardInterrupt:
+        GPIO.cleanup()
         print("❌ Manuell abgebrochen.")
 
     finally:
