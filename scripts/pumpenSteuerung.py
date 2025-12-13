@@ -87,12 +87,12 @@ class Pumpen:
     def all_on(self, pump_ids: Optional[Iterable[int]] = None):
         """Schaltet alle (oder ausgewählte) Pumpen EIN."""
         for pid in self._iter_pump_ids(pump_ids):
-            self.pump_on(pid)
+            GPIO.output(self.PUMP_PINS[pid], self.RELAY_ACTIVE_STATE)
 
     def all_off(self, pump_ids: Optional[Iterable[int]] = None):
         """Schaltet alle (oder ausgewählte) Pumpen AUS."""
         for pid in self._iter_pump_ids(pump_ids):
-            self.pump_off(pid)
+            GPIO.output(self.PUMP_PINS[pid], self.RELAY_INACTIVE_STATE)
 
     def all_pump_ml(self, ml: float, pump_ids: Optional[Iterable[int]] = None):
         """
