@@ -4,7 +4,7 @@
         "stepper_motors": {
             "syringe": {
                 "step_pin": 17,
-                "dir_pin": 27,
+                "dir_pin": 3,
                 "en_pin": 4
             },
             "hub": {
@@ -31,9 +31,9 @@
             "relais3": 7,
             "relais4": 8,
             "relais5": 18,
-            "relais6": 0,
-            "relais7": 0,
-            "relais8": 0
+            "relais6": 14,
+            "relais7": 15,
+            "relais8": 27
 
         }
     },
