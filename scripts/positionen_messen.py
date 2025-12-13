@@ -16,8 +16,13 @@ def measure_positions(element):
             print(steps)
             break
         elif command.lower() == 'w':
-            steps += 100
-            element.AXIS._do_step(100, True)
+            front_steps = input("Wie viele Schritte zurückfahren? ")
+            try:
+                front_steps = int(front_steps)
+                steps += front_steps
+                element.AXIS._do_step(front_steps, True)
+            except ValueError:
+                print("Ungültige Eingabe. Bitte eine Zahl eingeben.")
         elif command.lower() == 'i':
             print(steps)
         elif command.lower() == 's':
