@@ -5,9 +5,9 @@ import sys
 # =====================================
 # PIN-KONFIGURATION
 # =====================================
-PIN_STEP = 17
-PIN_DIR = 27
-PIN_EN = 22
+PIN_STEP = 16
+PIN_DIR = 20
+PIN_EN = 21
 
 STEP_DELAY = 0.00005  # kann langsamer gestellt werden (z.B. 0.001)
 
