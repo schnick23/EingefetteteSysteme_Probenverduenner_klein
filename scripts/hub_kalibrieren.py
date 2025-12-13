@@ -34,7 +34,7 @@ lin_axis = motorcontroller.Axis(
     pin_step=config['gpio']["stepper_motors"]['linear']['step_pin'],
     pin_dir=config['gpio']["stepper_motors"]['linear']['dir_pin'],
     pin_en=config['gpio']["stepper_motors"]['linear']['en_pin'],
-    home_towards_positive=True
+    home_towards_positive=False
 )
 end_stop_pin_vorne = config['gpio']['endstops']['linear_vorne']
 end_stop_pin_hinten = config['gpio']['endstops']['linear_hinten']
