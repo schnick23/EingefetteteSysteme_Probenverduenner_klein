@@ -51,6 +51,7 @@ def measure_positions(element):
         except KeyboardInterrupt:
             GPIO.cleanup()
             print("❌ Manuell abgebrochen.")
+            break
         
 
 
