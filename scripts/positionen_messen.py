@@ -42,6 +42,7 @@ def measure_positions(element):
 
 
 GPIO.cleanup()
+
 print("GPIO cleaned up.")
 
 def setup_gpio():
@@ -102,5 +103,25 @@ def setup_gpio():
         GPIO.cleanup()
         print("❌ Manuell abgebrochen.")
 
+GPIO.cleanup()
+GPIO.setmode(GPIO.BCM)
+with open('config.json', 'r') as f:
+    config = json.load(f)
+
+end_stop_pin = config['gpio']['endstops']['hub']
+hub_step_pin = config['gpio']["stepper_motors"]['hub']['step_pin']
+hub_en_pin = config['gpio']["stepper_motors"]['hub']['en_pin']
+hub_dir_pin = config['gpio']["stepper_motors"]['hub']['dir_pin']
+hub_axis = motorcontroller.Axis(
+    name="Hubtisch-Achse",
+    pin_step=hub_step_pin,
+    pin_dir=hub_dir_pin,
+    pin_en=hub_en_pin
+)
+hub_tisch = HubTisch.Hubtisch(
+    AXIS=hub_axis,
+    endstop_pin=end_stop_pin
+)
+measure_positions(hub_tisch)
 
 
