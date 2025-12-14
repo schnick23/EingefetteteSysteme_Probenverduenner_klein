@@ -227,12 +227,23 @@
     // Mapping: row index -> factor value (nur für Reihen 0..2)
     const factors = {};
     for (let r = 0; r < rows - 1; r++) {
-      const el = document.getElementById(`factor-${rows - 1 - r}`) || document.getElementById(`factor-${r}`);
+      const el = document.getElementById(`factor-${r}`) //|| document.getElementById(`factor-${r}`);
       // aufgrund manueller Umbenennungen im Template robust lesen
       const val = el && el.value !== '' ? Number(el.value) : null;
       if (val !== null && !Number.isNaN(val)) factors[r] = val;
     }
     return factors;
+  }
+
+  function collectFills() {
+    // Mapping: row index -> fill value (nur für Reihen 0..2)
+    const fills = {};
+    for (let r = 0; r < rows - 1; r++) {
+      const el = document.getElementById(`fill-${r}`);
+      const val = el && el.value !== '' ? Number(el.value) : null;
+      if (val !== null && !Number.isNaN(val)) fills[r] = val;
+    }
+    return fills;
   }
 
   function collectEnabledRows() {
@@ -257,7 +268,9 @@
       grid: state,
       enabledRows: collectEnabledRows(),
       factors: collectFactors(),
-      stockVolume: parseFloat(document.getElementById('stockVolume').value || '0')
+      fills: collectFills(),
+      stockVolume: parseFloat(document.getElementById('stockVolume').value || '0'),
+      cover: getCoverCheckboxValue()
     };
     const data = await callApi('/api/start', payload);
 
@@ -267,9 +280,21 @@
     }
     if (data && data.ok && data.task_id) {
       notify('Start gesendet');
-      // Weiterleitung auf die Laufzeit-Seite mit nur Ladebalken/Abbrechen
-      //window.location.href = `/check`;
-      document.querySelector("form").submit(); // goes to the checking page
+      // Add hidden inputs with the processed data
+      const form = document.querySelector("form");
+      const dataInput = document.createElement("input");
+      dataInput.type = "hidden";
+      dataInput.name = "processedData";
+      dataInput.value = JSON.stringify(data.data);
+      form.appendChild(dataInput);
+      
+      const taskIdInput = document.createElement("input");
+      taskIdInput.type = "hidden";
+      taskIdInput.name = "task_id";
+      taskIdInput.value = data.task_id;
+      form.appendChild(taskIdInput);
+      
+      form.submit(); // goes to the checking page
     } else {
       notify('Start fehlgeschlagen', true);
     }

@@ -17,9 +17,20 @@
             margin: 0;
         }
 
+        p {
+            font-size: 20px;
+            font-weight: 500;
+            line-height: 1.5;
+            margin-bottom: 0px;
+        }
+
+        ul {
+            margin-top: 0px;
+        }
+
         .page{
-            min-width: 600px;
-            max-width: 600px;
+            min-width: 500px;
+            max-width: 500px;
             box-shadow: 2px 2px 4px rgba(128, 128, 128, 0.358);
             border-radius: 10px;
             background-color: #ffffff;
@@ -63,16 +74,31 @@
         
         </header>
 
-        <main class="page-main">
-            <p>Bitte prüfe die Parameter ein letztes Mal:</p>
-            <ul>
-                <li>Stammlösungstartvolumen: {{ start_volume }} ml</li>
-                <li>Zielvolumen: {{ target_volume }} ml</li>
-                <li>Verdünnung 1: {{ dilution1 }} </li>
-                <li>Verdünnung 2: {{ dilution2 }} </li>
-                <li>Verdünnung 3: {{ dilution3 }} </li>
-            </ul>
+        <main class="page-main" style="margin-left: 30px;">
+            
+            <p>Reihe 1:</p>
 
+            <ul>
+                {% if info1 %}
+                <li>Verdünnungsfaktor: {{ info1.Verduennung }}</li>
+                <li>Endvolumen: {{ info1.Volumen|round(2) }} ml </li>
+                {% endif %}
+
+            </ul>
+            <p>Reihe 2:</p>
+            <ul>
+                {% if info2 %}
+                <li>Verdünnungsfaktor: {{ info2.Verduennung }}</li>
+                <li>Endvolumen: {{ info2.Volumen|round(2) }} ml </li>
+                {% endif %}
+            </ul>
+            <p>Reihe 3:</p>
+            <ul>
+                {% if info3 %}
+                <li>Verdünnungsfaktor: {{ info3.Verduennung }}</li>
+                <li>Endvolumen: {{ info3.Volumen|round(2) }} ml </li>
+                {% endif %}
+            </ul>
         </main>
         <div class="button-group">
             <button id="button1" onclick="window.location.href='/'">Änderungen vornehmen</button>

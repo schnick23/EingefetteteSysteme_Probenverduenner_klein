@@ -93,30 +93,27 @@ class LinearFuehrung:
 
         print(f"[{self.AXIS.name}] Starte Homing der Linearachse...")
         direction = False 
-        print(f"[{self.AXIS.name}] Fahre in Richtung "
-              f"{'positiv' if direction else 'negativ'} zum Homing...")
+        print("Fahre nach hinten zum Homing...")
 
-        while GPIO.input(self.END_STOP_PIN_VORNE) == GPIO.HIGH and GPIO.input(self.END_STOP_PIN_HINTEN) == GPIO.HIGH:
-            self.AXIS._do_step(10, direction)
+        while GPIO.input(self.END_STOP_PIN_HINTEN) == GPIO.HIGH:
+            self.AXIS.do_step_linear(10, direction)
 
         print(f"[{self.AXIS.name}] Hinterer Endschalter ausgelöst!")
         self.AXIS.current_steps = self.LINEAR_POSITIONS[8]
-        print(f"[{self.AXIS.name}] Homing abgeschlossen. Position auf 0 gesetzt.")
+        print(f"[{self.AXIS.name}] Homing abgeschlossen. Position auf 8 gesetzt.")
     
-    def front(self):
+    def home_vorne(self):
         if self.END_STOP_PIN_VORNE is None:
             print(f"[{self.AXIS.name}] Kein vorderer Endschalter definiert. Homing nicht möglich.")
             return
 
         print(f"[{self.AXIS.name}] Starte Homing der Linearachse...")
         direction = True 
-        print(f"[{self.AXIS.name}] Fahre in Richtung "
-              f"{'positiv' if direction else 'negativ'} zum Homing...")
+        print("Fahre nach vorne zum Homing...")
 
-        while GPIO.input(self.END_STOP_PIN_VORNE) == GPIO.HIGH and GPIO.input(self.END_STOP_PIN_HINTEN) == GPIO.HIGH:
-            self.AXIS._do_step(10, direction)
+        while GPIO.input(self.END_STOP_PIN_VORNE) == GPIO.HIGH:
+            self.AXIS.do_step_linear(10, direction)
 
         print(f"[{self.AXIS.name}] Vorderer Endschalter ausgelöst!")
-        self.AXIS.current_steps = 0
-        print(f"[{self.AXIS.name}] Homing abgeschlossen. Position auf 0 gesetzt.")
-
+        self.AXIS.current_steps = self.LINEAR_POSITIONS[1]
+        print(f"[{self.AXIS.name}] Homing abgeschlossen. Position auf 1 gesetzt.")

@@ -4,7 +4,7 @@ import time
 
 
 START_DELAY = 0.0015   # sehr langsam (Startmoment)
-RUN_DELAY   = 0.0005   # Zielgeschwindigkeit
+   # Zielgeschwindigkeit
 END_DELAY   = 0.0015   # sanftes Abbremsen
 
 RAMP_STEPS = 300       # Anzahl Schritte für Beschleunigung / Bremsung
@@ -15,7 +15,8 @@ class Axis:
         name, #Name der Achse HUB, LINEAR, SYRINGE
         pin_step, 
         pin_dir, #Richtung
-        pin_en,     
+        pin_en,
+        run_delay   = 0.0001,     
         #step_delay=STEP_DELAY,
         dir_high_is_positive=True,
         home_towards_positive=False,
@@ -25,6 +26,7 @@ class Axis:
         self.pin_step = pin_step
         self.pin_dir = pin_dir
         self.pin_en = pin_en
+        self.RUN_DELAY   = run_delay
         #self.step_delay = step_delay
         self.dir_high_is_positive = dir_high_is_positive
         self.home_towards_positive = home_towards_positive
@@ -67,19 +69,19 @@ class Axis:
                 # Beschleunigung
                 delay = self._lerp(
                     start=START_DELAY,
-                    end=RUN_DELAY,
+                    end=self.RUN_DELAY,
                     t=i / ramp_steps
                 )
             elif i > steps - ramp_steps:
                 # Bremsen
                 delay = self._lerp(
-                    start=RUN_DELAY,
+                    start=self.RUN_DELAY,
                     end=END_DELAY,
                     t=(i - (steps - ramp_steps)) / ramp_steps
                 )
             else:
                 # konstante Geschwindigkeit
-                delay = RUN_DELAY
+                delay = self.RUN_DELAY
 
             GPIO.output(self.pin_step, GPIO.HIGH)
             time.sleep(delay)
@@ -92,6 +94,22 @@ class Axis:
                 self.current_steps -= 1
 
             # Endschalter hier prüfen
+    
+    def do_step_linear(self, steps: int, direction: bool):
+     
+        if steps <= 0:
+            return
+        self._set_dir(direction)
+        for _ in range(steps):
+            GPIO.output(self.pin_step, GPIO.HIGH)
+            time.sleep(self.RUN_DELAY)
+            GPIO.output(self.pin_step, GPIO.LOW)
+            time.sleep(self.RUN_DELAY)
+            if direction:
+                self.current_steps += 1
+            else:
+                self.current_steps -= 1
+
 
 
     def _home(self):

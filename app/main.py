@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+﻿from flask import Flask, render_template, request
 
 from .config import Config
 from . import api
@@ -24,41 +24,35 @@ def create_app(config_class=Config):
     
     @app.route("/check", methods=["POST"])
     def check_page():
-        start_volume = request.form.get("stock_Volume")
-
-        targetV3 = request.form.get("fillDilution3")
-        targetV2 = request.form.get("fillDilution2")
-        targetV1 = request.form.get("fillDilution1")
-        if targetV3 is not None:
-            target_volume = targetV3
-        elif targetV2 is not None:
-            target_volume = targetV2
-        elif targetV1 is not None:
-            target_volume = targetV1
+        import json
         
-        dilution1   = request.form.get("factorDilution1")
-        dilution2   = request.form.get("factorDilution2")
-        dilution3   = request.form.get("factorDilution3")
-
-        # Task erstellen für die spätere Ausführung
-        task_id = str(uuid.uuid4())
-        params = {
-            "stockVolume": start_volume,
-            "targetVolume": target_volume,
-            "dilution1": dilution1,
-            "dilution2": dilution2,
-            "dilution3": dilution3
-        }
-        state = TaskState(name="dilute", params=params)
-        runner.start_task(task_id, example_dilute, state)
+        # Get the processed data from the hidden input
+        processed_data_str = request.form.get("processedData")
+        task_id = request.form.get("task_id")
+        
+        if processed_data_str:
+            processed_data = json.loads(processed_data_str)
+        else:
+            processed_data = {}
+        
+        start_volume = processed_data.get("stockVolume", request.form.get("stock_Volume"))
+        dilution1 = processed_data.get("factors", {}).get("2", request.form.get("factorDilution1"))
+        dilution2 = processed_data.get("factors", {}).get("1", request.form.get("factorDilution2"))
+        dilution3 = processed_data.get("factors", {}).get("0", request.form.get("factorDilution3"))
+        
+        info1 = processed_data.get("info1")
+        info2 = processed_data.get("info2")
+        info3 = processed_data.get("info3")
 
         return render_template(
             "check.html",
             start_volume=start_volume,
-            target_volume=target_volume,
             dilution1=dilution1,
             dilution2=dilution2,
             dilution3=dilution3,
+            info1=info1,
+            info2=info2,
+            info3=info3,
             task_id=task_id
         )
 
