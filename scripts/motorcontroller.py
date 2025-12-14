@@ -16,7 +16,7 @@ class Axis:
         pin_step, 
         pin_dir, #Richtung
         pin_en,
-        run_delay   = 0.0001     
+        run_delay   = 0.0001,     
         #step_delay=STEP_DELAY,
         dir_high_is_positive=True,
         home_towards_positive=False,
