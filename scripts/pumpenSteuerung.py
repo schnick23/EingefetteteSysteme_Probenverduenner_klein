@@ -125,6 +125,7 @@ class Pumpen:
             Ändert die Drehrichtung der Pumpen.
             true = vorwärts, false = rückwärts
         """
+        dir = not dir
         for pin in self.PUMP_PINS.values():
             GPIO.output(pin, self.RELAY_INACTIVE_STATE)
         if dir:
