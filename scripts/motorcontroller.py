@@ -4,7 +4,7 @@ import time
 
 
 START_DELAY = 0.0015   # sehr langsam (Startmoment)
-RUN_DELAY   = 0.0005   # Zielgeschwindigkeit
+RUN_DELAY   = 0.0001   # Zielgeschwindigkeit
 END_DELAY   = 0.0015   # sanftes Abbremsen
 
 RAMP_STEPS = 300       # Anzahl Schritte für Beschleunigung / Bremsung
