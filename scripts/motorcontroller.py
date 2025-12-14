@@ -94,6 +94,22 @@ class Axis:
                 self.current_steps -= 1
 
             # Endschalter hier prüfen
+    
+    def do_step_linear(self, steps: int, direction: bool):
+     
+        if steps <= 0:
+            return
+        self._set_dir(direction)
+        for _ in range(steps):
+            GPIO.output(self.pin_step, GPIO.HIGH)
+            time.sleep(self.RUN_DELAY)
+            GPIO.output(self.pin_step, GPIO.LOW)
+            time.sleep(self.RUN_DELAY)
+            if direction:
+                self.current_steps += 1
+            else:
+                self.current_steps -= 1
+
 
 
     def _home(self):
