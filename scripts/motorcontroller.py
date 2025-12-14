@@ -3,7 +3,7 @@ import RPi.GPIO as GPIO
 import time
 
 
-STEP_DELAY = 0.00005             # 0.5 ms → ca. 2000 Schritte/s
+STEP_DELAY = 0.0005             # 0.5 ms → ca. 2000 Schritte/s
 
 class Axis:
     def __init__(
