@@ -248,6 +248,22 @@ def check_factors(data: Dict[str, Any]):
         }
         data.update({"info1": info1})
 
+    pump1: bool = grid[3][0]
+    pump2: bool = grid[3][1]
+    pump3: bool = grid[3][2]
+    pump4: bool = grid[3][3]
+    pump5: bool = grid[3][4]
+
+    activePumps: Dict[int, bool] = {
+            1: pump1,
+            2: pump2,
+            3: pump3,
+            4: pump4,
+            5: pump5
+        }
+    
+    data.update({"activePumps": activePumps})
+
     return (True, "All checks passed")
         
     
