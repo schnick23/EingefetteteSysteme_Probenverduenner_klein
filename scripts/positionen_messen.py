@@ -8,9 +8,13 @@ import RPi.GPIO as GPIO
 import os
 
 current = None
-hub_steps = 0
-linear_steps = 0
-syringe_steps = 0
+
+
+axis_steps= {
+    "Hubtisch-Achse": 0,
+    "Linear-Achse": 0,
+    "Spritzkopf-Achse": 0
+}
 
 
 def measure_positions(element):
@@ -25,28 +29,23 @@ def measure_positions(element):
                 element.home()
                 break
             elif command.lower() == 'hub':
-                print(current,steps)
+                print(current,axis_steps[current])
                 measure_positions(hub_tisch)
             elif command.lower() == 'lin':
-                print(element.AXIS.name,steps)
+                print(current,axis_steps[current])
                 measure_positions(linear_fuehrung)
             elif command.lower() == 'syr':
-                print(element.AXIS.name,steps)
+                print(current,axis_steps[current])
                 measure_positions(spritzkopf)
             elif command.lower() == 'h':
                 element.home()
-                switch current:
-                        case "Hubtisch-Achse":
-                            hub_steps = 0
-                        case "Linear-Achse":
-                            linear_steps = 0
-                        case "Spritzkopf-Achse":
-                            syringe_steps = 0
+                axis_steps[current] = 0
+                steps = 0
                 
             elif command.lower() == 'v' and current == "Linear-Achse":
                 element.home_vorne()
                 steps = 100000
-                linear_steps = 100000
+                axis_steps[current] = 100000
             
             elif command.lower() == 'w':
                 front_steps = input("Wie viele Schritte zurückfahren? ")
@@ -54,13 +53,7 @@ def measure_positions(element):
                     front_steps = int(front_steps)
                     steps += front_steps
                     element.AXIS._do_step(front_steps, True)
-                    switch current:
-                        case "Hubtisch-Achse":
-                            hub_steps +=front_steps
-                        case "Linear-Achse":
-                            linear_steps +=front_steps
-                        case "Spritzkopf-Achse":
-                            syringe_steps +=front_steps
+                    axis_steps[current] +=front_steps
                 except ValueError:
                     print("Ungültige Eingabe. Bitte eine Zahl eingeben.")
             elif command.lower() == 'i':
@@ -73,13 +66,7 @@ def measure_positions(element):
                     back_steps = int(back_steps)
                     steps -= back_steps
                     element.AXIS._do_step(back_steps, False)
-                    switch current:
-                        case "Hubtisch-Achse":
-                            hub_steps -=front_steps
-                        case "Linear-Achse":
-                            linear_steps -=front_steps
-                        case "Spritzkopf-Achse":
-                            syringe_steps -=front_steps
+                    axis_steps[current] -= back_steps
                 except ValueError:
                     print("Ungültige Eingabe. Bitte eine Zahl eingeben.")
         
