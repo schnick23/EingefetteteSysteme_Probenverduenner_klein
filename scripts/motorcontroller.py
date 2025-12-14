@@ -16,7 +16,7 @@ class Axis:
         pin_step, 
         pin_dir, #Richtung
         pin_en,     
-        step_delay=STEP_DELAY,
+        #step_delay=STEP_DELAY,
         dir_high_is_positive=True,
         home_towards_positive=False,
     ):
@@ -47,7 +47,7 @@ class Axis:
             GPIO.output(self.pin_dir, GPIO.LOW if direction else GPIO.HIGH)
     
 
-    
+
     def _lerp(self, start: float, end: float, t: float) -> float:
         return start + (end - start) * max(0.0, min(1.0, t))
 
