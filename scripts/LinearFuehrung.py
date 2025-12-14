@@ -27,10 +27,10 @@ class LinearFuehrung:
     # POSITIONEN NOCH ZUORDNEN
     LINEAR_POSITIONS = {
         1: 100000,        # Pos 1 = Anfangsposition
-        2: 74800,     # Pos 2 = 1. Reihe
-        3: 63300,     # Pos 3 = 2. Reihe
-        4: 51000,     # Pos 4 = 3. Reihe
-        5: 39500,     # Pos 5 = 4. Reihe
+        2: 74800,     # Pos 2 = Reihe 0 --> Stammlösung
+        4: 51500,     # Pos 4 = 1. Verdünnungsreihe
+        3: 63300,     # Pos 3 = 2. Verdünnungsreihe
+        5: 39500,     # Pos 5 = 3. Verdünnungsreihe
         6: 32000,    # Pos 6 = Reinigungsbehälter
         7: 24000,    # Pos 7 = Abfallbehälter
         8: 14000,    # Pos 8 = Abdeckungsposition

@@ -2,7 +2,13 @@ import RPi.GPIO as GPIO
 import time
 from typing import Iterable, Optional
 
-SECONDS_PER_ML = 0.5  # Standardwert, anpassen durch Kalibrieren!
+SECONDS_PER_ML = {
+    1: 3.445,
+    2: 3.480,
+    3: 3.410,
+    4: 3.600,
+    5: 3.490
+}
 
 
 class Pumpen:
@@ -94,7 +100,7 @@ class Pumpen:
         for pid in self._iter_pump_ids(pump_ids):
             GPIO.output(self.PUMP_PINS[pid], self.RELAY_INACTIVE_STATE)
 
-    def all_pump_ml(self, ml: float, pump_ids: Optional[Iterable[int]] = None):
+    def all_pump_ml(self, ml: float, pump_ids: list = None):
         """
         Lässt alle (oder eine Auswahl von) Pumpen GLEICHZEITIG dieselbe ml-Menge pumpen.
         Realisiert, indem sie gleichzeitig eingeschaltet werden, gewartet wird

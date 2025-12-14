@@ -48,18 +48,18 @@ def ersteReinigung(hubtisch_controller, linearfuehrung_controller, spritzkopf_co
     linearfuehrung_controller.move_linear_to_index(1)  # Anfangsposition
     print("\n=== SYSTEM: REINIGUNG ABGESCHLOSSEN ===")
 
-def Verdünnen(hubtisch_controller, linearfuehrung_controller, spritzkopf_controller, pumpen_controller, Stammreihe: int, StammLsg: float, VerdLsg: float):
+def Verdünnen(hubtisch_controller, linearfuehrung_controller, spritzkopf_controller, pumpen_controller, Stammreihe: int, Reihe: int, StammLsg: float, VerdLsg: float, aktivePumpe: list):
     print("\n=== SYSTEM: PROBENVERDÜNNUNG DURCHFÜHREN ===")
     hubtisch_controller.home()
     linearfuehrung_controller.move_linear_to_index(Stammreihe)  # Verdünnungsreihe
-    spritzkopf_controller.set_volume_ml(0.4)
+    spritzkopf_controller.set_volume_ml(0.4) # luftblase aufziehen
     hubtisch_controller.move_hub_to_top()
-    spritzkopf_controller.set_volume_ml(StammLsg + 0.4)  # Spritzkopf aufziehen
+    spritzkopf_controller.set_volume_ml(StammLsg)  # Spritzkopf aufziehen um die Stammlösung ml
     hubtisch_controller.home()
-    linearfuehrung_controller.move_linear_to_index(Stammreihe + 1)  # Verdünnungsreihe
+    linearfuehrung_controller.move_linear_to_index(Reihe)  # Verdünnungsreihe
     hubtisch_controller.move_hub_to_top()
-    spritzkopf_controller.set_volume_ml(0)  # Spritzkopf leeren
-    pumpen_controller.all_pump_ml(VerdLsg)  # Alle Pumpen Verdünnungslösung
+    spritzkopf_controller.home()  # Spritzkopf leeren
+    pumpen_controller.all_pump_ml(VerdLsg, aktivePumpe)  # Alle Pumpen Verdünnungslösung (die aktiv sind)
     hubtisch_controller.home()
     print("\n=== SYSTEM: PROBENVERDÜNNUNG ABGESCHLOSSEN ===")
 
