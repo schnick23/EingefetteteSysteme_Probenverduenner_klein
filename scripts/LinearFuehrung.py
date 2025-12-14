@@ -95,7 +95,7 @@ class LinearFuehrung:
         direction = False 
         print("Fahre nach hinten zum Homing...")
 
-        while GPIO.input(self.END_STOP_PIN_VORNE) == GPIO.HIGH and GPIO.input(self.END_STOP_PIN_HINTEN) == GPIO.HIGH:
+        while GPIO.input(self.END_STOP_PIN_HINTEN) == GPIO.HIGH:
             self.AXIS.do_step_linear(10, direction)
 
         print(f"[{self.AXIS.name}] Hinterer Endschalter ausgelöst!")
@@ -111,7 +111,7 @@ class LinearFuehrung:
         direction = True 
         print("Fahre nach vorne zum Homing...")
 
-        while GPIO.input(self.END_STOP_PIN_VORNE) == GPIO.HIGH and GPIO.input(self.END_STOP_PIN_HINTEN) == GPIO.HIGH:
+        while GPIO.input(self.END_STOP_PIN_VORNE) == GPIO.HIGH:
             self.AXIS.do_step_linear(10, direction)
 
         print(f"[{self.AXIS.name}] Vorderer Endschalter ausgelöst!")
