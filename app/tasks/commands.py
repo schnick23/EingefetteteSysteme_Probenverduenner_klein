@@ -2,14 +2,14 @@
 from itertools import product
 from typing import Any, Dict
 import time
-from scripts.ablauf import starteAblauf
+from scripts.ablauf import starteAblauf #hat bei leyna nicht funktioniert
 from .runner import TaskState
 
 
 def start_process(payload: Dict[str, Any]) -> Dict[str, Any]:
     print("[START] Payload received:\n" + pformat(payload))
     # Hier würde später die echte Verdünnungslogik aufgerufen
-    starteAblauf(payload)
+    starteAblauf(payload) #hat bei leyna nicht funktioniert
     return {"status": "started"}
 
 
@@ -21,35 +21,66 @@ def cancel_process(payload: Dict[str, Any] | None = None) -> Dict[str, Any]:
 
 def check_factors(data: Dict[str, Any]):
     factors = data.get("factors", [])
+    fills = data.get("fills", [])
+    rows = data.get("enabledRows", [])
+    stock = data.get("stockVolume", None)
+    cover = data.get("cover", None)
     grid = data.get("grid", [])
+
     
-    factor1 = factors.get("1")
-    factor2 = factors.get("2")
-    factor3 = factors.get("0")
+    factor1: int = factors.get("2")
+    factor2: int = factors.get("1")
+    factor3: int = factors.get("0")
 
-    row3off = (grid[0][0]==False and grid[0][1]==False and grid[0][2]==False and grid[0][3]==False and grid[0][4]==False)
-    row2off = (grid[1][0]==False and grid[1][1]==False and grid[1][2]==False and grid[1][3]==False and grid[1][4]==False)
+    fill1 = fills.get("2")
+    fill2 = fills.get("1")
+    fill3 = fills.get("0")
 
-    if factor1 is None or (row3off != False and factor3 is not None) or (row3off != True and factor3 is None) or (row2off != False and factor2 is not None) or (row2off != True and factor2 is None):
+    row3active = rows.get("0")
+    row2active = rows.get("1")
+
+    #stock volume check
+    if stock is None: 
+        return (False, "Stock volume is missing")
+
+    #factor and fill checks
+    if factor1 is None or (row2active and factor2 is None) or (row3active and factor3 is None):
         return (False, "Factors do not match grid configuration")
     
+    if not row2active and factor2 is not None:
+        factors.update({"2": None})
+
+    if not row3active and factor3 is not None:
+        factors.update({"0": None})
+
+    if row3active:
+        fills.update({"2": None, "1": None})
+        if fill3 is None:
+            return (False, "Fill volume for row 3 is missing")
+    if row2active and not row3active:
+        fills.update({"2": None, "0": None})
+        if fill2 is None:
+            return (False, "Fill volume for row 2 is missing")
+    if not row2active and not row3active:
+        fills.update({"1": None, "0": None})
+        if fill1 is None:
+            return (False, "Fill volume for row 1 is missing")
+
     if factor1 > 1 and factor1 <= 10:
         print("Factors are valid")
     else:
         return (False, "Factors are not all valid")
     
-    if factor2 is not None:
+    if row2active:
         if factor2 > 1 and factor2 <= 10:
             print("Factors are valid")
         elif factor2 <= 100 and factor2 % 10 == 0:
             print("Factors are valid")
         else:
             return (False, "Factors are not all valid")
-    else:
-        print("Factor2 is None, skipping validation")
-        return (True, "OK")
     
-    if factor3 is not None:
+    
+    if row3active:
         if factor3 > 1 and factor3 <= 10:
             print("Factors are valid")
         elif factor2 <= 100 and factor2 % 10 == 0:
@@ -58,9 +89,169 @@ def check_factors(data: Dict[str, Any]):
             print("Factors are valid")
         else:
             return (False, "Factors are not all valid")
+    
+
+    #factors not larger than 10 
+
+    # if (row3active and (factor3 / 10)  > factor2):
+    #     return (False, "Factor 3 is too large compared to Factor 2")
+
+    # if (row2active and (factor2 / 10)  > factor1):
+    #     return (False, "Factor 2 is too large compared to Factor 1")
+    
+
+    fa3stammreihe: int = 0
+    fa2stammreihe: int = 0
+    fa1stammreihe: int = 0
+
+    if row3active and factor3 <= 10:
+        fa3stammreihe = 0
+    elif row3active and factor3 <= 100 and factor3 / 10 <= factor1:
+        fa3stammreihe = 1
+    elif row3active and factor3 <= 1000 and factor3 / 100 <= factor2:
+        fa3stammreihe = 2
+    
+    if row2active and factor2 <= 10:
+        fa2stammreihe = 0
+    elif row2active and factor2 <= 100 and factor2 / 10 <= factor1:
+        fa2stammreihe = 1
+
+    if row3active:
+        stammmenge1: float = calculating_stocksolution(14, factor1, 1)
+
+        if fa2stammreihe == 0:
+            stammmenge2: float = calculating_stocksolution(14, factor2, 1)
+        elif fa2stammreihe == 1:
+            stammmenge2: float = calculating_stocksolution(14, factor2, factor1)
+
+        if fa3stammreihe == 0:
+            stammmenge3: float = calculating_stocksolution(14, factor3, 1)
+        elif fa3stammreihe == 1:
+            stammmenge3: float = calculating_stocksolution(fill3, factor3, factor1)
+        elif fa3stammreihe == 2:
+            stammmenge3: float = calculating_stocksolution(fill3, factor3, factor2)
+        
+        
+        verdunnungsmenge3: float = calculating_dilutionsolution(fill3, stammmenge3)
+        verdunnungsmenge2: float = calculating_dilutionsolution(14, stammmenge2)
+        verdunnungsmenge1: float = calculating_dilutionsolution(14, stammmenge1)
+
+        volumen3 = stammmenge3 + verdunnungsmenge3
+        volumen2 = stammmenge2 + verdunnungsmenge2
+        volumen1 = stammmenge1 + verdunnungsmenge1
+        volumenstock = data.get("stockVolume", None)
+
+        if row3active and fa3stammreihe == 0:
+            volumenstock -= stammmenge3
+        elif row3active and fa3stammreihe == 1:
+            volumen1 -= stammmenge3
+        elif row3active and fa3stammreihe == 2:
+            volumen2 -= stammmenge3
+        
+        if row2active and fa2stammreihe == 0:
+            volumenstock -= stammmenge2
+        elif row2active and fa2stammreihe == 1:
+            volumen1 -= stammmenge2
+
+        volumenstock -= stammmenge1
+        
+        if volumenstock < 2:
+            return (False, "Not enough stock solution for all rows")
+
+        info3: Dict[str, Any] = {
+            "Reihe": 3,
+            "Stammreihe": fa3stammreihe,
+            "Stammmenge": stammmenge3,
+            "Verduennungsmenge": verdunnungsmenge3,
+            "Volumen": volumen3,
+            "Verduennung": factor3
+        }
+        info2: Dict[str, Any] = {
+            "Reihe": 2,
+            "Stammreihe": fa2stammreihe,
+            "Stammmenge": stammmenge2,
+            "Verduennungsmenge": verdunnungsmenge2,
+            "Volumen": volumen2,
+            "Verduennung": factor2
+        }
+        info1: Dict[str, Any] = {
+            "Reihe": 1,
+            "Stammreihe": fa1stammreihe,
+            "Stammmenge": stammmenge1,
+            "Verduennungsmenge": verdunnungsmenge1,
+            "Volumen": volumen1,
+            "Verduennung": factor1
+        }
+        data.update({"info3": info3, "info2": info2, "info1": info1})
+    elif not row3active and row2active:
+        stammmenge1: float = calculating_stocksolution(14, factor1, 1)
+        
+        if fa2stammreihe == 0:
+            stammmenge2: float = calculating_stocksolution(14, factor2, 1)
+        elif fa2stammreihe == 1:
+            stammmenge2: float = calculating_stocksolution(14, factor2, factor1)
+
+        verdunnungsmenge2: float = calculating_dilutionsolution(fill2, stammmenge2)
+        verdunnungsmenge1: float = calculating_dilutionsolution(14, stammmenge1)
+
+        volumen2 = stammmenge2 + verdunnungsmenge2
+        volumen1 = stammmenge1 + verdunnungsmenge1
+        volumenstock = data.get("stockVolume", None)
+
+        
+        if row2active and fa2stammreihe == 0:
+            volumenstock -= stammmenge2
+        elif row2active and fa2stammreihe == 1:
+            volumen1 -= stammmenge2
+
+        volumenstock -= stammmenge1
+        
+        if volumenstock < 2:
+            return (False, "Not enough stock solution for all rows")
+        
+        info2: Dict[str, Any] = {
+            "Reihe": 2,
+            "Stammreihe": fa2stammreihe,
+            "Stammmenge": stammmenge2,
+            "Verduennungsmenge": verdunnungsmenge2,
+            "Volumen": volumen2,
+            "Verduennung": factor2
+        }
+        info1: Dict[str, Any] = {
+            "Reihe": 1,
+            "Stammreihe": fa1stammreihe,
+            "Stammmenge": stammmenge1,
+            "Verduennungsmenge": verdunnungsmenge1,
+            "Volumen": volumen1,
+            "Verduennung": factor1
+        }
+        data.update({"info2": info2, "info1": info1})
     else:
-        print("Factor3 is None, skipping validation")
-        return (True, "OK")
+        stammmenge1: float = calculating_stocksolution(fill1, factor1, 1)
+        verdunnungsmenge1: float = calculating_dilutionsolution(fill1, stammmenge1)
+
+        volumen1 = stammmenge1 + verdunnungsmenge1
+        volumenstock = data.get("stockVolume", None)
+
+        volumenstock -= stammmenge1
+        
+        if volumenstock < 2:
+            return (False, "Not enough stock solution for all rows")
+
+        info1: Dict[str, Any] = {
+            "Reihe": 1,
+            "Stammreihe": fa1stammreihe,
+            "Stammmenge": stammmenge1,
+            "Verduennungsmenge": verdunnungsmenge1,
+            "Volumen": volumen1,
+            "Verduennung": factor1
+        }
+        data.update({"info1": info1})
+
+    return (True, "All checks passed")
+        
+    
+    
 
 
 def simulate_workflow(state: TaskState, payload: Dict[str, Any] | None = None) -> None:
@@ -145,10 +336,12 @@ def split_into_three_numbers_limited(factors, min_val=2, max_val=19):
     return sorted(solutions)
 
 
-def calculating_solution(endproduct: int, dilutionfactor: int):
-    base_amount = endproduct / dilutionfactor
+def calculating_stocksolution(endsolutionamount: int, dilutionfactor: int, alreadyusedfactor: int):
+    base_amount = endsolutionamount / (dilutionfactor / alreadyusedfactor)
     return base_amount
 
-def calculating_solution(endproduct: int, base_amount: int):
-    dilution = endproduct - base_amount
+def calculating_dilutionsolution(endsolutionamount: int, base_amount: int):
+    dilution = endsolutionamount - base_amount
     return dilution
+
+
