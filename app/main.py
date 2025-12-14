@@ -1,7 +1,9 @@
-﻿from flask import Flask, render_template
+﻿from flask import Flask, render_template, request
 from .config import Config
 from . import api
-import os# Hardware backend dynamisch laden
+import os
+import uuid
+from .tasks.runner import runner, TaskState, example_dilute# Hardware backend dynamisch laden
 from .hw import mock_impl, rpi_impl  # noqa: F401
 
 def create_app(config_class=Config):
@@ -37,13 +39,26 @@ def create_app(config_class=Config):
         dilution2   = request.form.get("factorDilution2")
         dilution3   = request.form.get("factorDilution3")
 
+        # Task erstellen für die spätere Ausführung
+        task_id = str(uuid.uuid4())
+        params = {
+            "stockVolume": start_volume,
+            "targetVolume": target_volume,
+            "dilution1": dilution1,
+            "dilution2": dilution2,
+            "dilution3": dilution3
+        }
+        state = TaskState(name="dilute", params=params)
+        runner.start_task(task_id, example_dilute, state)
+
         return render_template(
             "check.html",
             start_volume=start_volume,
             target_volume=target_volume,
             dilution1=dilution1,
             dilution2=dilution2,
-            dilution3=dilution3
+            dilution3=dilution3,
+            task_id=task_id
         )
 
     @app.route("/running/<task_id>")
