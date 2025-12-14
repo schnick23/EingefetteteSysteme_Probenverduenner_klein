@@ -15,6 +15,7 @@ def measure_positions(element):
         
         if command.lower() == 'q':
             print(steps)
+            element.home()
             break
         elif command.lower() == 'w':
             front_steps = input("Wie viele Schritte zurückfahren? ")
