@@ -106,12 +106,21 @@ class Pumpen:
         Realisiert, indem sie gleichzeitig eingeschaltet werden, gewartet wird
         und dann alle wieder ausgeschaltet werden.
         """
-        seconds = ml * self.seconds_per_ml
-        print(f"Alle Pumpen: {ml:.2f} ml → {seconds:.2f} s")
-
+        seconds_per_ml_list list = [
+            (pid, self.seconds_per_ml[pid])
+            for pid in self._iter_pump_ids(pump_ids)
+        ]
+        seconds_per_ml_list.sort(key=lambda x: x[1])  # nach Sekunden pro ml sortieren
         self.all_on(pump_ids)
-        time.sleep(seconds)
-        self.all_off(pump_ids)
+        current_time = 0.0
+        for pid, spm in seconds_per_ml_list:
+            wait_time = spm * ml
+            print(f"Pumpe {pid} pumpt {ml} ml (Dauer: {wait_time:.2f} s)")
+            time.sleep(wait_time-current_time)
+            GPIO.output(self.PUMP_PINS[pid], self.RELAY_INACTIVE_STATE)
+            current_time = spm * ml
+            print(f"Pumpe {pid} fertig.")
+        self.all_off(self)
 
     # ============================
     #  Aufräumen
