@@ -76,7 +76,8 @@ hub_axis = motorcontroller.Axis(
     name="Hubtisch-Achse",
     pin_step=hub_step_pin,
     pin_dir=hub_dir_pin,
-    pin_en=hub_en_pin
+    pin_en=hub_en_pin,
+    run_delay=0.0001
 )
 hub_tisch = HubTisch.Hubtisch(
     AXIS=hub_axis,
@@ -86,7 +87,8 @@ lin_axis = motorcontroller.Axis(
     name="Linear-Achse",
     pin_step=config['gpio']["stepper_motors"]['linear']['step_pin'],
     pin_dir=config['gpio']["stepper_motors"]['linear']['dir_pin'],
-    pin_en=config['gpio']["stepper_motors"]['linear']['en_pin']
+    pin_en=config['gpio']["stepper_motors"]['linear']['en_pin'],
+    run_delay=0.00005
 )
 end_stop_pin_vorne = config['gpio']['endstops']['linear_vorne']
 end_stop_pin_hinten = config['gpio']['endstops']['linear_hinten']
@@ -101,6 +103,7 @@ syr_axis = motorcontroller.Axis(
     pin_step=config['gpio']["stepper_motors"]['syringe']['step_pin'],
     pin_dir=config['gpio']["stepper_motors"]['syringe']['dir_pin'],
     pin_en=config['gpio']["stepper_motors"]['syringe']['en_pin']
+    run_delay=0.0001
 )
 end_stop_pin_links = config['gpio']['endstops']['syringe_links']
 end_stop_pin_rechts = config['gpio']['endstops']['syringe_rechts']

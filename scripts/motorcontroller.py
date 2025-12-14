@@ -4,7 +4,7 @@ import time
 
 
 START_DELAY = 0.0015   # sehr langsam (Startmoment)
-RUN_DELAY   = 0.0001   # Zielgeschwindigkeit
+   # Zielgeschwindigkeit
 END_DELAY   = 0.0015   # sanftes Abbremsen
 
 RAMP_STEPS = 300       # Anzahl Schritte für Beschleunigung / Bremsung
@@ -15,7 +15,8 @@ class Axis:
         name, #Name der Achse HUB, LINEAR, SYRINGE
         pin_step, 
         pin_dir, #Richtung
-        pin_en,     
+        pin_en,
+        run_delay   = 0.0001     
         #step_delay=STEP_DELAY,
         dir_high_is_positive=True,
         home_towards_positive=False,
@@ -25,6 +26,7 @@ class Axis:
         self.pin_step = pin_step
         self.pin_dir = pin_dir
         self.pin_en = pin_en
+        self.RUN_DELAY   = run_delay
         #self.step_delay = step_delay
         self.dir_high_is_positive = dir_high_is_positive
         self.home_towards_positive = home_towards_positive
