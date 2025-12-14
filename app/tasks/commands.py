@@ -2,19 +2,21 @@
 from itertools import product
 from typing import Any, Dict
 import time
-
+from scripts.ablauf import starteAblauf
 from .runner import TaskState
 
 
 def start_process(payload: Dict[str, Any]) -> Dict[str, Any]:
     print("[START] Payload received:\n" + pformat(payload))
     # Hier würde später die echte Verdünnungslogik aufgerufen
+    starteAblauf(payload)
     return {"status": "started"}
 
 
 def cancel_process(payload: Dict[str, Any] | None = None) -> Dict[str, Any]:
     print("[CANCEL] Request received:\n" + pformat(payload or {}))
     # Hier später: aktiven Task stoppen, Hardware in sicheren Zustand versetzen
+
     return {"status": "cancelled"}
 
 def check_factors(data: Dict[str, Any]):

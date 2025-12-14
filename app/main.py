@@ -1,4 +1,5 @@
-﻿from flask import Flask, render_template, request
+from flask import Flask, render_template, request
+
 from .config import Config
 from . import api
 import os
