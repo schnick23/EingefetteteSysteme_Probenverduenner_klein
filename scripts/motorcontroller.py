@@ -69,19 +69,19 @@ class Axis:
                 # Beschleunigung
                 delay = self._lerp(
                     start=START_DELAY,
-                    end=RUN_DELAY,
+                    end=self.RUN_DELAY,
                     t=i / ramp_steps
                 )
             elif i > steps - ramp_steps:
                 # Bremsen
                 delay = self._lerp(
-                    start=RUN_DELAY,
+                    start=self.RUN_DELAY,
                     end=END_DELAY,
                     t=(i - (steps - ramp_steps)) / ramp_steps
                 )
             else:
                 # konstante Geschwindigkeit
-                delay = RUN_DELAY
+                delay = self.RUN_DELAY
 
             GPIO.output(self.pin_step, GPIO.HIGH)
             time.sleep(delay)
