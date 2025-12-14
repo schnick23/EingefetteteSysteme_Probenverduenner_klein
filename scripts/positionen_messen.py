@@ -102,7 +102,7 @@ syr_axis = motorcontroller.Axis(
     name="Spritzkopf-Achse",
     pin_step=config['gpio']["stepper_motors"]['syringe']['step_pin'],
     pin_dir=config['gpio']["stepper_motors"]['syringe']['dir_pin'],
-    pin_en=config['gpio']["stepper_motors"]['syringe']['en_pin']
+    pin_en=config['gpio']["stepper_motors"]['syringe']['en_pin'],
     run_delay=0.0001
 )
 end_stop_pin_links = config['gpio']['endstops']['syringe_links']
