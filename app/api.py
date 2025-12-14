@@ -17,7 +17,7 @@ def run_program():
     if program != "dilute":
         return jsonify({"error": "unknown program"}), 400
 
-    # optional: Layout-Infos entgegennehmen
+    # optional: Layout-Infos entgegennehmen 
     grid = params.get("grid")
     stock_volume = params.get("stockVolume")
     # Minimalvalidierung (nicht blockierend fürs MVP)
