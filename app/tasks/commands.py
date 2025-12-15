@@ -105,39 +105,39 @@ def check_factors(data: Dict[str, Any]):
     #     return (False, "Factor 2 is too large compared to Factor 1")
     
 
-    fa3stammreihe: int = 0
-    fa2stammreihe: int = 0
-    fa1stammreihe: int = 0
+    fa3stammreihe: int = 2
+    fa2stammreihe: int = 2
+    fa1stammreihe: int = 2
 
     if row3active and factor3 <= 10:
-        fa3stammreihe = 0
-    elif row3active and factor3 <= 100 and factor3 / 10 <= factor1:
-        fa3stammreihe = 1
-    elif row3active and factor3 <= 1000 and factor3 / 10 <= factor2:
         fa3stammreihe = 2
+    elif row3active and factor3 <= 100 and factor3 / 10 <= factor1:
+        fa3stammreihe = 3
+    elif row3active and factor3 <= 1000 and factor3 / 10 <= factor2:
+        fa3stammreihe = 4
     else:
         return (False, "Keine gültige Stammreihe für Reihe 3 gefunden")
     
     if row2active and factor2 <= 10:
-        fa2stammreihe = 0
+        fa2stammreihe = 2
     elif row2active and factor2 <= 100 and factor2 / 10 <= factor1:
-        fa2stammreihe = 1
+        fa2stammreihe = 3
     else:
         return (False, "Keine gültige Stammreihe für Reihe 2 gefunden")
 
     if row3active:
         stammmenge1: float = calculating_stocksolution(14, factor1, 1)
 
-        if fa2stammreihe == 0:
+        if fa2stammreihe == 2:
             stammmenge2: float = calculating_stocksolution(14, factor2, 1)
-        elif fa2stammreihe == 1:
+        elif fa2stammreihe == 3:
             stammmenge2: float = calculating_stocksolution(14, factor2, factor1)
 
-        if fa3stammreihe == 0:
+        if fa3stammreihe == 2:
             stammmenge3: float = calculating_stocksolution(14, factor3, 1)
-        elif fa3stammreihe == 1:
+        elif fa3stammreihe == 3:
             stammmenge3: float = calculating_stocksolution(fill3, factor3, factor1)
-        elif fa3stammreihe == 2:
+        elif fa3stammreihe == 4:
             stammmenge3: float = calculating_stocksolution(fill3, factor3, factor2)
         
         
@@ -150,16 +150,16 @@ def check_factors(data: Dict[str, Any]):
         volumen1 = stammmenge1 + verdunnungsmenge1
         volumenstock = data.get("stockVolume", None)
 
-        if row3active and fa3stammreihe == 0:
+        if row3active and fa3stammreihe == 2:
             volumenstock -= stammmenge3
-        elif row3active and fa3stammreihe == 1:
+        elif row3active and fa3stammreihe == 3:
             volumen1 -= stammmenge3
-        elif row3active and fa3stammreihe == 2:
+        elif row3active and fa3stammreihe == 4:
             volumen2 -= stammmenge3
         
-        if row2active and fa2stammreihe == 0:
+        if row2active and fa2stammreihe == 2:
             volumenstock -= stammmenge2
-        elif row2active and fa2stammreihe == 1:
+        elif row2active and fa2stammreihe == 3:
             volumen1 -= stammmenge2
 
         volumenstock -= stammmenge1
@@ -168,7 +168,7 @@ def check_factors(data: Dict[str, Any]):
             return (False, "Nicht genug Stammlösung für alle Reihen vorhanden, 2ml Reserve nötig")
 
         info3: Dict[str, Any] = {
-            "Reihe": 3,
+            "Reihe": 5,
             "Stammreihe": fa3stammreihe,
             "Stammmenge": stammmenge3,
             "Verduennungsmenge": verdunnungsmenge3,
@@ -176,7 +176,7 @@ def check_factors(data: Dict[str, Any]):
             "Verduennung": factor3
         }
         info2: Dict[str, Any] = {
-            "Reihe": 2,
+            "Reihe": 4,
             "Stammreihe": fa2stammreihe,
             "Stammmenge": stammmenge2,
             "Verduennungsmenge": verdunnungsmenge2,
@@ -184,7 +184,7 @@ def check_factors(data: Dict[str, Any]):
             "Verduennung": factor2
         }
         info1: Dict[str, Any] = {
-            "Reihe": 1,
+            "Reihe": 3,
             "Stammreihe": fa1stammreihe,
             "Stammmenge": stammmenge1,
             "Verduennungsmenge": verdunnungsmenge1,
@@ -195,9 +195,9 @@ def check_factors(data: Dict[str, Any]):
     elif not row3active and row2active:
         stammmenge1: float = calculating_stocksolution(14, factor1, 1)
         
-        if fa2stammreihe == 0:
+        if fa2stammreihe == 2:
             stammmenge2: float = calculating_stocksolution(14, factor2, 1)
-        elif fa2stammreihe == 1:
+        elif fa2stammreihe == 3:
             stammmenge2: float = calculating_stocksolution(14, factor2, factor1)
 
         verdunnungsmenge2: float = calculating_dilutionsolution(fill2, stammmenge2)
@@ -219,7 +219,7 @@ def check_factors(data: Dict[str, Any]):
             return (False, "Nicht genug Stammlösung für alle Reihen vorhanden, 2ml Reserve nötig")
         
         info2: Dict[str, Any] = {
-            "Reihe": 2,
+            "Reihe": 4,
             "Stammreihe": fa2stammreihe,
             "Stammmenge": stammmenge2,
             "Verduennungsmenge": verdunnungsmenge2,
@@ -227,7 +227,7 @@ def check_factors(data: Dict[str, Any]):
             "Verduennung": factor2
         }
         info1: Dict[str, Any] = {
-            "Reihe": 1,
+            "Reihe": 3,
             "Stammreihe": fa1stammreihe,
             "Stammmenge": stammmenge1,
             "Verduennungsmenge": verdunnungsmenge1,
@@ -248,7 +248,7 @@ def check_factors(data: Dict[str, Any]):
             return (False, "Nicht genug Stammlösung für alle Reihen vorhanden, 2ml Reserve nötig")
 
         info1: Dict[str, Any] = {
-            "Reihe": 1,
+            "Reihe": 3,
             "Stammreihe": fa1stammreihe,
             "Stammmenge": stammmenge1,
             "Verduennungsmenge": verdunnungsmenge1,
