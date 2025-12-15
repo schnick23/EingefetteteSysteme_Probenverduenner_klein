@@ -62,8 +62,8 @@
     },
     "positions": {
         "syringe": {
-            "max_volume_ml": 15.0,
-            "steps_per_ml": 0.0
+            "max_volume_ml": 3.5,
+            "steps_per_ml": 10800.0
         },
         "hub_tisch": {
             "bottom": 0,
