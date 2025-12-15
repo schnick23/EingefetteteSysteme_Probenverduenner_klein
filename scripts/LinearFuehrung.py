@@ -26,14 +26,14 @@ class LinearFuehrung:
     # WERTE NOCH KALIBRIEREN
     # POSITIONEN NOCH ZUORDNEN
     LINEAR_POSITIONS = {
-        1: 100000,        # Pos 1 = Anfangsposition
-        2: 74800,     # Pos 2 = Reihe 0 --> Stammlösung
-        4: 51500,     # Pos 4 = 1. Verdünnungsreihe
-        3: 63300,     # Pos 3 = 2. Verdünnungsreihe
-        5: 39500,     # Pos 5 = 3. Verdünnungsreihe
-        6: 32000,    # Pos 6 = Reinigungsbehälter
-        7: 24000,    # Pos 7 = Abfallbehälter
-        8: 14000,    # Pos 8 = Abdeckungsposition
+        1: 95000,        # Pos 1 = Abdeckungsposition
+        2: 73300,     # Pos 2 = Reihe 0 --> Stammlösung
+        4: 61800,     # Pos 4 = 1. Verdünnungsreihe
+        3: 50300,     # Pos 3 = 2. Verdünnungsreihe
+        5: 38300,     # Pos 5 = 3. Verdünnungsreihe
+        6: 30300,    # Pos 6 = Reinigungsbehälter
+        7: 22300,    # Pos 7 = Abfallbehälter
+        8: 0,    # Pos 8 = Home Position (Endstopp hintend)
     }
 
     # DIR_HIGH_IS_POSITIVE = True   # ggf. umdrehen, wenn Richtung „falsch herum“
