@@ -41,11 +41,11 @@ def check_factors(data: Dict[str, Any]):
 
     #stock volume check
     if stock is None: 
-        return (False, "Stock volume is missing")
+        return (False, "Stammlösungsvolumen fehlt")
 
     #factor and fill checks
     if factor1 is None or (row2active and factor2 is None) or (row3active and factor3 is None):
-        return (False, "Factors do not match grid configuration")
+        return (False, "Faktoren stimmen nicht mit der Rasterkonfiguration überein")
     
     if not row2active and factor2 is not None:
         factors.update({"2": None})
@@ -56,39 +56,38 @@ def check_factors(data: Dict[str, Any]):
     if row3active:
         fills.update({"2": None, "1": None})
         if fill3 is None:
-            return (False, "Fill volume for row 3 is missing")
+            return (False, "Füllvolumen für Reihe 3 fehlt")
     if row2active and not row3active:
         fills.update({"2": None, "0": None})
         if fill2 is None:
-            return (False, "Fill volume for row 2 is missing")
+            return (False, "Füllvolumen für Reihe 2 fehlt")
     if not row2active and not row3active:
         fills.update({"1": None, "0": None})
         if fill1 is None:
-            return (False, "Fill volume for row 1 is missing")
-
+            return (False, "Füllvolumen für Reihe 1 fehlt")
     if factor1 > 1 and factor1 <= 10:
         print("Factors are valid")
     else:
-        return (False, "Factors are not all valid")
+        return (False, "Faktoren sind nicht alle gültig")
     
     if row2active:
         if factor2 > 1 and factor2 <= 10:
-            print("Factors are valid")
+            print("Faktoren sind gültig")
         elif factor2 <= 100 and factor2 % 10 == 0:
-            print("Factors are valid")
+            print("Faktoren sind gültig")
         else:
-            return (False, "Factors are not all valid")
+            return (False, "Faktoren sind nicht alle gültig")
     
     
     if row3active:
         if factor3 > 1 and factor3 <= 10:
-            print("Factors are valid")
+            print("Faktoren sind gültig")
         elif factor2 <= 100 and factor2 % 10 == 0:
-            print("Factors are valid")
+            print("Faktoren sind gültig")
         elif factor3 <= 1000 and factor3 % 50 == 0:
-            print("Factors are valid")
+            print("Faktoren sind gültig")
         else:
-            return (False, "Factors are not all valid")
+            return (False, "Faktoren sind nicht alle gültig")
     
 
     #factors not larger than 10 
@@ -108,13 +107,17 @@ def check_factors(data: Dict[str, Any]):
         fa3stammreihe = 0
     elif row3active and factor3 <= 100 and factor3 / 10 <= factor1:
         fa3stammreihe = 1
-    elif row3active and factor3 <= 1000 and factor3 / 100 <= factor2:
+    elif row3active and factor3 <= 1000 and factor3 / 10 <= factor2:
         fa3stammreihe = 2
+    else:
+        return (False, "Keine gültige Stammreihe für Reihe 3 gefunden")
     
     if row2active and factor2 <= 10:
         fa2stammreihe = 0
     elif row2active and factor2 <= 100 and factor2 / 10 <= factor1:
         fa2stammreihe = 1
+    else:
+        return (False, "Keine gültige Stammreihe für Reihe 2 gefunden")
 
     if row3active:
         stammmenge1: float = calculating_stocksolution(14, factor1, 1)
@@ -156,7 +159,7 @@ def check_factors(data: Dict[str, Any]):
         volumenstock -= stammmenge1
         
         if volumenstock < 2:
-            return (False, "Not enough stock solution for all rows")
+            return (False, "Nicht genug Stammlösung für alle Reihen vorhanden, 2ml Reserve nötig")
 
         info3: Dict[str, Any] = {
             "Reihe": 3,
@@ -207,7 +210,7 @@ def check_factors(data: Dict[str, Any]):
         volumenstock -= stammmenge1
         
         if volumenstock < 2:
-            return (False, "Not enough stock solution for all rows")
+            return (False, "Nicht genug Stammlösung für alle Reihen vorhanden, 2ml Reserve nötig")
         
         info2: Dict[str, Any] = {
             "Reihe": 2,
@@ -236,7 +239,7 @@ def check_factors(data: Dict[str, Any]):
         volumenstock -= stammmenge1
         
         if volumenstock < 2:
-            return (False, "Not enough stock solution for all rows")
+            return (False, "Nicht genug Stammlösung für alle Reihen vorhanden, 2ml Reserve nötig")
 
         info1: Dict[str, Any] = {
             "Reihe": 1,
@@ -264,7 +267,7 @@ def check_factors(data: Dict[str, Any]):
     
     data.update({"activePumps": activePumps})
 
-    return (True, "All checks passed")
+    return (True, "Alle Prüfungen bestanden")
         
     
     
