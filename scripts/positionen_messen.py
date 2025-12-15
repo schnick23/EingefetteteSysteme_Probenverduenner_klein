@@ -189,8 +189,8 @@ syr_axis = motorcontroller.Axis(
     run_delay=config['axes']['step_delay_syr'],
     endstop_pins=[syr_end_stop_pin_links, syr_end_stop_pin_rechts]
 )
-syr_max_volume_ml = config['syringe']['max_volume_ml']
-syr_steps_per_ml = config['syringe']['steps_per_ml']
+syr_max_volume_ml = config["positions"]['syringe']['max_volume_ml']
+syr_steps_per_ml = config["positions"]['syringe']['steps_per_ml']
 
 spritzkopf = Spritzkopf.SyringeHead(
     axis=syr_axis,
