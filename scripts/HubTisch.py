@@ -3,7 +3,7 @@ import RPi.GPIO as GPIO
 import time
 
 import motorcontroller
-class Hubtisch:
+class HubTisch:
     # ==============================
     #   KONFIGURATION HUB-ACHSE
     # ==============================
@@ -28,6 +28,8 @@ class Hubtisch:
         self.END_STOP_PIN = endstop_pin
         if self.END_STOP_PIN is not None:
             GPIO.setup(self.END_STOP_PIN, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+        else: 
+            print(f"[{self.AXIS.name}] WARNUNG: Kein Endstopp-Pin konfiguriert!")
     # ==============================
     #   HILFSFUNKTIONEN
     # ==============================
@@ -68,10 +70,6 @@ class Hubtisch:
     def move_hub_to_cover(self):
         print("\n=== HUBTISCH: FAHRE ZUR ABDECKUNGSPOSITION ===")
         self.move_to_position(self.AXIS, self.HUB_COVER_STEPS)
-
-    def setup_gpio():
-        GPIO.setmode(GPIO.BCM)
-        GPIO.setwarnings(False)
 
 
     def cleanup_gpio(self):

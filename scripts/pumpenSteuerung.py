@@ -21,25 +21,23 @@ class Pumpen:
       für 1 ml laufen muss (Kalibrierwert!).
     """
 
-    # BCM-GPIO-Pins für die 5 Pumpen (Beispielwerte, bitte an dein Board anpassen)
-    
 
-    # ANNAHME: Relais ist "active LOW"
-    # LOW  = Relais zieht an → Pumpe AN
-    # HIGH = Relais aus      → Pumpe AUS
+    # Relais ist "active HIGH"
+    # HIGH  = Relais zieht an → Pumpe AN
+    # LOW = Relais aus      → Pumpe AUS
     RELAY_ACTIVE_STATE = GPIO.HIGH
     RELAY_INACTIVE_STATE = GPIO.LOW
 
 
 
 
-    def __init__(self, pump1, pump2, pump3, pump4, pump5, relais6, relais7, relais8):
+    def __init__(self, pump1, pump2, pump3, pump4, pump5, relais6, relais7, relais8, seconds_per_ml=SECONDS_PER_ML):
         """
         seconds_per_ml:
             Wie viele Sekunden muss die Pumpe laufen, um ~1 ml zu fördern?
             → Diesen Wert musst du durch Kalibrieren bestimmen!
         """
-        self.seconds_per_ml = SECONDS_PER_ML
+        self.seconds_per_ml = seconds_per_ml
         self.PUMP_PINS = {
             1: pump1,
             2: pump2,
@@ -106,8 +104,8 @@ class Pumpen:
         Realisiert, indem sie gleichzeitig eingeschaltet werden, gewartet wird
         und dann alle wieder ausgeschaltet werden.
         """
-        seconds_per_ml_list list = [
-            (pid, self.seconds_per_ml[pid])
+        seconds_per_ml_list = [
+            (pid, self.seconds_per_ml[str(pid)])
             for pid in self._iter_pump_ids(pump_ids)
         ]
         seconds_per_ml_list.sort(key=lambda x: x[1])  # nach Sekunden pro ml sortieren
@@ -122,19 +120,6 @@ class Pumpen:
             print(f"Pumpe {pid} fertig.")
         self.all_off(self)
 
-    # ============================
-    #  Aufräumen
-    # ============================
-
-    def cleanup(self):
-        """Alle Pumpen ausschalten und GPIO aufräumen."""
-        print("Schalte alle Pumpen aus & GPIO.cleanup()...")
-        try:
-            self.all_off()
-        finally:
-            GPIO.cleanup()
-        print("GPIO cleaned up.")
-    
     def changeDir(self, dir: bool): 
         """
             Ändert die Drehrichtung der Pumpen.
@@ -155,3 +140,17 @@ class Pumpen:
             GPIO.output(self.RELAIS_PINS[8], self.RELAY_INACTIVE_STATE)
             time.sleep(0.1)
             GPIO.output(self.RELAIS_PINS[7], self.RELAY_INACTIVE_STATE)
+
+    # ============================
+    #  Aufräumen
+    # ============================
+
+    def cleanup(self):
+        """Alle Pumpen ausschalten und GPIO aufräumen."""
+        print("Schalte alle Pumpen aus & GPIO.cleanup()...")
+        try:
+            self.all_off()
+        finally:
+            GPIO.cleanup()
+        print("GPIO cleaned up.")
+    

@@ -2,11 +2,9 @@
 import RPi.GPIO as GPIO
 import time
 
-
+#Anfahrrampe für Stepper-Motoren
 START_DELAY = 0.0015   # sehr langsam (Startmoment)
-   # Zielgeschwindigkeit
 END_DELAY   = 0.0015   # sanftes Abbremsen
-
 RAMP_STEPS = 300       # Anzahl Schritte für Beschleunigung / Bremsung
 
 class Axis:
@@ -16,10 +14,11 @@ class Axis:
         pin_step, 
         pin_dir, #Richtung
         pin_en,
-        run_delay   = 0.0001,     
-        #step_delay=STEP_DELAY,
+        run_delay = 0.0001, #delay zwischen den Schritten (Default: 0.0001)     
         dir_high_is_positive=True,
         home_towards_positive=False,
+        endstop_pins: list[int] = None
+    
     ):
         GPIO.setmode(GPIO.BCM)
         self.name = name
@@ -27,10 +26,10 @@ class Axis:
         self.pin_dir = pin_dir
         self.pin_en = pin_en
         self.RUN_DELAY   = run_delay
-        #self.step_delay = step_delay
         self.dir_high_is_positive = dir_high_is_positive
         self.home_towards_positive = home_towards_positive
         self.current_steps = 0
+        self.END_STOP_PIN = endstop_pins
 
         GPIO.setup(self.pin_step, GPIO.OUT)
         GPIO.setup(self.pin_dir, GPIO.OUT)
@@ -61,8 +60,15 @@ class Axis:
 
         # Nutze die globalen Konstanten
         ramp_steps = min(steps // 2, RAMP_STEPS)
-
         for i in range(steps):
+            endstop = False
+            for pin in self.END_STOP_PIN:
+                if GPIO.input(pin) == GPIO.LOW:
+                    endstop = True
+                    break
+            if self.END_STOP_PIN is not None and endstop == True and direction == False:
+                print(f"[{self.name}] Endstopp erreicht. Stoppe Bewegung.")
+                break
 
             # --- Rampe berechnen ---
             if i < ramp_steps:
@@ -92,15 +98,21 @@ class Axis:
                 self.current_steps += 1
             else:
                 self.current_steps -= 1
-
-            # Endschalter hier prüfen
+            
     
     def do_step_linear(self, steps: int, direction: bool):
-     
         if steps <= 0:
             return
         self._set_dir(direction)
         for _ in range(steps):
+            endstop = False
+            for pin in self.END_STOP_PIN:
+                if GPIO.input(pin) == GPIO.LOW:
+                    endstop = True
+                    break
+            if self.END_STOP_PIN is not None and endstop == True and direction == False:
+                print(f"[{self.name}] Endstopp erreicht. Stoppe Bewegung.")
+                break
             GPIO.output(self.pin_step, GPIO.HIGH)
             time.sleep(self.RUN_DELAY)
             GPIO.output(self.pin_step, GPIO.LOW)
@@ -109,18 +121,3 @@ class Axis:
                 self.current_steps += 1
             else:
                 self.current_steps -= 1
-
-
-
-    def _home(self):
-        # Fahre zurück auf 0 basierend auf dem aktuellen Zählerstand
-        steps_to_move = abs(self.current_steps)
-        
-        if steps_to_move == 0:
-            return
-
-        # Wenn wir bei +1000 sind, müssen wir in negative Richtung (False) fahren
-        # Wenn wir bei -1000 sind, müssen wir in positive Richtung (True) fahren
-        direction = False if self.current_steps > 0 else True
-        
-        self._do_step(steps_to_move, direction)
