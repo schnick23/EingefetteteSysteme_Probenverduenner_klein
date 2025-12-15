@@ -44,7 +44,7 @@ def ersteReinigung(hubtisch_controller, linearfuehrung_controller, spritzkopf_co
     hubtisch_controller.move_hub_to_cleaning()
     spritzkopf_controller.home() # Spritzkopf leeren
     hubtisch_controller.home()
-    linearfuehrung_controller.move_linear_to_index(1)  # Anfangsposition
+    linearfuehrung_controller.home()  # Anfangsposition
     print("\n=== SYSTEM: REINIGUNG ABGESCHLOSSEN ===")
 
 def Verduennen(hubtisch_controller, linearfuehrung_controller, spritzkopf_controller, pumpen_controller, Stammreihe: int, Reihe: int, StammLsg: float, VerdLsg: float, aktivePumpe: list):
