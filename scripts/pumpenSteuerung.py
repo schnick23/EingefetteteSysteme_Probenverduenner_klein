@@ -159,7 +159,7 @@ class Pumpen:
         """Lässt alle Pumpen 1 ml füllen."""
         self.changeDir(direction)
         self.all_on()
-        time.sleep(55)
+        time.sleep(75)
         self.all_off()
 
     def changeDir(self, dir: bool): 

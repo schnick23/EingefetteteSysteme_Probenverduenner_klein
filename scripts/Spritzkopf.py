@@ -111,10 +111,7 @@ class SyringeHead:
         else:
             print(f"[SYRINGE] Aspirate: +{volume_ml} ml")
         self._move_relative_ml(volume_ml)
-        if is_simulation():
-            sim_print(f">>> Aktuelles Volumen: {self.current_volume_ml:.3f} ml <<<")
-        else:
-            print(f"[SYRINGE] Aktuelles Volumen: {self.current_volume_ml:.3f} ml")
+        # Keine Abschluss-/Statusmeldung
 
     def dispense(self, volume_ml: float):
         """
@@ -126,10 +123,7 @@ class SyringeHead:
         else:
             print(f"[SYRINGE] Dispense: -{volume_ml} ml")
         self._move_relative_ml(-volume_ml)
-        if is_simulation():
-            sim_print(f">>> Aktuelles Volumen: {self.current_volume_ml:.3f} ml <<<")
-        else:
-            print(f"[SYRINGE] Aktuelles Volumen: {self.current_volume_ml:.3f} ml")
+        # Keine Abschluss-/Statusmeldung
 
     def go_to_volume(self, target_volume_ml: float):
         """
@@ -137,9 +131,9 @@ class SyringeHead:
         """
         target_volume_ml = self._clamp_volume(target_volume_ml)
         delta_ml = target_volume_ml - self.current_volume_ml
-        print(f"[SYRINGE] Go to volume: {target_volume_ml} ml (Δ={delta_ml:+.3f} ml)")
+        print(f"[SYRINGE] Go to volume: {target_volume_ml} ml")
         self._move_relative_ml(delta_ml)
-        print(f"[SYRINGE] Aktuelles Volumen: {self.current_volume_ml:.3f} ml")
+        # Keine Abschluss-/Statusmeldung
 
     def is_empty(self) -> bool:
         return self.current_volume_ml <= 0.0001
@@ -168,4 +162,4 @@ class SyringeHead:
         # Position auf 0 setzen
         self.AXIS.current_steps = 0
         self.current_volume_ml = 0.0
-        print(f"[{self.AXIS.name}] Homing abgeschlossen. Position und Volumen auf 0 gesetzt.")
+        # Keine Abschluss-/Statusmeldung

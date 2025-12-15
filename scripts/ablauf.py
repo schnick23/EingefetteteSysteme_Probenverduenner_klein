@@ -102,9 +102,13 @@ def starteAblauf(payload, simulation=False):
                     pump_active = global_active_pumps.get(pump_id) or global_active_pumps.get(str(pump_id))
                     
                     # Grid-Status für dieses spezifische Well (Reihe, Spalte)
+                    # Mapping: GUI hat Reihen 0..2 (oben→unten), letzte Reihe (index rows-1) ist Stammlösung.
+                    # Für i=1..3 (1=unterste Verdünnungsreihe) gilt: grid_row_index = (len(grid)-1) - i
                     well_active = False
-                    if ziel_reihe < len(grid) and col < len(grid[ziel_reihe]):
-                        well_active = grid[ziel_reihe][col]
+                    grid_row_index = (len(grid) - 1) - i if isinstance(grid, list) and len(grid) >= 4 else None
+                    if grid_row_index is not None and grid_row_index >= 0:
+                        if grid_row_index < len(grid) and col < len(grid[grid_row_index]):
+                            well_active = grid[grid_row_index][col]
                     
                     # Pumpe nur aktivieren, wenn global AN und Well im Grid AN
                     if pump_active and well_active:
@@ -112,6 +116,24 @@ def starteAblauf(payload, simulation=False):
                 
                 print(f"Starte Verdünnung für Reihe {ziel_reihe} (von {stamm_reihe}). Aktive Pumpen: {active_pumps}")
                 
+                # Zwischenreinigung durchführen
+                ablaeufe.ZwischenReinigung(
+                    hubtisch_controller, 
+                    linearfuehrung_controller, 
+                    spritzkopf_controller, 
+                    Stammreihe=stamm_reihe, 
+                    StammLsg=stamm_lsg
+                )
+
+                # Zwischenreinigung durchführen
+                ablaeufe.ZwischenReinigung(
+                    hubtisch_controller, 
+                    linearfuehrung_controller, 
+                    spritzkopf_controller, 
+                    Stammreihe=stamm_reihe, 
+                    StammLsg=stamm_lsg
+                )
+
                 ablaeufe.Verduennen(
                     hubtisch_controller, 
                     linearfuehrung_controller, 
@@ -123,15 +145,14 @@ def starteAblauf(payload, simulation=False):
                     VerdLsg=verd_lsg, 
                     aktivePumpe=active_pumps
                 )
-                
-                # Zwischenreinigung durchführen
-                ablaeufe.ZwischenReinigung(
-                    hubtisch_controller, 
-                    linearfuehrung_controller, 
-                    spritzkopf_controller, 
-                    Stammreihe=stamm_reihe, 
-                    StammLsg=stamm_lsg
-                )
+
+        # Abschlussposition abhängig von 'cover'
+        try:
+            if payload.get('cover'):
+                linearfuehrung_controller.move_linear_to_index(1)
+                hubtisch_controller.move_hub_to_top()
+        except Exception:
+            pass
 
         pumpen_controller.fill_all_pumps(False)  # Am Ende alle Pumpen füllen
         hubtisch_controller.home()

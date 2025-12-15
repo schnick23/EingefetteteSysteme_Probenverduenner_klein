@@ -1,0 +1,81 @@
+{
+  "grid": [
+    [
+      true,
+      true,
+      true,
+      true,
+      true
+    ],
+    [
+      true,
+      true,
+      true,
+      true,
+      true
+    ],
+    [
+      true,
+      true,
+      true,
+      true,
+      true
+    ],
+    [
+      true,
+      true,
+      true,
+      true,
+      true
+    ]
+  ],
+  "enabledRows": {
+    "0": true,
+    "1": true,
+    "2": true,
+    "3": true
+  },
+  "factors": {
+    "0": 1000,
+    "1": 100,
+    "2": 10
+  },
+  "fills": {
+    "0": 10,
+    "2": null,
+    "1": null
+  },
+  "stockVolume": 10,
+  "cover": true,
+  "info3": {
+    "Reihe": 3,
+    "Stammreihe": 2,
+    "Stammmenge": 1.0,
+    "Verduennungsmenge": 9.0,
+    "Volumen": 10.0,
+    "Verduennung": 1000
+  },
+  "info2": {
+    "Reihe": 2,
+    "Stammreihe": 1,
+    "Stammmenge": 1.4,
+    "Verduennungsmenge": 12.6,
+    "Volumen": 13.0,
+    "Verduennung": 100
+  },
+  "info1": {
+    "Reihe": 1,
+    "Stammreihe": 0,
+    "Stammmenge": 1.4,
+    "Verduennungsmenge": 12.6,
+    "Volumen": 12.6,
+    "Verduennung": 10
+  },
+  "activePumps": {
+    "1": true,
+    "2": true,
+    "3": true,
+    "4": true,
+    "5": true
+  }
+}

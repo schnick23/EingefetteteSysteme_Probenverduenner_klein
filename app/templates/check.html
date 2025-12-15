@@ -100,11 +100,30 @@
                 {% endif %}
             </ul>
         </main>
-        <div class="button-group">
-            <button id="button1" onclick="window.location.href='/'">Änderungen vornehmen</button>
-            <button id="button2" onclick="window.location.href='/running/{{ task_id }}'">Weiter</button>
-        </div>
+                <div class="button-group">
+                        <button id="button1" onclick="window.location.href='/'">Änderungen vornehmen</button>
+                        <button id="button2">Starten</button>
+                </div>
     </div>
+        <script>
+            (function(){
+                const btn = document.getElementById('button2');
+                const payload = {{ processed_json|safe }};
+                btn.addEventListener('click', async () => {
+                    try {
+                        const res = await fetch('/api/confirm_start', {
+                            method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ data: payload })
+                        });
+                        const out = await res.json();
+                        if (res.ok && out && out.ok && out.task_id) {
+                            window.location.href = '/running/' + encodeURIComponent(out.task_id);
+                        } else {
+                            alert('Start fehlgeschlagen');
+                        }
+                    } catch(e){ console.error(e); alert('Start fehlgeschlagen'); }
+                });
+            })();
+        </script>
 </body>
 
 </html>

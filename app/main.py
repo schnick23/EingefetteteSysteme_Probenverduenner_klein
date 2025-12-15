@@ -59,7 +59,7 @@ def create_app(config_class=Config):
         
         # Get the processed data from the hidden input
         processed_data_str = request.form.get("processedData")
-        task_id = request.form.get("task_id")
+        task_id = None
         
         if processed_data_str:
             processed_data = json.loads(processed_data_str)
@@ -84,7 +84,8 @@ def create_app(config_class=Config):
             info1=info1,
             info2=info2,
             info3=info3,
-            task_id=task_id
+            task_id=task_id,
+            processed_json=processed_data_str or "{}"
         )
 
     @app.route("/running/<task_id>")

@@ -278,25 +278,18 @@
       showError(data.error);
       return;
     }
-    if (data && data.ok && data.task_id) {
-      notify('Start gesendet');
-      // Add hidden inputs with the processed data
+    if (data && data.ok) {
+      notify('Eingaben geprüft');
+      // Verarbeiteten Payload an Check-Seite übergeben
       const form = document.querySelector("form");
       const dataInput = document.createElement("input");
       dataInput.type = "hidden";
       dataInput.name = "processedData";
       dataInput.value = JSON.stringify(data.data);
       form.appendChild(dataInput);
-      
-      const taskIdInput = document.createElement("input");
-      taskIdInput.type = "hidden";
-      taskIdInput.name = "task_id";
-      taskIdInput.value = data.task_id;
-      form.appendChild(taskIdInput);
-      
-      form.submit(); // goes to the checking page
+      form.submit(); // zeigt die Check-Seite VOR Start
     } else {
-      notify('Start fehlgeschlagen', true);
+      notify('Prüfung fehlgeschlagen', true);
     }
   }
 

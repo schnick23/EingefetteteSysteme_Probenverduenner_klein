@@ -53,13 +53,20 @@ def api_start():
     checkfactors = check_factors(data)
     if isinstance(checkfactors, tuple) and checkfactors[0] is False:
         return jsonify({"error": checkfactors[1]}), 400
-    # Log (Dummy)
+    # Nur validieren und aufbereitete Daten zurückgeben; Prozess noch NICHT starten
+    return jsonify({"ok": True, "data": data})
+
+
+@bp.route("/confirm_start", methods=["POST"])
+def api_confirm_start():
+    payload = request.get_json(force=True, silent=True) or {}
+    data = payload.get("data") or payload
+    # Start der eigentlichen Logik + paralleler Fortschritts-Task
     start_process(data)
-    # Hintergrund-Task starten (Dummy-Workflow mit Fortschritt)
     task_id = str(uuid.uuid4())
     state = TaskState(name="workflow", params=data)
     runner.start_task(task_id, lambda s: simulate_workflow(s, data), state)
-    return jsonify({"ok": True, "task_id": task_id, "data": data})
+    return jsonify({"ok": True, "task_id": task_id})
 
 
 @bp.route("/cancel", methods=["POST"])
