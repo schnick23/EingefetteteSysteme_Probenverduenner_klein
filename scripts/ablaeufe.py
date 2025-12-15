@@ -27,6 +27,7 @@ def ersteReinigung(hubtisch_controller, linearfuehrung_controller, spritzkopf_co
     linearfuehrung_controller.move_linear_to_index(6)  # Reinigungsbehälter
     spritzkopf_controller.go_to_volume(1)  # Luftblase aufziehen
     hubtisch_controller.move_hub_to_top()
+    pumpen_controller.fill_all_pumps()
     pumpen_controller.fill_all_pumps()  # Reinigungsbehälter füllen
     spritzkopf_controller.aspirate(2.0)  # Spritzkopf aufziehen
     hubtisch_controller.home()

@@ -161,7 +161,8 @@ def starteAblauf(payload, simulation=False, report=None):
         lin_dir= config["gpio"]["stepper_motors"]["linear"]["dir_pin"]
         lin_en= config["gpio"]["stepper_motors"]["linear"]["en_pin"]
         lin_endtaster_hinten = config["gpio"]["endstops"]["linear_hinten"]
-        lin_axis = Axis("Linear_Achse", lin_step, lin_dir, lin_en)
+        lin_delay = config['axes']['step_delay_lin']
+        lin_axis = Axis("Linear_Achse", lin_step, lin_dir, lin_en, run_delay=lin_delay)
         linearfuehrung_controller = LinearFuehrung.LinearFuehrung(lin_axis, endstop_pin_hinten=lin_endtaster_hinten)
 
         # spritzkopf initialisieren
