@@ -56,9 +56,11 @@ class Axis:
         if steps <= 0:
             return
         if self.home_towards_positive:
-            self._set_dir(not direction)
-        else:
-            self._set_dir(direction)
+            direction = direction
+        if not self.home_towards_positive:
+            direction = not direction
+        
+        self._set_dir(direction)
 
         # Nutze die globalen Konstanten
         ramp_steps = min(steps // 2, RAMP_STEPS)
@@ -105,6 +107,11 @@ class Axis:
     def do_step_linear(self, steps: int, direction: bool):
         if steps <= 0:
             return
+        
+        if self.home_towards_positive:
+            direction = direction
+        if not self.home_towards_positive:
+            direction = not direction
         self._set_dir(direction)
         for _ in range(steps):
             endstop = False
