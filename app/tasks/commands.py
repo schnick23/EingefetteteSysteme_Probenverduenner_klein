@@ -2,6 +2,12 @@
 from itertools import product
 from typing import Any, Dict
 import time
+import sys
+import os
+
+# Füge den scripts-Ordner zum Python-Pfad hinzu
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "../../scripts")))
+
 from scripts.ablauf import starteAblauf #hat bei leyna nicht funktioniert
 from .runner import TaskState
 

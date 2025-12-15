@@ -53,6 +53,12 @@ class SyringeHead:
     #   HILFSFUNKTIONEN (INTERN)
     # ==============================
 
+    def _clamp_volume(self, volume: float) -> float:
+        """
+        Begrenzt das Volumen auf den gültigen Bereich [0, max_volume_ml].
+        """
+        return max(0.0, min(volume, self.max_volume_ml))
+
     def _ml_to_steps(self, ml: float) -> int:
         return int(round(ml * self.steps_per_ml))
 

@@ -69,15 +69,15 @@ class HubTisch:
 
     def move_hub_to_top(self):
         print("\n=== HUBTISCH: FAHRE NACH OBEN ===")
-        self.move_to_position(self.AXIS, self.HUB_TOP_STEPS)
+        self.move_to_position(self.HUB_TOP_STEPS)
     
     def move_hub_to_cleaning(self):
         print("\n=== HUBTISCH: FAHRE ZUR REINIGUNGSPOSITION ===")
-        self.move_to_position(self.AXIS, self.HUB_CLEANING_STEPS)
+        self.move_to_position(self.HUB_CLEANING_STEPS)
     
     def move_hub_to_cover(self):
         print("\n=== HUBTISCH: FAHRE ZUR ABDECKUNGSPOSITION ===")
-        self.move_to_position(self.AXIS, self.HUB_COVER_STEPS)
+        self.move_to_position(self.HUB_COVER_STEPS)
 
 
     def cleanup_gpio(self):

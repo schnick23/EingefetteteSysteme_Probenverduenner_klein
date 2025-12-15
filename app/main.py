@@ -1,4 +1,35 @@
-﻿from flask import Flask, render_template, request
+﻿import sys
+from unittest.mock import MagicMock
+
+# Mock RPi.GPIO if not available (e.g. on macOS)
+try:
+    import RPi.GPIO as GPIO
+except ImportError:
+    print("⚠️  RPi.GPIO not found. Using Mock for development.")
+    
+    # Create a mock module for RPi
+    MockRPi = MagicMock()
+    MockGPIO = MagicMock()
+    
+    # Set up constants that might be used
+    MockGPIO.BCM = "BCM"
+    MockGPIO.BOARD = "BOARD"
+    MockGPIO.OUT = "OUT"
+    MockGPIO.IN = "IN"
+    MockGPIO.HIGH = 1
+    MockGPIO.LOW = 0
+    MockGPIO.PUD_UP = "PUD_UP"
+    MockGPIO.PUD_DOWN = "PUD_DOWN"
+    MockGPIO.FALLING = "FALLING"
+    MockGPIO.RISING = "RISING"
+    MockGPIO.BOTH = "BOTH"
+    
+    # Assign to sys.modules BEFORE any other imports
+    sys.modules['RPi'] = MockRPi
+    sys.modules['RPi.GPIO'] = MockGPIO
+    MockRPi.GPIO = MockGPIO
+
+from flask import Flask, render_template, request
 
 from .config import Config
 from . import api

@@ -40,30 +40,30 @@ def starteAblauf(payload, simulation=False):
         pumpen_controller = pumpenSteuerung.Pumpen(pump1, pump2, pump3, pump4, pump5, relais6, relais7, relais8)
 
         # hubtisch initialisieren
-        hub_step= config["gpio"]["hub"]["step_pin"]
-        hub_dir= config["gpio"]["hub"]["dir_pin"]
-        hub_en= config["gpio"]["hub"]["en_pin"]
+        hub_step= config["gpio"]["stepper_motors"]["hub"]["step_pin"]
+        hub_dir= config["gpio"]["stepper_motors"]["hub"]["dir_pin"]
+        hub_en= config["gpio"]["stepper_motors"]["hub"]["en_pin"]
         hub_endtaster = config["gpio"]["endstops"]["hub"]
-        hub_axis = Axis.Axis("Hubtisch_Achse", hub_step, hub_dir, hub_en)
+        hub_axis = Axis("Hubtisch_Achse", hub_step, hub_dir, hub_en)
         hubtisch_controller = HubTisch.HubTisch(hub_axis, hub_endtaster)
 
         # linearführung initialisieren
-        lin_step= config["gpio"]["linear"]["step_pin"]
-        lin_dir= config["gpio"]["linear"]["dir_pin"]
-        lin_en= config["gpio"]["linear"]["en_pin"]
+        lin_step= config["gpio"]["stepper_motors"]["linear"]["step_pin"]
+        lin_dir= config["gpio"]["stepper_motors"]["linear"]["dir_pin"]
+        lin_en= config["gpio"]["stepper_motors"]["linear"]["en_pin"]
         lin_endtaster_hinten = config["gpio"]["endstops"]["linear_hinten"]
-        lin_axis = Axis.Axis("Linear_Achse", lin_step, lin_dir, lin_en)
+        lin_axis = Axis("Linear_Achse", lin_step, lin_dir, lin_en)
         linearfuehrung_controller = LinearFuehrung.LinearFuehrung(lin_axis, endstop_pin_hinten=lin_endtaster_hinten)
 
         # spritzkopf initialisieren
-        syr_step= config["gpio"]["syringe"]["step_pin"]
-        syr_dir= config["gpio"]["syringe"]["dir_pin"]
-        syr_en= config["gpio"]["syringe"]["en_pin"]
-        syr_axis = Axis.Axis("Spritzkopf_Achse", syr_step, syr_dir, syr_en)
+        syr_step= config["gpio"]["stepper_motors"]["syringe"]["step_pin"]
+        syr_dir= config["gpio"]["stepper_motors"]["syringe"]["dir_pin"]
+        syr_en= config["gpio"]["stepper_motors"]["syringe"]["en_pin"]
+        syr_axis = Axis("Spritzkopf_Achse", syr_step, syr_dir, syr_en)
         syr_endtaster_left = config["gpio"]["endstops"]["syringe_links"]
         syr_endtaster_right = config["gpio"]["endstops"]["syringe_rechts"]
-        syr_steps_per_ml = config["syringe"]["steps_per_ml"]
-        syr_max_volume_ml = config["syringe"]["max_volume_ml"]
+        syr_steps_per_ml = config["positions"]["syringe"]["steps_per_ml"]
+        syr_max_volume_ml = config["positions"]["syringe"]["max_volume_ml"]
         spritzkopf_controller = Spritzkopf.SyringeHead(syr_axis, endstop_pin_links=syr_endtaster_left, endstop_pin_rechts=syr_endtaster_right, max_volume_ml=syr_max_volume_ml, steps_per_ml=syr_steps_per_ml)
                                                     
 
