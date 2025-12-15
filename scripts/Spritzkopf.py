@@ -151,7 +151,7 @@ class SyringeHead:
         print(f"[{self.AXIS.name}] Homing...")
         
         # In Richtung Homing fahren, bis Endstopp erreicht
-        direction = False
+        direction = True
         while GPIO.input(self.END_STOP_PIN_RECHTS) == GPIO.HIGH or GPIO.input(self.END_STOP_PIN_LINKS) == GPIO.HIGH:
             self.AXIS.do_step_linear(10, direction)
 
