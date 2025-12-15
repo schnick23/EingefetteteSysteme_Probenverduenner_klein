@@ -62,16 +62,12 @@ class Axis:
             return
 
         if is_simulation():
-            old_pos = self.current_steps
             if direction:
                 self.current_steps += steps
             else:
                 self.current_steps -= steps
-            sim_print(f"\n{'='*50}")
-            sim_print(f"MOTOR: {self.name}")
-            sim_print(f"Schritte: {steps} | Richtung: {'VORWÄRTS (von Home weg)' if direction else 'RÜCKWÄRTS (zu Home hin)'}")
-            sim_print(f"Position: {old_pos} → {self.current_steps} Schritte")
-            sim_print(f"{'='*50}")
+            # Reduziertes Logging: keine Schritt-/Positionszahlen
+            sim_print(f"[{self.name}] Bewegung (sim), Richtung: {'vorwärts' if direction else 'rückwärts'}")
             return
 
         if self.home_towards_positive:
@@ -80,7 +76,8 @@ class Axis:
             direction = not direction
 
         # Echtbetrieb: Start-Log
-        print(f"[{self.name}] Starte Bewegung: {steps} Schritte, Richtung: {'vorwärts' if direction else 'rückwärts'}")
+        # Reduziertes Logging: keine Schritt-/Positionszahlen
+        print(f"[{self.name}] Starte Bewegung, Richtung: {'vorwärts' if direction else 'rückwärts'}")
         self._set_dir(direction)
 
         # Nutze die globalen Konstanten
@@ -126,7 +123,8 @@ class Axis:
             else:
                 self.current_steps -= 1
         # Echtbetrieb: End-Log
-        print(f"[{self.name}] Bewegung abgeschlossen. Neue Position: {self.current_steps} Schritte")
+        # Reduziertes Logging: keine Schritt-/Positionszahlen
+        print(f"[{self.name}] Bewegung abgeschlossen")
             
     
     def do_step_linear(self, steps: int, direction: bool):
@@ -134,16 +132,12 @@ class Axis:
             return
             
         if is_simulation():
-            old_pos = self.current_steps
             if direction:
                 self.current_steps += steps
             else:
                 self.current_steps -= steps
-            sim_print(f"\n{'='*50}")
-            sim_print(f"MOTOR LINEAR: {self.name}")
-            sim_print(f"Schritte: {steps} | Richtung: {'VORWÄRTS' if direction else 'RÜCKWÄRTS'}")
-            sim_print(f"Position: {old_pos} → {self.current_steps} Schritte")
-            sim_print(f"{'='*50}")
+            # Reduziertes Logging: keine Schritt-/Positionszahlen
+            sim_print(f"[{self.name}] Linearbewegung (sim), Richtung: {'vorwärts' if direction else 'rückwärts'}")
             return
             
         
@@ -152,7 +146,8 @@ class Axis:
         else:
             direction = not direction
         # Echtbetrieb: Start-Log
-        print(f"[{self.name}] Starte lineare Bewegung: {steps} Schritte, Richtung: {'vorwärts' if direction else 'rückwärts'}")
+        # Reduziertes Logging: keine Schritt-/Positionszahlen
+        print(f"[{self.name}] Starte lineare Bewegung, Richtung: {'vorwärts' if direction else 'rückwärts'}")
         self._set_dir(direction)
         for _ in range(steps):
             endstop = False
@@ -174,4 +169,5 @@ class Axis:
             else:
                 self.current_steps -= 1
         # Echtbetrieb: End-Log
-        print(f"[{self.name}] Lineare Bewegung abgeschlossen. Neue Position: {self.current_steps} Schritte")
+        # Reduziertes Logging: keine Schritt-/Positionszahlen
+        print(f"[{self.name}] Lineare Bewegung abgeschlossen")
