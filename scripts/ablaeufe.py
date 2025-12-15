@@ -64,16 +64,14 @@ def Verduennen(hubtisch_controller, linearfuehrung_controller, spritzkopf_contro
 
 def ZwischenReinigung(hubtisch_controller, linearfuehrung_controller, spritzkopf_controller, Stammreihe: int, StammLsg: float):
     print("\n=== SYSTEM: ZWISCHENREINIGUNG DURCHFÜHREN ===")
-    for cycle in range(1,2):
-        print(f"\n--- REINIGUNGSZYKLUS {cycle} ---")
-        hubtisch_controller.home()
-        spritzkopf_controller.go_to_volume(1)  # Luftblase aufziehen
-        linearfuehrung_controller.move_linear_to_index(Stammreihe)
-        hubtisch_controller.move_hub_to_top()
-        spritzkopf_controller.go_to_volume(StammLsg + 0.9)  # Spritzkopf aufziehen (Stammlösungsmenge + 0.5 + Luftblase)
-        hubtisch_controller.home()
-        linearfuehrung_controller.move_linear_to_index(7)  # Abfallbehälter
-        hubtisch_controller.move_hub_to_cleaning()
-        spritzkopf_controller.home() # Spritzkopf leeren
+    hubtisch_controller.home()
+    spritzkopf_controller.go_to_volume(1)  # Luftblase aufziehen
+    linearfuehrung_controller.move_linear_to_index(Stammreihe)
+    hubtisch_controller.move_hub_to_top()
+    spritzkopf_controller.go_to_volume(StammLsg + 0.9)  # Spritzkopf aufziehen (Stammlösungsmenge + 0.5 + Luftblase)
+    hubtisch_controller.home()
+    linearfuehrung_controller.move_linear_to_index(7)  # Abfallbehälter
+    hubtisch_controller.move_hub_to_cleaning()
+    spritzkopf_controller.home() # Spritzkopf leeren
     hubtisch_controller.home()
     print("\n=== SYSTEM: ZWISCHENREINIGUNG ABGESCHLOSSEN ===")
