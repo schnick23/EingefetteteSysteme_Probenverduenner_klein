@@ -173,8 +173,8 @@ syr_axis = motorcontroller.Axis(
     pin_en=config['gpio']["stepper_motors"]['syringe']['en_pin'],
     run_delay=config['axes']['step_delay_syr'],
     endstop_pins=[syr_end_stop_pin_links, syr_end_stop_pin_rechts],
-    dir_high_is_positive=False
-)
+    home_towards_positive=False
+    )
 syr_max_volume_ml = config["positions"]['syringe']['max_volume_ml']
 syr_steps_per_ml = config["positions"]['syringe']['steps_per_ml']
 
