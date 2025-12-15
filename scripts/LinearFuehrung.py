@@ -27,14 +27,14 @@ class LinearFuehrung:
     # WERTE NOCH KALIBRIEREN
     # POSITIONEN NOCH ZUORDNEN
     LINEAR_POSITIONS = {
-        1: 100000,        # Pos 1 = Anfangsposition
-        2: 74800,     # Pos 2 = Reihe 0 --> Stammlösung
-        4: 51500,     # Pos 4 = 1. Verdünnungsreihe
-        3: 63300,     # Pos 3 = 2. Verdünnungsreihe
-        5: 39500,     # Pos 5 = 3. Verdünnungsreihe
-        6: 32000,    # Pos 6 = Reinigungsbehälter
-        7: 24000,    # Pos 7 = Abfallbehälter
-        8: 14000,    # Pos 8 = Abdeckungsposition
+        1: 97000,        # Pos 1 = Abdeckung
+        2: 75300,     # Pos 2 = Reihe 0 --> Stammlösung
+        4: 63300,     # Pos 4 = 1. Verdünnungsreihe
+        3: 52300,     # Pos 3 = 2. Verdünnungsreihe
+        5: 40300,     # Pos 5 = 3. Verdünnungsreihe
+        6: 32300,    # Pos 6 = Reinigungsbehälter
+        7: 24300,    # Pos 7 = Abfallbehälter
+        8: 0,    # Pos 8 = Home
     }
 
     # DIR_HIGH_IS_POSITIVE = True   # ggf. umdrehen, wenn Richtung „falsch herum“
@@ -113,7 +113,7 @@ class LinearFuehrung:
             self.AXIS.do_step_linear(10, direction)
 
         print(f"[{self.AXIS.name}] Hinterer Endschalter ausgelöst!")
-        self.AXIS.current_steps = 0
+        self.AXIS.current_steps = self.LINEAR_POSITIONS[8]
         print(f"[{self.AXIS.name}] Homing abgeschlossen. Position auf 0 gesetzt.")
     
     
