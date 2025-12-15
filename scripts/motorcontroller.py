@@ -55,8 +55,10 @@ class Axis:
     def _do_step(self, steps: int, direction: bool):
         if steps <= 0:
             return
-
-        self._set_dir(direction)
+        if home_towards_positive:
+            self._set_dir(not direction)
+        else:
+            self._set_dir(direction)
 
         # Nutze die globalen Konstanten
         ramp_steps = min(steps // 2, RAMP_STEPS)
