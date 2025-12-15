@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-import RPi.GPIO as GPIO
+from .gpio_compat import GPIO
 import time
 
 

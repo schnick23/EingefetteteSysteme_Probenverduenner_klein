@@ -1,10 +1,10 @@
-import HubTisch
-import LinearFuehrung
-import Spritzkopf
+from . import HubTisch
+from . import LinearFuehrung
+from . import Spritzkopf
 import time
 import json
-import motorcontroller
-import RPi.GPIO as GPIO
+from . import motorcontroller
+from .gpio_compat import GPIO
 import os
 
 current = None

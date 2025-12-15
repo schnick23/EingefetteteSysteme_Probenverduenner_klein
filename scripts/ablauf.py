@@ -1,12 +1,12 @@
-import HubTisch
-import LinearFuehrung
-import pumpenSteuerung
-import Spritzkopf
+from . import HubTisch
+from . import LinearFuehrung
+from . import pumpenSteuerung
+from . import Spritzkopf
 import json
-from motorcontroller import Axis
+from .motorcontroller import Axis
 from pathlib import Path
 import RPi.GPIO as GPIO
-import ablaeufe
+from . import ablaeufe
 
 def starteAblauf(payload):
     try:

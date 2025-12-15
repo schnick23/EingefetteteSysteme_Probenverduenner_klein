@@ -2,7 +2,7 @@
 import RPi.GPIO as GPIO
 import time
 
-import motorcontroller
+from . import motorcontroller
 class Hubtisch:
     # ==============================
     #   KONFIGURATION HUB-ACHSE

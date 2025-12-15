@@ -2,7 +2,7 @@
 import RPi.GPIO as GPIO
 import time
 
-from motorcontroller import Axis
+from .motorcontroller import Axis
 
 class LinearFuehrung:
 

@@ -9,7 +9,7 @@
 
   const grid = document.getElementById('wellGrid');
   const btnStart = document.getElementById('startBtn');
-  const btnCancel = document.getElementById('cancelBtn');
+  // const btnCancel = document.getElementById('cancelBtn');
   // Loader-UI wurde auf eine separate Seite ausgelagert
 
   function wellId(r, c) { return `well-${r}-${c}`; }
@@ -304,14 +304,14 @@
     console[isErr ? 'error' : 'log'](msg);
   }
 
-  async function cancelProgram() {
+  /* async function cancelProgram() {
     const payload = {
       reason: 'user',
       timestamp: Date.now()
     };
     const data = await callApi('/api/cancel', payload);
     if (data && data.ok) notify('Cancel gesendet'); else notify('Cancel fehlgeschlagen', true);
-  }
+  } */
 
 
   function getCoverCheckboxValue() {
@@ -351,7 +351,7 @@
     setEnabledInputs();
     setCoverCheckbox(getCoverCheckboxValue());
     btnStart.addEventListener('click', startProgram);
-    btnCancel.addEventListener('click', cancelProgram);
+    // btnCancel.addEventListener('click', cancelProgram);
     document.getElementById("cover").addEventListener("click", () => {
     toggleCoverCheckbox(document.getElementById("cover"));
     });

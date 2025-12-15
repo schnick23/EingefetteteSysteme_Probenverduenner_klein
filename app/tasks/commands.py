@@ -2,14 +2,27 @@
 from itertools import product
 from typing import Any, Dict
 import time
-from scripts.ablauf import starteAblauf #hat bei leyna nicht funktioniert
+# from scripts.ablauf import starteAblauf #hat bei leyna nicht funktioniert
 from .runner import TaskState
+
+# Bedingter Import für Raspberry Pi Hardware-Code
+try:
+    from scripts.ablauf import starteAblauf
+    HAS_RPI_HARDWARE = True
+except (ImportError, ModuleNotFoundError) as e:
+    print(f"[INFO] RPi-Hardware nicht verfügbar (läuft auf Windows/Mock): {e}")
+    HAS_RPI_HARDWARE = False
+    def starteAblauf(payload):
+        """Dummy-Funktion für Windows-Entwicklung"""
+        print("[MOCK] starteAblauf würde auf RPi ausgeführt mit:", payload)
 
 
 def start_process(payload: Dict[str, Any]) -> Dict[str, Any]:
     print("[START] Payload received:\n" + pformat(payload))
     # Hier würde später die echte Verdünnungslogik aufgerufen
-    starteAblauf(payload) #hat bei leyna nicht funktioniert
+    # starteAblauf(payload) #hat bei leyna nicht funktioniert - Auskommentiert für Web-UI Test
+    print("[INFO] Hardware-Ablauf ist deaktiviert - nur UI-Test")
+
     return {"status": "started"}
 
 
@@ -20,13 +33,16 @@ def cancel_process(payload: Dict[str, Any] | None = None) -> Dict[str, Any]:
     return {"status": "cancelled"}
 
 def check_factors(data: Dict[str, Any]):
-    factors = data.get("factors", [])
-    fills = data.get("fills", [])
-    rows = data.get("enabledRows", [])
+    print(f"[DEBUG] check_factors received data: {data}")
+    factors = data.get("factors", {})
+    fills = data.get("fills", {})
+    rows = data.get("enabledRows", {})
+
     stock = data.get("stockVolume", None)
     cover = data.get("cover", None)
     grid = data.get("grid", [])
 
+    print(f"[DEBUG] factors={factors}, fills={fills}, rows={rows}, stock={stock}")
     
     factor1: int = factors.get("2")
     factor2: int = factors.get("1")
@@ -38,6 +54,10 @@ def check_factors(data: Dict[str, Any]):
 
     row3active = rows.get("0")
     row2active = rows.get("1")
+    
+    print(f"[DEBUG] factor1={factor1}, factor2={factor2}, factor3={factor3}")
+    print(f"[DEBUG] fill1={fill1}, fill2={fill2}, fill3={fill3}")
+    print(f"[DEBUG] row2active={row2active}, row3active={row3active}")
 
     #stock volume check
     if stock is None: 

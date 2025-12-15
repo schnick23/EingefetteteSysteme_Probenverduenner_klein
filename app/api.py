@@ -72,3 +72,24 @@ def api_cancel():
     result = cancel_process(data)
     return jsonify({"ok": True, "cancel_ack": runner_ack, **result})
 
+
+@bp.route("/remove-cover", methods=["POST"])
+def api_remove_cover():
+    data = request.get_json(force=True, silent=True) or {}
+    # Neuen Task für Abdeckung entfernen starten
+    task_id = str(uuid.uuid4())
+    state = TaskState(name="remove_cover", params={"action": "remove_cover"})
+    # Hier kannst du eine spezielle Funktion für das Abdeckung-Entfernen definieren
+    # Beispiel: runner.start_task(task_id, remove_cover_workflow, state)
+    # Für jetzt nutzen wir eine Dummy-Funktion
+    def remove_cover_workflow(s: TaskState):
+        s.message = "Abdeckung wird entfernt..."
+        s.progress = 50
+        import time
+        time.sleep(2)
+        s.message = "Abdeckung entfernt"
+        s.progress = 100
+        s.state = "finished"
+    
+    runner.start_task(task_id, remove_cover_workflow, state)
+    return jsonify({"ok": True, "task_id": task_id})

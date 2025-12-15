@@ -1,7 +1,7 @@
-import HubTisch
-import LinearFuehrung
-import pumpenSteuerung
-import Spritzkopf
+from . import HubTisch
+from . import LinearFuehrung
+from . import pumpenSteuerung
+from . import Spritzkopf
 import json
 from motorcontroller import Axis
 from pathlib import Path

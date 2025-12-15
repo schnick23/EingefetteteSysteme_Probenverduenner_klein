@@ -1,4 +1,4 @@
-import RPi.GPIO as GPIO
+from .gpio_compat import GPIO
 import time
 from typing import Iterable, Optional
 
@@ -106,7 +106,7 @@ class Pumpen:
         Realisiert, indem sie gleichzeitig eingeschaltet werden, gewartet wird
         und dann alle wieder ausgeschaltet werden.
         """
-        seconds_per_ml_list list = [
+        seconds_per_ml_list = [
             (pid, self.seconds_per_ml[pid])
             for pid in self._iter_pump_ids(pump_ids)
         ]
