@@ -72,6 +72,12 @@ def check_factors(data: Dict[str, Any]):
     if stock is None: 
         return (False, "Stammlösungsvolumen fehlt")
 
+    if stock < 2:
+        return (False, "Stammlösungsvolumen zu gering, min. 2ml nötig")
+    
+    if stock > 14:
+        return (False, "Stammlösungsvolumen zu hoch, max. 14ml erlaubt")
+
     #factor and fill checks
     if factor1 is None or (row2active and factor2 is None) or (row3active and factor3 is None):
         return (False, "Faktoren stimmen nicht mit der Rasterkonfiguration überein")
@@ -86,14 +92,21 @@ def check_factors(data: Dict[str, Any]):
         fills.update({"2": None, "1": None})
         if fill3 is None:
             return (False, "Füllvolumen für Reihe 3 fehlt")
+        if fill3 > 14:
+            return (False, "Füllvolumen für Reihe 3 zu hoch, max. 14ml erlaubt")
     if row2active and not row3active:
         fills.update({"2": None, "0": None})
         if fill2 is None:
             return (False, "Füllvolumen für Reihe 2 fehlt")
+        if fill2 > 14:
+            return (False, "Füllvolumen für Reihe 2 zu hoch, max. 14ml erlaubt")
     if not row2active and not row3active:
         fills.update({"1": None, "0": None})
         if fill1 is None:
             return (False, "Füllvolumen für Reihe 1 fehlt")
+        if fill1 > 14:
+            return (False, "Füllvolumen für Reihe 1 zu hoch, max. 14ml erlaubt")
+        
     if factor1 > 1 and factor1 <= 10:
         print("Factors are valid")
     else:
@@ -174,21 +187,24 @@ def check_factors(data: Dict[str, Any]):
         volumenstock = data.get("stockVolume", None)
 
         if row3active and fa3stammreihe == 2:
-            volumenstock -= stammmenge3
+            volumenstock -= ((stammmenge3 * 3) + 1)
         elif row3active and fa3stammreihe == 3:
-            volumen1 -= stammmenge3
+            volumen1 -= ((stammmenge3 * 3) + 1)
         elif row3active and fa3stammreihe == 4:
-            volumen2 -= stammmenge3
+            volumen2 -= ((stammmenge3 * 3) + 1)
         
         if row2active and fa2stammreihe == 2:
-            volumenstock -= stammmenge2
+            volumenstock -= ((stammmenge2 * 3) + 1)
         elif row2active and fa2stammreihe == 3:
-            volumen1 -= stammmenge2
+            volumen1 -= ((stammmenge2 * 3) + 1)
 
-        volumenstock -= stammmenge1
+        volumenstock -= ((stammmenge1 * 3) + 1)
         
         if volumenstock < 2:
             return (False, "Nicht genug Stammlösung für alle Reihen vorhanden, 2ml Reserve nötig")
+        
+        if volumenstock > 14:
+            return (False, "Zu viel Stammlösung nötig, max. 14ml erlaubt")
 
         info3: Dict[str, Any] = {
             "Reihe": 5,
@@ -232,14 +248,17 @@ def check_factors(data: Dict[str, Any]):
 
         
         if row2active and fa2stammreihe == 0:
-            volumenstock -= stammmenge2
+            volumenstock -= ((stammmenge2 * 3) + 1)
         elif row2active and fa2stammreihe == 1:
-            volumen1 -= stammmenge2
+            volumen1 -= ((stammmenge2 * 3) + 1)
 
-        volumenstock -= stammmenge1
+        volumenstock -= ((stammmenge1 * 3) + 1)
         
         if volumenstock < 2:
             return (False, "Nicht genug Stammlösung für alle Reihen vorhanden, 2ml Reserve nötig")
+        
+        if volumenstock > 14:
+            return (False, "Zu viel Stammlösung nötig, max. 14ml erlaubt")
         
         info2: Dict[str, Any] = {
             "Reihe": 4,
@@ -265,10 +284,13 @@ def check_factors(data: Dict[str, Any]):
         volumen1 = stammmenge1 + verdunnungsmenge1
         volumenstock = data.get("stockVolume", None)
 
-        volumenstock -= stammmenge1
+        volumenstock -= ((stammmenge1 * 3) + 1)
         
         if volumenstock < 2:
             return (False, "Nicht genug Stammlösung für alle Reihen vorhanden, 2ml Reserve nötig")
+        
+        if volumenstock > 14:
+            return (False, "Zu viel Stammlösung nötig, max. 14ml erlaubt")
 
         info1: Dict[str, Any] = {
             "Reihe": 3,
