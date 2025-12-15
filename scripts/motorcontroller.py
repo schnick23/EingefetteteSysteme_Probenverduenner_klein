@@ -55,7 +55,7 @@ class Axis:
     def _do_step(self, steps: int, direction: bool):
         if steps <= 0:
             return
-        if home_towards_positive:
+        if self.home_towards_positive:
             self._set_dir(not direction)
         else:
             self._set_dir(direction)
