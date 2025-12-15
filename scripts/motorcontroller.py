@@ -17,7 +17,7 @@ class Axis:
         pin_en,
         run_delay = 0.0001, #delay zwischen den Schritten (Default: 0.0001)     
         dir_high_is_positive=True,
-        home_towards_positive=False,
+        home_towards_positive=True,
         endstop_pins: list[int] = None
     
     ):
@@ -74,6 +74,11 @@ class Axis:
             sim_print(f"{'='*50}")
             return
 
+        if self.home_towards_positive:
+            direction = direction
+        if not self.home_towards_positive:
+            direction = not direction
+        
         self._set_dir(direction)
 
         # Nutze die globalen Konstanten
@@ -84,7 +89,7 @@ class Axis:
                 if GPIO.input(pin) == GPIO.LOW:
                     endstop = True
                     break
-            if self.END_STOP_PIN is not None and endstop == True and direction == False:
+            if self.END_STOP_PIN is not None and endstop == True and direction == (not self.home_towards_positive):
                 print(f"[{self.name}] Endstopp erreicht. Stoppe Bewegung.")
                 break
 
@@ -135,6 +140,11 @@ class Axis:
             sim_print(f"{'='*50}")
             return
             
+        
+        if self.home_towards_positive:
+            direction = direction
+        if not self.home_towards_positive:
+            direction = not direction
         self._set_dir(direction)
         for _ in range(steps):
             endstop = False

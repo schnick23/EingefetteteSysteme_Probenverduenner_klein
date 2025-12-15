@@ -94,7 +94,7 @@ class HubTisch:
 
 
         # In Richtung Homing fahren, bis Endstopp erreicht
-        direction = self.AXIS.home_towards_positive
+        direction = False
         print(f"[{self.AXIS.name}] Fahre in Richtung "
               f"{'positiv' if direction else 'negativ'} zum Homing...")
         while GPIO.input(self.END_STOP_PIN) == GPIO.HIGH:
