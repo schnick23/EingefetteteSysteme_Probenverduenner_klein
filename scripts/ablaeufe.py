@@ -23,7 +23,7 @@ def ersteReinigung(hubtisch_controller, linearfuehrung_controller, spritzkopf_co
     nullpositioniereSystem(hubtisch_controller, linearfuehrung_controller, spritzkopf_controller)
     linearfuehrung_controller.move_linear_to_index(7)  # abfallbehälter
     hubtisch_controller.move_hub_to_cleaning()
-    pumpen_controller.all_pump_ml(15.0)  # SCHLAUCHVOLUMEN ERMITTELN UND ANPASSEN
+    pumpen_controller.fill_all_pumps()  # SCHLAUCHVOLUMEN ERMITTELN UND ANPASSEN
     hubtisch_controller.home()
     linearfuehrung_controller.move_linear_to_index(6)  # Reinigungsbehälter
     spritzkopf_controller.go_to_volume(0.4)  # Luftblase aufziehen
