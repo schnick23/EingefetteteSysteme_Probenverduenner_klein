@@ -213,7 +213,7 @@ pump5= config["gpio"]["relais"]["relais5"]
 relais6= config["gpio"]["relais"]["relais6"]
 relais7= config["gpio"]["relais"]["relais7"]
 relais8= config["gpio"]["relais"]["relais8"]
-pumpen_controller = pumpenSteuerung.PumpenSteuerung(pump1, pump2, pump3, pump4, pump5, relais6, relais7, relais8)
+pumpen_controller = pumpenSteuerung.__init__(pump1, pump2, pump3, pump4, pump5, relais6, relais7, relais8)
 
 
 command = input("Welches Element soll vermessen werden? (hub/lin/syr): ")
