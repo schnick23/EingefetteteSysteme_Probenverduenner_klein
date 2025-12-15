@@ -155,6 +155,13 @@ class Pumpen:
                 print(f"Pumpe {pid} fertig.")
             self.all_off()
 
+    def fill_all_pumps(self, direction: bool = True):
+        """Lässt alle Pumpen 1 ml füllen."""
+        self.changeDir(direction)
+        self.all_on()
+        time.wait(55)
+        self.all_off()
+
     def changeDir(self, dir: bool): 
         """
             Ändert die Drehrichtung der Pumpen.
