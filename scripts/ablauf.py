@@ -9,7 +9,7 @@ import RPi.GPIO as GPIO
 import ablaeufe
 from simulation_mode import enable_simulation, is_simulation
 
-def starteAblauf(payload, simulation=False):
+def starteAblauf(payload, simulation=False, report=None):
     """
     Startet den Verdünnungsablauf.
     
@@ -20,6 +20,13 @@ def starteAblauf(payload, simulation=False):
     if simulation:
         enable_simulation()
         
+    def _report(msg: str, pct: int | None = None):
+        if report:
+            try:
+                report(msg, pct)
+            except Exception:
+                pass
+
     try:
         # Pfad zur config.json relativ zum aktuellen Skript ermitteln
         config_path = Path(__file__).resolve().parent / "config.json"
@@ -67,10 +74,12 @@ def starteAblauf(payload, simulation=False):
         spritzkopf_controller = Spritzkopf.SyringeHead(syr_axis, endstop_pin_links=syr_endtaster_left, endstop_pin_rechts=syr_endtaster_right, max_volume_ml=syr_max_volume_ml, steps_per_ml=syr_steps_per_ml)
                                                     
 
-        # Abläufe ausführen
-        
+        # Abläufe ausführen (Reihenfolge: Nullpositionierung → Erste Reinigung → pro Reihe: Zwischenreinigung ×2 → Verdünnen)
+        _report("Nullpositioniere System…", 5)
+        ablaeufe.nullpositioniereSystem(hubtisch_controller, linearfuehrung_controller, spritzkopf_controller)
+
+        _report("Erste Reinigung…", 10)
         ablaeufe.ersteReinigung(hubtisch_controller, linearfuehrung_controller, spritzkopf_controller, pumpen_controller)
-        ablaeufe.ZwischenReinigung(hubtisch_controller, linearfuehrung_controller, spritzkopf_controller, Stammreihe=2, StammLsg=3.0)  # Initiale Reinigung vor Verdünnung
         # Iteriere über die Reihen 1 bis 3 (Row 0 ist Stammlösung)
         for i in range(1, 4):
             row_key = str(i)
@@ -116,6 +125,8 @@ def starteAblauf(payload, simulation=False):
                 
                 print(f"Starte Verdünnung für Reihe {ziel_reihe} (von {stamm_reihe}). Aktive Pumpen: {active_pumps}")
                 
+                
+                _report("Zwischenreinigung…", 15 + i*20)
                 # Zwischenreinigung durchführen
                 ablaeufe.ZwischenReinigung(
                     hubtisch_controller, 
@@ -125,7 +136,7 @@ def starteAblauf(payload, simulation=False):
                     StammLsg=stamm_lsg
                 )
 
-                # Zwischenreinigung durchführen
+                _report("Zwischenreinigung…", 18 + i*20)
                 ablaeufe.ZwischenReinigung(
                     hubtisch_controller, 
                     linearfuehrung_controller, 
@@ -134,6 +145,7 @@ def starteAblauf(payload, simulation=False):
                     StammLsg=stamm_lsg
                 )
 
+                _report(f"Verdünnung: Reihe {ziel_reihe} (von {stamm_reihe})…", 20 + i*20)
                 ablaeufe.Verduennen(
                     hubtisch_controller, 
                     linearfuehrung_controller, 
@@ -149,14 +161,18 @@ def starteAblauf(payload, simulation=False):
         # Abschlussposition abhängig von 'cover'
         try:
             if payload.get('cover'):
+                _report("Abdecken…", 95)
                 linearfuehrung_controller.move_linear_to_index(1)
-                hubtisch_controller.move_hub_to_top()
+                hubtisch_controller.move_hub_to_cover()
+            else:
+                _report("Fahre in Ausgangsposition…", 95)
+                hubtisch_controller.home()
+                linearfuehrung_controller.home()
         except Exception:
             pass
 
         pumpen_controller.fill_all_pumps(False)  # Am Ende alle Pumpen füllen
-        hubtisch_controller.home()
-        linearfuehrung_controller.home()
+        _report("Fertig", 100)
 
     except Exception as e:
         print(f"\n=== SYSTEM: FEHLER AUFGETRETEN ===\n{e}")

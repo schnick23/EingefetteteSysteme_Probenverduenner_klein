@@ -76,8 +76,7 @@ class Axis:
             direction = not direction
 
         # Echtbetrieb: Start-Log
-        # Reduziertes Logging: keine Schritt-/Positionszahlen
-        print(f"[{self.name}] Starte Bewegung, Richtung: {'vorwärts' if direction else 'rückwärts'}")
+            # Keine Logausgabe hier – nur High-Level-Komponenten loggen Start der Gesamtbewegung
         self._set_dir(direction)
 
         # Nutze die globalen Konstanten
@@ -122,8 +121,7 @@ class Axis:
             else:
                 self.current_steps -= 1
         # Echtbetrieb: End-Log
-        # Reduziertes Logging: keine Schritt-/Positionszahlen
-        print(f"[{self.name}] Bewegung abgeschlossen")
+            # Keine Abschluss-Logausgabe
             
     
     def do_step_linear(self, steps: int, direction: bool):
@@ -145,8 +143,7 @@ class Axis:
         else:
             direction = not direction
         # Echtbetrieb: Start-Log
-        # Reduziertes Logging: keine Schritt-/Positionszahlen
-        print(f"[{self.name}] Starte lineare Bewegung, Richtung: {'vorwärts' if direction else 'rückwärts'}")
+            # Keine Logausgabe hier – nur High-Level-Komponenten loggen Start der Gesamtbewegung
         self._set_dir(direction)
         for _ in range(steps):
             endstop = False
@@ -167,5 +164,4 @@ class Axis:
             else:
                 self.current_steps -= 1
         # Echtbetrieb: End-Log
-        # Reduziertes Logging: keine Schritt-/Positionszahlen
-        print(f"[{self.name}] Lineare Bewegung abgeschlossen")
+            # Keine Abschluss-Logausgabe

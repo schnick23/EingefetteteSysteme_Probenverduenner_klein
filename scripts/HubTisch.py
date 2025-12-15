@@ -12,7 +12,7 @@ class HubTisch:
     # Positionen in "Schritten"
     HUB_BOTTOM_STEPS = 0          # unten = 0
     HUB_CLEANING_STEPS = 4000
-    HUB_COVER_STEPS = 5000
+    HUB_COVER_STEPS = 35000
     HUB_TOP_STEPS    = 23000       # oben = DIESEN WERT KALIBRIEREN!
     END_STOP_PIN = None
 

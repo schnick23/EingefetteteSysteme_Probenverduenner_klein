@@ -20,7 +20,6 @@ def nullpositioniereSystem(hubtisch_controller, linearfuehrung_controller, sprit
 
 def ersteReinigung(hubtisch_controller, linearfuehrung_controller, spritzkopf_controller, pumpen_controller):
     print("\n=== SYSTEM: ERSTE REINIGUNGSDURCHFÜHRUNG ===")
-    nullpositioniereSystem(hubtisch_controller, linearfuehrung_controller, spritzkopf_controller)
     linearfuehrung_controller.move_linear_to_index(7)  # abfallbehälter
     hubtisch_controller.move_hub_to_top()
     pumpen_controller.fill_all_pumps()  # SCHLAUCHVOLUMEN ERMITTELN UND ANPASSEN

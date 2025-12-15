@@ -13,10 +13,33 @@ from .runner import TaskState
 
 
 def start_process(payload: Dict[str, Any]) -> Dict[str, Any]:
+    # Nur einmalig Payload in CLI ausgeben
     print("[START] Payload received:\n" + pformat(payload))
-    # Hier würde später die echte Verdünnungslogik aufgerufen
-    starteAblauf(payload) #hat bei leyna nicht funktioniert
-    return {"status": "started"}
+    return {"status": "printed"}
+
+
+def run_real_workflow(state: TaskState, payload: Dict[str, Any]) -> None:
+    """Startet den echten Verdünnungsprozess im Hintergrund und aktualisiert Statusmeldungen.
+    """
+    state.message = "Starte Verdünnungsprozess…"
+    state.progress = 1
+
+    def report(msg: str, pct: int | None = None):
+        state.message = msg
+        if pct is not None:
+            try:
+                pct_i = int(pct)
+                state.progress = max(state.progress, max(0, min(100, pct_i)))
+            except Exception:
+                pass
+
+    try:
+        starteAblauf(payload, simulation=False, report=report)
+        state.progress = max(state.progress, 100)
+    except Exception as e:
+        state.state = "error"
+        state.message = f"Fehler: {e}"
+        return
 
 
 def cancel_process(payload: Dict[str, Any] | None = None) -> Dict[str, Any]:

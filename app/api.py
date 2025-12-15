@@ -1,7 +1,7 @@
 ﻿from flask import Blueprint, request, jsonify, current_app
 import uuid
 from .tasks.runner import runner, TaskState, example_dilute
-from .tasks.commands import start_process, cancel_process, simulate_workflow, check_factors
+from .tasks.commands import start_process, cancel_process, check_factors, run_real_workflow
 
 bp = Blueprint("api", __name__, url_prefix="/api")
 
@@ -65,7 +65,7 @@ def api_confirm_start():
     start_process(data)
     task_id = str(uuid.uuid4())
     state = TaskState(name="workflow", params=data)
-    runner.start_task(task_id, lambda s: simulate_workflow(s, data), state)
+    runner.start_task(task_id, lambda s: run_real_workflow(s, data), state)
     return jsonify({"ok": True, "task_id": task_id})
 
 
