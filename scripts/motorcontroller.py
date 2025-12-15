@@ -66,7 +66,7 @@ class Axis:
                 if GPIO.input(pin) == GPIO.LOW:
                     endstop = True
                     break
-            if self.END_STOP_PIN is not None and endstop == True and direction == False:
+            if self.END_STOP_PIN is not None and endstop == True and direction == (not self.dir_high_is_positive):
                 print(f"[{self.name}] Endstopp erreicht. Stoppe Bewegung.")
                 break
 
