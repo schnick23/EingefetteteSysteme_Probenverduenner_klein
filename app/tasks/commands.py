@@ -145,21 +145,23 @@ def check_factors(data: Dict[str, Any]):
     fa2stammreihe: int = 2
     fa1stammreihe: int = 2
 
-    if row3active and factor3 <= 10:
-        fa3stammreihe = 2
-    elif row3active and factor3 <= 100 and factor3 / 10 <= factor1:
-        fa3stammreihe = 3
-    elif row3active and factor3 <= 1000 and factor3 / 10 <= factor2:
-        fa3stammreihe = 4
-    else:
-        return (False, "Keine gültige Stammreihe für Reihe 3 gefunden")
-    
-    if row2active and factor2 <= 10:
-        fa2stammreihe = 2
-    elif row2active and factor2 <= 100 and factor2 / 10 <= factor1:
-        fa2stammreihe = 3
-    else:
-        return (False, "Keine gültige Stammreihe für Reihe 2 gefunden")
+    if row3active:
+        if factor3 <= 10:
+            fa3stammreihe = 2
+        elif factor3 <= 100 and factor3 / 10 <= factor1:
+            fa3stammreihe = 3
+        elif factor3 <= 1000 and factor3 / 10 <= factor2:
+            fa3stammreihe = 4
+        else:
+            return (False, "Keine gültige Stammreihe für Reihe 3 gefunden")
+        
+    if row2active:
+        if factor2 <= 10:
+            fa2stammreihe = 2
+        elif factor2 <= 100 and factor2 / 10 <= factor1:
+            fa2stammreihe = 3
+        else:
+            return (False, "Keine gültige Stammreihe für Reihe 2 gefunden")
 
     if row3active:
         stammmenge1: float = calculating_stocksolution(14, factor1, 1)

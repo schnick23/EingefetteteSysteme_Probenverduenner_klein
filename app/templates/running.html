@@ -69,7 +69,7 @@
       display:flex; 
       justify-content: center; 
     }
-    .btn-cancel { 
+    /* .btn-cancel { 
       appearance: none; 
       border: none; 
       background: #ff4d4f; 
@@ -81,7 +81,40 @@
       box-shadow: 0 2px 0 rgba(0,0,0,0.1); 
       cursor: pointer; 
     }
-    .btn-cancel:active { transform: translateY(1px); }
+    .btn-cancel:active { transform: translateY(1px); } */
+    .btn-remove-cover {
+      appearance: none;
+      border: none;
+      background: #2f7bfd;
+      color: #fff;
+      font-weight: 800;
+      font-size: 16px;
+      padding: 14px 28px;
+      border-radius: 10px;
+      box-shadow: 0 2px 0 rgba(0,0,0,0.1);
+      cursor: pointer;
+      display: none;
+    }
+    .btn-remove-cover:active {  transform: translateY(1px); 
+    }
+    .btn-remove-cover.show { 
+      display: inline-block; 
+    }
+    .btn-back {
+      appearance: none;
+      border: none;
+      background: #9d9d9d;
+      color: #fff;
+      font-weight: 800;
+      font-size: 16px;
+      padding: 14px 28px;
+      border-radius: 10px;
+      box-shadow: 0 2px 0 rgba(0,0,0,0.1);
+      cursor: pointer;
+      display: none;
+    }
+    .btn-back:active { transform: translateY(1px); }
+    .btn-back.show { display: inline-block; }
     .done { 
       color:#0f8a3b; 
       font-weight:600; 
@@ -103,8 +136,12 @@
         <div class="bar"><div class="fill" id="fill"></div></div>
         <div class="status"><span id="msg">Wird gestartet…</span><span id="pct">0%</span></div>
       </div>
-      <div class="actions">
+      <!-- <div class="actions">
         <button class="btn-cancel" id="cancel">ABBRECHEN</button>
+      </div> -->
+      <div class="actions">
+        <button class="btn-remove-cover" id="removeCover">Abdeckung entfernen</button>
+        <button class="btn-back" id="btnBack">Zurück</button>
       </div>
     </div>
   </div>
@@ -120,15 +157,18 @@
       const msg = document.getElementById('msg');
       const title = document.getElementById('title');
       const spinner = document.getElementById('spinner');
-      const btnCancel = document.getElementById('cancel');
+      // const btnCancel = document.getElementById('cancel');
+      const btnRemoveCover = document.getElementById('removeCover');
+      const btnBack = document.getElementById('btnBack');
       let timer = null;
+      let hasCover = false;
 
-      function switchToBackButton() {
+      /* function switchToBackButton() {
         const newBtn = btnCancel.cloneNode(true);
         newBtn.textContent = 'Zurück';
         newBtn.onclick = function() { window.location.href = '/'; };
         btnCancel.parentNode.replaceChild(newBtn, btnCancel);
-      }
+      } */
 
       async function poll() {
         try {
@@ -147,18 +187,27 @@
               msg.classList.add('done');
               fill.style.width = '100%';
               fill.classList.add('done');
+              
+              // Prüfen ob cover-Parameter true war
+              if (st.params && st.params.cover === true) {
+                hasCover = true;
+                btnRemoveCover.classList.add('show');
+              } else {
+                // Kein Cover oder cover=false: Zurück-Button anzeigen
+                btnBack.classList.add('show');
+              }
             } else {
               title.innerHTML = 'Fehler';
               msg.classList.add('error');
             }
-            switchToBackButton();
+            // switchToBackButton();
           }
         } catch (e) {
           console.error(e);
         }
       }
 
-      async function cancel() {
+      /* async function cancel() {
         try {
           const res = await fetch('/api/cancel', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ reason: 'user', task_id: taskId })});
           if (res.ok) {
@@ -173,9 +222,41 @@
         } catch (e) {
           console.error(e);
         }
+      } */
+
+      async function removeCover() {
+        try {
+          btnRemoveCover.disabled = true;
+          btnRemoveCover.textContent = 'Wird gestartet...';
+          const res = await fetch('/api/remove-cover', { 
+            method: 'POST', 
+            headers: { 'Content-Type': 'application/json' }, 
+            body: JSON.stringify({ task_id: taskId })
+          });
+          if (res.ok) {
+            const data = await res.json();
+            if (data.task_id) {
+              // Zur neuen Task-Seite weiterleiten
+              window.location.href = `/running/${data.task_id}`;
+            }
+          } else {
+            btnRemoveCover.disabled = false;
+            btnRemoveCover.textContent = 'ABDECKUNG ENTFERNEN';
+            msg.textContent = 'Fehler beim Starten';
+            msg.classList.add('error');
+          }
+        } catch (e) {
+          console.error(e);
+          btnRemoveCover.disabled = false;
+          btnRemoveCover.textContent = 'ABDECKUNG ENTFERNEN';
+        }
       }
 
-      btnCancel.addEventListener('click', cancel);
+      // btnCancel.addEventListener('click', cancel);
+      btnRemoveCover.addEventListener('click', removeCover);
+      btnBack.addEventListener('click', () => {
+        window.location.href = '/';
+      });
       timer = setInterval(poll, 400);
       poll();
     })();
