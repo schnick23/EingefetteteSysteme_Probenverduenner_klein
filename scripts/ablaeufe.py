@@ -22,24 +22,23 @@ def ersteReinigung(hubtisch_controller, linearfuehrung_controller, spritzkopf_co
     print("\n=== SYSTEM: ERSTE REINIGUNGSDURCHFÜHRUNG ===")
     nullpositioniereSystem(hubtisch_controller, linearfuehrung_controller, spritzkopf_controller)
     linearfuehrung_controller.move_linear_to_index(7)  # abfallbehälter
-    hubtisch_controller.move_hub_to_cleaning()
+    hubtisch_controller.move_hub_to_top()
     pumpen_controller.fill_all_pumps()  # SCHLAUCHVOLUMEN ERMITTELN UND ANPASSEN
     hubtisch_controller.home()
     linearfuehrung_controller.move_linear_to_index(6)  # Reinigungsbehälter
-    spritzkopf_controller.go_to_volume(0.4)  # Luftblase aufziehen
+    spritzkopf_controller.go_to_volume(1)  # Luftblase aufziehen
     hubtisch_controller.move_hub_to_top()
-    pumpen_controller.all_pump_ml(5.0)  # Alle Pumpen 5 ml
-    spritzkopf_controller.go_to_volume(2.0)  # Spritzkopf aufziehen
+    pumpen_controller.fill_all_pumps()  # Reinigungsbehälter füllen
+    spritzkopf_controller.aspirate(2.0)  # Spritzkopf aufziehen
     hubtisch_controller.home()
     linearfuehrung_controller.move_linear_to_index(7)  # Abfallbehälter
     hubtisch_controller.move_hub_to_cleaning()
     spritzkopf_controller.home()  # Spritzkopf leeren
     hubtisch_controller.home()
     linearfuehrung_controller.move_linear_to_index(6)  # Renigungsbehälter
-    spritzkopf_controller.go_to_volume(0.4)  # Luftblase aufziehen
+    spritzkopf_controller.go_to_volume(1)  # Luftblase aufziehen
     hubtisch_controller.move_hub_to_top()
-    pumpen_controller.all_pump_ml(5.0)  # DARAUF SCHAUEN; Evtl. mehr ml pumpen
-    spritzkopf_controller.go_to_volume(2.0)  # Spritzkopf aufziehen
+    spritzkopf_controller.aspirate(2.0)  # Spritzkopf aufziehen
     hubtisch_controller.home()
     linearfuehrung_controller.move_linear_to_index(7)  # Abfallbehälter
     hubtisch_controller.move_hub_to_cleaning()
