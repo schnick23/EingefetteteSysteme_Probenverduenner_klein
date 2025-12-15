@@ -17,7 +17,7 @@ class SyringeHead:
         axis,
         steps_per_ml: int,
         max_volume_ml: float,
-        draw_towards_positive: bool = True,
+        draw_towards_positive: bool = False,
         start_volume_ml: float = 0.0,
         endstop_pin_links: int = None,
         endstop_pin_rechts: int = None
