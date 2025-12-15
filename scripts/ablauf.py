@@ -68,7 +68,7 @@ def starteAblauf(payload, simulation=False):
                                                     
 
         # Abläufe ausführen
-        ablaeufe.nullpositioniereSystem(hubtisch_controller, linearfuehrung_controller, spritzkopf_controller)
+        
         ablaeufe.ersteReinigung(hubtisch_controller, linearfuehrung_controller, spritzkopf_controller, pumpen_controller)
 
         # Iteriere über die Reihen 1 bis 3 (Row 0 ist Stammlösung)
@@ -132,6 +132,10 @@ def starteAblauf(payload, simulation=False):
                     Stammreihe=stamm_reihe, 
                     StammLsg=stamm_lsg
                 )
+
+        pumpen_controller.fill_all_pumps(False)  # Am Ende alle Pumpen füllen
+        hubtisch_controller.home()
+        linearfuehrung_controller.home()
 
     except Exception as e:
         print(f"\n=== SYSTEM: FEHLER AUFGETRETEN ===\n{e}")
