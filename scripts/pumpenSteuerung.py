@@ -3,11 +3,11 @@ import time
 from typing import Iterable, Optional
 
 SECONDS_PER_ML = {
-    1: 3.445,
-    2: 3.480,
-    3: 3.410,
-    4: 3.600,
-    5: 3.490
+    "1": 3.445,
+    "2": 3.480,
+    "3": 3.410,
+    "4": 3.600,
+    "5": 3.490
 }
 
 
