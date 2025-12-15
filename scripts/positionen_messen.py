@@ -47,7 +47,7 @@ def measure_positions(element):
                 try:
                     front_steps = int(front_steps)
                     steps += front_steps
-                    element.AXIS._do_step(front_steps, elemen.AXIS.dir_high_is_positive)
+                    element.AXIS._do_step(front_steps, element.AXIS.dir_high_is_positive)
                     axis_steps[current] +=front_steps
                 except ValueError:
                     print("Ungültige Eingabe. Bitte eine Zahl eingeben.")
