@@ -87,10 +87,12 @@ class Axis:
         ramp_steps = min(steps // 2, RAMP_STEPS)
         for i in range(steps):
             endstop = False
-            for pin in self.END_STOP_PIN:
-                if GPIO.input(pin) == GPIO.LOW:
-                    endstop = True
-                    break
+            # Endstopp nur prüfen, wenn Pins konfiguriert sind
+            if self.END_STOP_PIN is not None:
+                for pin in self.END_STOP_PIN:
+                    if GPIO.input(pin) == GPIO.LOW:
+                        endstop = True
+                        break
             if self.END_STOP_PIN is not None and endstop == True and direction == (not self.home_towards_positive):
                 print(f"[{self.name}] Endstopp erreicht. Stoppe Bewegung.")
                 break
@@ -154,10 +156,12 @@ class Axis:
         self._set_dir(direction)
         for _ in range(steps):
             endstop = False
-            for pin in self.END_STOP_PIN:
-                if GPIO.input(pin) == GPIO.LOW:
-                    endstop = True
-                    break
+            # Endstopp nur prüfen, wenn Pins konfiguriert sind
+            if self.END_STOP_PIN is not None:
+                for pin in self.END_STOP_PIN:
+                    if GPIO.input(pin) == GPIO.LOW:
+                        endstop = True
+                        break
             if self.END_STOP_PIN is not None and endstop == True and direction == False:
                 print(f"[{self.name}] Endstopp erreicht. Stoppe Bewegung.")
                 break
