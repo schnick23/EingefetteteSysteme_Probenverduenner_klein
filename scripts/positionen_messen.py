@@ -23,7 +23,7 @@ def measure_positions(element):
     current = element.AXIS.name
     while True:
         try:
-            command = input("Mögliche Befehle: \n 'h' - Home \n 'v' - Home Vorne (nur Linear) \n 'w' - Schritte vorwärts \n 's' - Schritte rückwärts \n 'i' - Info aktuelle Position \n 'q' - Beenden \n Eingabe: ")            
+            command = input("Mögliche Befehle: \n 'h' - Home \n 'w' - Schritte vorwärts \n 's' - Schritte rückwärts \n 'i' - Info aktuelle Position \n 'q' - Beenden \n Eingabe: ")            
             if command.lower() == 'q':
                 print(current,steps)
                 element.home()
@@ -41,18 +41,13 @@ def measure_positions(element):
                 element.home()
                 axis_steps[current] = 0
                 steps = 0
-                
-            elif command.lower() == 'v' and current == "Linear-Achse":
-                element.home_vorne()
-                steps = 100000
-                axis_steps[current] = 100000
             
             elif command.lower() == 'w':
                 front_steps = input("Wie viele Schritte zurückfahren? ")
                 try:
                     front_steps = int(front_steps)
                     steps += front_steps
-                    element.AXIS._do_step(front_steps, True)
+                    element.AXIS._do_step(front_steps, elemen.AXIS.dir_high_is_positive)
                     axis_steps[current] +=front_steps
                 except ValueError:
                     print("Ungültige Eingabe. Bitte eine Zahl eingeben.")
@@ -110,7 +105,7 @@ def measure_positions(element):
                 try:
                     back_steps = int(back_steps)
                     steps -= back_steps
-                    element.AXIS._do_step(back_steps, False)
+                    element.AXIS._do_step(back_steps, not element.AXIS.dir_high_is_positive)
                     axis_steps[current] -= back_steps
                 except ValueError:
                     print("Ungültige Eingabe. Bitte eine Zahl eingeben.")
@@ -177,7 +172,8 @@ syr_axis = motorcontroller.Axis(
     pin_dir=config['gpio']["stepper_motors"]['syringe']['dir_pin'],
     pin_en=config['gpio']["stepper_motors"]['syringe']['en_pin'],
     run_delay=config['axes']['step_delay_syr'],
-    endstop_pins=[syr_end_stop_pin_links, syr_end_stop_pin_rechts]
+    endstop_pins=[syr_end_stop_pin_links, syr_end_stop_pin_rechts],
+    dir_high_is_positive=False
 )
 syr_max_volume_ml = config["positions"]['syringe']['max_volume_ml']
 syr_steps_per_ml = config["positions"]['syringe']['steps_per_ml']
