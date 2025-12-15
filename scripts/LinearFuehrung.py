@@ -29,8 +29,8 @@ class LinearFuehrung:
     LINEAR_POSITIONS = {
         1: 97000,        # Pos 1 = Abdeckung
         2: 75300,     # Pos 2 = Reihe 0 --> Stammlösung
-        4: 63300,     # Pos 4 = 1. Verdünnungsreihe
-        3: 52300,     # Pos 3 = 2. Verdünnungsreihe
+        3: 63300,     # Pos 4 = 1. Verdünnungsreihe
+        4: 52300,     # Pos 3 = 2. Verdünnungsreihe
         5: 40300,     # Pos 5 = 3. Verdünnungsreihe
         6: 32300,    # Pos 6 = Reinigungsbehälter
         7: 24300,    # Pos 7 = Abfallbehälter
@@ -52,11 +52,6 @@ class LinearFuehrung:
         delta = target_steps - self.AXIS.current_steps
 
         if delta == 0:
-            msg = f"[{self.AXIS.name}] Bereits an der Zielposition ({target_steps} Schritte)."
-            if is_simulation():
-                sim_print(msg)
-            else:
-                print(msg)
             return
         
         if is_simulation():
@@ -71,10 +66,9 @@ class LinearFuehrung:
         direction = delta > 0
         steps = abs(delta)
 
-        print(f"[{self.AXIS.name}] Bewege {steps} Schritte in Richtung "
-            f"{'positiv' if direction else 'negativ'}...")
+        # Nur Startmeldung über move_linear_to_index; hier keine zusätzlichen Logs
         self.AXIS._do_step(steps, direction)
-        print(f"[{self.AXIS.name}] Neue Position: {self.AXIS.current_steps} Schritte")
+        # Keine Abschlussmeldung
 
 
     def move_linear_to_index(self, index: int):
@@ -107,13 +101,11 @@ class LinearFuehrung:
 
         print(f"[{self.AXIS.name}] Starte Homing der Linearachse...")
         direction = False 
-        print("Fahre nach hinten zum Homing...")
 
         while GPIO.input(self.END_STOP_PIN_HINTEN) == GPIO.HIGH:
             self.AXIS.do_step_linear(10, direction)
 
-        print(f"[{self.AXIS.name}] Hinterer Endschalter ausgelöst!")
         self.AXIS.current_steps = self.LINEAR_POSITIONS[8]
-        print(f"[{self.AXIS.name}] Homing abgeschlossen. Position auf 0 gesetzt.")
+        # Keine Abschlussmeldung
     
     

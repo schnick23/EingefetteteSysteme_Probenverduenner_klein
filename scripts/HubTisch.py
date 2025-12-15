@@ -43,23 +43,17 @@ class HubTisch:
         delta = target_steps - self.AXIS.current_steps
 
         if delta == 0:
-            msg = f"[{self.AXIS.name}] Bereits an der Zielposition ({target_steps} Schritte)."
-            if is_simulation():
-                sim_print(msg)
-            else:
-                print(msg)
             return
 
         direction = delta > 0
         steps = abs(delta)
         
         if is_simulation():
-            sim_print(f"\n>>> HUBTISCH bewegt zu Position {target_steps} Schritte <<<")
+            sim_print(f"\n>>> HUBTISCH: Starte Bewegung zur Zielposition <<<")
 
-        print(f"[{self.AXIS.name}] Bewege {steps} Schritte in Richtung "
-            f"{'positiv' if direction else 'negativ'}...")
+        # Nur Startmeldungen in den Aufrufern, hier keine zusätzliche Ausgabe
         self.AXIS._do_step(steps, direction)
-        print(f"[{self.AXIS.name}] Neue Position: {self.AXIS.current_steps} Schritte")
+        # Keine Abschlussmeldung
 
 
     def move_hub_to_bottom(self):
@@ -95,11 +89,10 @@ class HubTisch:
 
         # In Richtung Homing fahren, bis Endstopp erreicht
         direction = False
-        print(f"[{self.AXIS.name}] Fahre in Richtung "
-              f"{'positiv' if direction else 'negativ'} zum Homing...")
+          # Keine zusätzliche Richtungs-/Statusausgabe
         while GPIO.input(self.END_STOP_PIN) == GPIO.HIGH:
             self.AXIS._do_step(1, direction)
 
         # Position auf 0 setzen
         self.AXIS.current_steps = 0
-        print(f"[{self.AXIS.name}] Homing abgeschlossen. Aktuelle Position: {self.AXIS.current_steps} Schritte.")
+        # Keine Abschlussmeldung

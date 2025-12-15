@@ -70,7 +70,7 @@ def starteAblauf(payload, simulation=False):
         # Abläufe ausführen
         
         ablaeufe.ersteReinigung(hubtisch_controller, linearfuehrung_controller, spritzkopf_controller, pumpen_controller)
-
+        ablaeufe.ZwischenReinigung(hubtisch_controller, linearfuehrung_controller, spritzkopf_controller, Stammreihe=2, StammLsg=3.0)  # Initiale Reinigung vor Verdünnung
         # Iteriere über die Reihen 1 bis 3 (Row 0 ist Stammlösung)
         for i in range(1, 4):
             row_key = str(i)
@@ -85,8 +85,8 @@ def starteAblauf(payload, simulation=False):
                     print(f"Warnung: Keine Info für Reihe {i} gefunden.")
                     continue
                 
-                stamm_reihe = int(info.get('Stammreihe', i-1))
-                ziel_reihe = int(info.get('Reihe', i))
+                stamm_reihe = int(info.get('Stammreihe', None))
+                ziel_reihe = int(info.get('Reihe', None))
                 stamm_lsg = float(info.get('Stammmenge', 0))
                 verd_lsg = float(info.get('Verduennungsmenge', 0))
                 

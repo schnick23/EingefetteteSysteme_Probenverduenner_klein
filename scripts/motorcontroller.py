@@ -91,7 +91,6 @@ class Axis:
                         endstop = True
                         break
             if self.END_STOP_PIN is not None and endstop == True and direction == (not self.home_towards_positive):
-                print(f"[{self.name}] Endstopp erreicht. Stoppe Bewegung.")
                 break
 
             # --- Rampe berechnen ---
@@ -158,7 +157,6 @@ class Axis:
                         endstop = True
                         break
             if self.END_STOP_PIN is not None and endstop == True and direction == False:
-                print(f"[{self.name}] Endstopp erreicht. Stoppe Bewegung.")
                 break
             GPIO.output(self.pin_step, GPIO.HIGH)
             time.sleep(self.RUN_DELAY)
