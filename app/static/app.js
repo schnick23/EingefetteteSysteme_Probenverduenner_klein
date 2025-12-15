@@ -9,7 +9,7 @@
 
   const grid = document.getElementById('wellGrid');
   const btnStart = document.getElementById('startBtn');
-  const btnCancel = document.getElementById('cancelBtn');
+  const btnReset = document.getElementById('resetBtn');
   // Loader-UI wurde auf eine separate Seite ausgelagert
 
   function wellId(r, c) { return `well-${r}-${c}`; }
@@ -297,13 +297,16 @@
     console[isErr ? 'error' : 'log'](msg);
   }
 
-  async function cancelProgram() {
-    const payload = {
-      reason: 'user',
-      timestamp: Date.now()
-    };
-    const data = await callApi('/api/cancel', payload);
-    if (data && data.ok) notify('Cancel gesendet'); else notify('Cancel fehlgeschlagen', true);
+  async function resetSystem() {
+    if (!confirm('System zurücksetzen? Dies führt eine Nullpositionierung durch und füllt die Pumpen.')) return;
+    notify('Reset wird durchgeführt...');
+    try {
+      const res = await fetch('/api/reset', { method: 'POST', headers: { 'Content-Type': 'application/json' } });
+      const data = await res.json();
+      if (data && data.ok) notify('Reset erfolgreich'); else notify('Reset fehlgeschlagen: ' + (data.error || ''), true);
+    } catch(e) {
+      notify('Reset fehlgeschlagen', true);
+    }
   }
 
 
@@ -344,7 +347,7 @@
     setEnabledInputs();
     setCoverCheckbox(getCoverCheckboxValue());
     btnStart.addEventListener('click', startProgram);
-    btnCancel.addEventListener('click', cancelProgram);
+    btnReset.addEventListener('click', resetSystem);
     document.getElementById("cover").addEventListener("click", () => {
     toggleCoverCheckbox(document.getElementById("cover"));
     });

@@ -9,6 +9,34 @@ bp = Blueprint("api", __name__, url_prefix="/api")
 def ping():
     return {"status": "ok"}
 
+@bp.route("/remove_cover", methods=["POST"])
+def remove_cover():
+    """Entfernt die Abdeckung: Hubtisch nach unten, Linear nach hinten."""
+    import sys
+    import os
+    sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "../scripts")))
+    from scripts.ablauf import entferneAbdeckungAblauf
+    
+    try:
+        entferneAbdeckungAblauf(simulation=False)
+        return jsonify({"ok": True, "message": "Abdeckung entfernt"})
+    except Exception as e:
+        return jsonify({"ok": False, "error": str(e)}), 500
+
+@bp.route("/reset", methods=["POST"])
+def reset_system():
+    """Reset: Nullpositionierung und Pumpen füllen."""
+    import sys
+    import os
+    sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "../scripts")))
+    from scripts.ablauf import resetSystemAblauf
+    
+    try:
+        resetSystemAblauf(simulation=False)
+        return jsonify({"ok": True, "message": "Reset erfolgreich"})
+    except Exception as e:
+        return jsonify({"ok": False, "error": str(e)}), 500
+
 @bp.route("/run", methods=["POST"])
 def run_program():
     data = request.get_json(force=True, silent=True) or {}

@@ -75,3 +75,15 @@ def ZwischenReinigung(hubtisch_controller, linearfuehrung_controller, spritzkopf
     spritzkopf_controller.home() # Spritzkopf leeren
     hubtisch_controller.home()
     print("\n=== SYSTEM: ZWISCHENREINIGUNG ABGESCHLOSSEN ===")
+
+def entferneAbdeckung(hubtisch_controller, linearfuehrung_controller):
+    print("\n=== SYSTEM: ENTFERNE ABDECKUNG ===")
+    hubtisch_controller.home()  # Hubtisch nach unten
+    linearfuehrung_controller.home()  # Linear nach hinten
+    print("\n=== SYSTEM: ABDECKUNG ENTFERNT ===")
+
+def resetSystem(hubtisch_controller, linearfuehrung_controller, spritzkopf_controller, pumpen_controller):
+    print("\n=== SYSTEM: RESET - NULLPOSITIONIERUNG UND PUMPEN FÜLLEN ===")
+    nullpositioniereSystem(hubtisch_controller, linearfuehrung_controller, spritzkopf_controller)
+    pumpen_controller.fill_all_pumps(False)
+    print("\n=== SYSTEM: RESET ABGESCHLOSSEN ===")

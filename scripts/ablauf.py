@@ -9,6 +9,108 @@ import RPi.GPIO as GPIO
 import ablaeufe
 from simulation_mode import enable_simulation, is_simulation
 
+def entferneAbdeckungAblauf(simulation=False):
+    """
+    Entfernt die Abdeckung: Hubtisch nach unten, Linear nach hinten.
+    """
+    if simulation:
+        enable_simulation()
+        
+    try:
+        config_path = Path(__file__).resolve().parent / "config.json"
+        with open(config_path, "r", encoding="utf-8") as config_file:
+            config = json.load(config_file)
+
+        # hubtisch initialisieren
+        hub_step= config["gpio"]["stepper_motors"]["hub"]["step_pin"]
+        hub_dir= config["gpio"]["stepper_motors"]["hub"]["dir_pin"]
+        hub_en= config["gpio"]["stepper_motors"]["hub"]["en_pin"]
+        hub_endtaster = config["gpio"]["endstops"]["hub"]
+        hub_axis = Axis("Hubtisch_Achse", hub_step, hub_dir, hub_en)
+        hubtisch_controller = HubTisch.HubTisch(hub_axis, hub_endtaster)
+
+        # linearführung initialisieren
+        lin_step= config["gpio"]["stepper_motors"]["linear"]["step_pin"]
+        lin_dir= config["gpio"]["stepper_motors"]["linear"]["dir_pin"]
+        lin_en= config["gpio"]["stepper_motors"]["linear"]["en_pin"]
+        lin_endtaster_hinten = config["gpio"]["endstops"]["linear_hinten"]
+        lin_axis = Axis("Linear_Achse", lin_step, lin_dir, lin_en)
+        linearfuehrung_controller = LinearFuehrung.LinearFuehrung(lin_axis, endstop_pin_hinten=lin_endtaster_hinten)
+
+        # Abdeckung entfernen
+        ablaeufe.entferneAbdeckung(hubtisch_controller, linearfuehrung_controller)
+
+    except Exception as e:
+        print(f"\n=== SYSTEM: FEHLER AUFGETRETEN ===\n{e}")
+        GPIO.cleanup()
+    except KeyboardInterrupt:
+        print("\n=== SYSTEM: PROGRAMM ABBRUCH DURCH BENUTZER ===")
+        GPIO.cleanup()
+    finally:
+        GPIO.cleanup()
+
+def resetSystemAblauf(simulation=False):
+    """
+    Reset: Nullpositionierung und Pumpen füllen.
+    """
+    if simulation:
+        enable_simulation()
+        
+    try:
+        config_path = Path(__file__).resolve().parent / "config.json"
+        with open(config_path, "r", encoding="utf-8") as config_file:
+            config = json.load(config_file)
+
+        # pumpen initialisieren
+        pump1= config["gpio"]["relais"]["relais1"]
+        pump2= config["gpio"]["relais"]["relais2"]
+        pump3= config["gpio"]["relais"]["relais3"]
+        pump4= config["gpio"]["relais"]["relais4"]
+        pump5= config["gpio"]["relais"]["relais5"]
+        relais6= config["gpio"]["relais"]["relais6"]
+        relais7= config["gpio"]["relais"]["relais7"]
+        relais8= config["gpio"]["relais"]["relais8"]
+        pumpen_controller = pumpenSteuerung.Pumpen(pump1, pump2, pump3, pump4, pump5, relais6, relais7, relais8)
+
+        # hubtisch initialisieren
+        hub_step= config["gpio"]["stepper_motors"]["hub"]["step_pin"]
+        hub_dir= config["gpio"]["stepper_motors"]["hub"]["dir_pin"]
+        hub_en= config["gpio"]["stepper_motors"]["hub"]["en_pin"]
+        hub_endtaster = config["gpio"]["endstops"]["hub"]
+        hub_axis = Axis("Hubtisch_Achse", hub_step, hub_dir, hub_en)
+        hubtisch_controller = HubTisch.HubTisch(hub_axis, hub_endtaster)
+
+        # linearführung initialisieren
+        lin_step= config["gpio"]["stepper_motors"]["linear"]["step_pin"]
+        lin_dir= config["gpio"]["stepper_motors"]["linear"]["dir_pin"]
+        lin_en= config["gpio"]["stepper_motors"]["linear"]["en_pin"]
+        lin_endtaster_hinten = config["gpio"]["endstops"]["linear_hinten"]
+        lin_axis = Axis("Linear_Achse", lin_step, lin_dir, lin_en)
+        linearfuehrung_controller = LinearFuehrung.LinearFuehrung(lin_axis, endstop_pin_hinten=lin_endtaster_hinten)
+
+        # spritzkopf initialisieren
+        syr_step= config["gpio"]["stepper_motors"]["syringe"]["step_pin"]
+        syr_dir= config["gpio"]["stepper_motors"]["syringe"]["dir_pin"]
+        syr_en= config["gpio"]["stepper_motors"]["syringe"]["en_pin"]
+        syr_axis = Axis("Spritzkopf_Achse", syr_step, syr_dir, syr_en, home_towards_positive=False)
+        syr_endtaster_left = config["gpio"]["endstops"]["syringe_links"]
+        syr_endtaster_right = config["gpio"]["endstops"]["syringe_rechts"]
+        syr_steps_per_ml = config["positions"]["syringe"]["steps_per_ml"]
+        syr_max_volume_ml = config["positions"]["syringe"]["max_volume_ml"]
+        spritzkopf_controller = Spritzkopf.SyringeHead(syr_axis, endstop_pin_links=syr_endtaster_left, endstop_pin_rechts=syr_endtaster_right, max_volume_ml=syr_max_volume_ml, steps_per_ml=syr_steps_per_ml)
+
+        # Reset durchführen
+        ablaeufe.resetSystem(hubtisch_controller, linearfuehrung_controller, spritzkopf_controller, pumpen_controller)
+
+    except Exception as e:
+        print(f"\n=== SYSTEM: FEHLER AUFGETRETEN ===\n{e}")
+        GPIO.cleanup()
+    except KeyboardInterrupt:
+        print("\n=== SYSTEM: PROGRAMM ABBRUCH DURCH BENUTZER ===")
+        GPIO.cleanup()
+    finally:
+        GPIO.cleanup()
+
 def starteAblauf(payload, simulation=False, report=None):
     """
     Startet den Verdünnungsablauf.

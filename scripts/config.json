@@ -43,7 +43,7 @@
     },
     "axes": {
         "step_delay": 0.0005,
-        "step_delay_lin" : 0.0001,
+        "step_delay_lin" : 0.000005,
         "step_delay_hub" : 0.0005,
         "step_delay_syr" : 0.0005,
         "steps_per_rev_linear": 200,

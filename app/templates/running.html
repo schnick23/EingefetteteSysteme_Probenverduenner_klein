@@ -227,28 +227,36 @@
       async function removeCover() {
         try {
           btnRemoveCover.disabled = true;
-          btnRemoveCover.textContent = 'Wird gestartet...';
-          const res = await fetch('/api/remove-cover', { 
+          btnRemoveCover.textContent = 'Wird ausgeführt...';
+          const res = await fetch('/api/remove_cover', { 
             method: 'POST', 
-            headers: { 'Content-Type': 'application/json' }, 
-            body: JSON.stringify({ task_id: taskId })
+            headers: { 'Content-Type': 'application/json' }
           });
           if (res.ok) {
             const data = await res.json();
-            if (data.task_id) {
-              // Zur neuen Task-Seite weiterleiten
-              window.location.href = `/running/${data.task_id}`;
+            if (data.ok) {
+              msg.textContent = 'Abdeckung entfernt';
+              msg.classList.remove('error');
+              msg.classList.add('done');
+              btnRemoveCover.textContent = 'Abdeckung entfernt ✓';
+            } else {
+              msg.textContent = 'Fehler: ' + (data.error || 'Unbekannter Fehler');
+              msg.classList.add('error');
+              btnRemoveCover.disabled = false;
+              btnRemoveCover.textContent = 'ABDECKUNG ENTFERNEN';
             }
           } else {
             btnRemoveCover.disabled = false;
             btnRemoveCover.textContent = 'ABDECKUNG ENTFERNEN';
-            msg.textContent = 'Fehler beim Starten';
+            msg.textContent = 'Fehler beim Entfernen der Abdeckung';
             msg.classList.add('error');
           }
         } catch (e) {
           console.error(e);
           btnRemoveCover.disabled = false;
           btnRemoveCover.textContent = 'ABDECKUNG ENTFERNEN';
+          msg.textContent = 'Fehler beim Entfernen der Abdeckung';
+          msg.classList.add('error');
         }
       }
 
