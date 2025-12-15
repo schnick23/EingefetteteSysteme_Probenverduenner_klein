@@ -1,6 +1,7 @@
 import RPi.GPIO as GPIO
 import time
 from typing import Iterable, Optional
+from simulation_mode import is_simulation, sim_print
 
 SECONDS_PER_ML = {
     "1": 3.445,
@@ -54,14 +55,16 @@ class Pumpen:
         GPIO.setmode(GPIO.BCM)
         GPIO.setwarnings(False)
 
-
-        # Alle Pumpenpins als Ausgang initialisieren und ausschalten
-        for pin in self.PUMP_PINS.values():
-            GPIO.setup(pin, GPIO.OUT)
-            GPIO.output(pin, self.RELAY_INACTIVE_STATE)
-        for pin in self.RELAIS_PINS.values():
-            GPIO.setup(pin, GPIO.OUT)
-            GPIO.output(pin, self.RELAY_INACTIVE_STATE)
+        if not is_simulation():
+            # Alle Pumpenpins als Ausgang initialisieren und ausschalten
+            for pin in self.PUMP_PINS.values():
+                GPIO.setup(pin, GPIO.OUT)
+                GPIO.output(pin, self.RELAY_INACTIVE_STATE)
+            for pin in self.RELAIS_PINS.values():
+                GPIO.setup(pin, GPIO.OUT)
+                GPIO.output(pin, self.RELAY_INACTIVE_STATE)
+        else:
+            sim_print("Pumpen-Controller initialisiert (Simulation)")
 
 
 
@@ -90,11 +93,19 @@ class Pumpen:
 
     def all_on(self, pump_ids: Optional[Iterable[int]] = None):
         """Schaltet alle (oder ausgewählte) Pumpen EIN."""
+        if is_simulation():
+            pump_list = list(self._iter_pump_ids(pump_ids))
+            sim_print(f"Pumpen einschalten: {pump_list}")
+            return
         for pid in self._iter_pump_ids(pump_ids):
             GPIO.output(self.PUMP_PINS[pid], self.RELAY_ACTIVE_STATE)
 
     def all_off(self, pump_ids: Optional[Iterable[int]] = None):
         """Schaltet alle (oder ausgewählte) Pumpen AUS."""
+        if is_simulation():
+            pump_list = list(self._iter_pump_ids(pump_ids))
+            sim_print(f"Pumpen ausschalten: {pump_list}")
+            return
         for pid in self._iter_pump_ids(pump_ids):
             GPIO.output(self.PUMP_PINS[pid], self.RELAY_INACTIVE_STATE)
 
@@ -109,6 +120,17 @@ class Pumpen:
             for pid in self._iter_pump_ids(pump_ids)
         ]
         seconds_per_ml_list.sort(key=lambda x: x[1])  # nach Sekunden pro ml sortieren
+        
+        if is_simulation():
+            sim_print(f"\n{'='*50}")
+            sim_print(f"PUMPEN-AKTION: {ml} ml pumpen")
+            sim_print(f"Aktive Pumpen: {[pid for pid, _ in seconds_per_ml_list]}")
+            for pid, spm in seconds_per_ml_list:
+                wait_time = spm * ml
+                sim_print(f"  Pumpe {pid}: {ml} ml in {wait_time:.2f} Sekunden")
+            sim_print(f"{'='*50}")
+            return
+            
         self.all_on(pump_ids)
         current_time = 0.0
         for pid, spm in seconds_per_ml_list:

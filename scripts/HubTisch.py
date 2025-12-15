@@ -3,6 +3,7 @@ import RPi.GPIO as GPIO
 import time
 
 import motorcontroller
+from simulation_mode import is_simulation, sim_print
 class HubTisch:
     # ==============================
     #   KONFIGURATION HUB-ACHSE
@@ -42,11 +43,18 @@ class HubTisch:
         delta = target_steps - self.AXIS.current_steps
 
         if delta == 0:
-            print(f"[{self.AXIS.name}] Bereits an der Zielposition ({target_steps} Schritte).")
+            msg = f"[{self.AXIS.name}] Bereits an der Zielposition ({target_steps} Schritte)."
+            if is_simulation():
+                sim_print(msg)
+            else:
+                print(msg)
             return
 
         direction = delta > 0
         steps = abs(delta)
+        
+        if is_simulation():
+            sim_print(f"\n>>> HUBTISCH bewegt zu Position {target_steps} Schritte <<<")
 
         print(f"[{self.AXIS.name}] Bewege {steps} Schritte in Richtung "
             f"{'positiv' if direction else 'negativ'}...")

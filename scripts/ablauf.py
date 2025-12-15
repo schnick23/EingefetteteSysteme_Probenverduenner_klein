@@ -7,8 +7,19 @@ from motorcontroller import Axis
 from pathlib import Path
 import RPi.GPIO as GPIO
 import ablaeufe
+from simulation_mode import enable_simulation, is_simulation
 
-def starteAblauf(payload):
+def starteAblauf(payload, simulation=False):
+    """
+    Startet den Verdünnungsablauf.
+    
+    Args:
+        payload: Dictionary mit Prozess-Parametern
+        simulation: Wenn True, wird nur simuliert ohne echte Hardware-Ansteuerung
+    """
+    if simulation:
+        enable_simulation()
+        
     try:
         # Pfad zur config.json relativ zum aktuellen Skript ermitteln
         config_path = Path(__file__).resolve().parent / "config.json"
@@ -26,7 +37,7 @@ def starteAblauf(payload):
         relais6= config["gpio"]["relais"]["relais6"]
         relais7= config["gpio"]["relais"]["relais7"]
         relais8= config["gpio"]["relais"]["relais8"]
-        pumpen_controller = pumpenSteuerung.PumpenSteuerung(pump1, pump2, pump3, pump4, pump5, relais6, relais7, relais8)
+        pumpen_controller = pumpenSteuerung.Pumpen(pump1, pump2, pump3, pump4, pump5, relais6, relais7, relais8)
 
         # hubtisch initialisieren
         hub_step= config["gpio"]["hub"]["step_pin"]
@@ -59,6 +70,68 @@ def starteAblauf(payload):
         # Abläufe ausführen
         ablaeufe.nullpositioniereSystem(hubtisch_controller, linearfuehrung_controller, spritzkopf_controller)
         ablaeufe.ersteReinigung(hubtisch_controller, linearfuehrung_controller, spritzkopf_controller, pumpen_controller)
+
+        # Iteriere über die Reihen 1 bis 3 (Row 0 ist Stammlösung)
+        for i in range(1, 4):
+            row_key = str(i)
+            # Prüfen ob Reihe aktiviert ist (Keys können str oder int sein)
+            enabled_rows = payload.get('enabledRows', {})
+            is_enabled = enabled_rows.get(row_key) or enabled_rows.get(i)
+            
+            if is_enabled:
+                info_key = f"info{i}"
+                info = payload.get(info_key)
+                if not info:
+                    print(f"Warnung: Keine Info für Reihe {i} gefunden.")
+                    continue
+                
+                stamm_reihe = int(info.get('Stammreihe', i-1))
+                ziel_reihe = int(info.get('Reihe', i))
+                stamm_lsg = float(info.get('Stammmenge', 0))
+                verd_lsg = float(info.get('Verduennungsmenge', 0))
+                
+                # Aktive Pumpen für diese Reihe ermitteln
+                active_pumps = []
+                grid = payload.get('grid', [])
+                global_active_pumps = payload.get('activePumps', {})
+                
+                # Wir gehen davon aus, dass es 5 Spalten/Pumpen gibt
+                for col in range(5): 
+                    pump_id = col + 1
+                    # Globaler Pumpen-Status
+                    pump_active = global_active_pumps.get(pump_id) or global_active_pumps.get(str(pump_id))
+                    
+                    # Grid-Status für dieses spezifische Well (Reihe, Spalte)
+                    well_active = False
+                    if ziel_reihe < len(grid) and col < len(grid[ziel_reihe]):
+                        well_active = grid[ziel_reihe][col]
+                    
+                    # Pumpe nur aktivieren, wenn global AN und Well im Grid AN
+                    if pump_active and well_active:
+                        active_pumps.append(pump_id)
+                
+                print(f"Starte Verdünnung für Reihe {ziel_reihe} (von {stamm_reihe}). Aktive Pumpen: {active_pumps}")
+                
+                ablaeufe.Verduennen(
+                    hubtisch_controller, 
+                    linearfuehrung_controller, 
+                    spritzkopf_controller, 
+                    pumpen_controller, 
+                    Stammreihe=stamm_reihe, 
+                    Reihe=ziel_reihe, 
+                    StammLsg=stamm_lsg, 
+                    VerdLsg=verd_lsg, 
+                    aktivePumpe=active_pumps
+                )
+                
+                # Zwischenreinigung durchführen
+                ablaeufe.ZwischenReinigung(
+                    hubtisch_controller, 
+                    linearfuehrung_controller, 
+                    spritzkopf_controller, 
+                    Stammreihe=stamm_reihe, 
+                    StammLsg=stamm_lsg
+                )
 
     except Exception as e:
         print(f"\n=== SYSTEM: FEHLER AUFGETRETEN ===\n{e}")

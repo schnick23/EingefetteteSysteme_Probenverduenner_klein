@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import RPi.GPIO as GPIO
 import time
+from simulation_mode import is_simulation, sim_print
 
 #Anfahrrampe für Stepper-Motoren
 START_DELAY = 0.0015   # sehr langsam (Startmoment)
@@ -31,21 +32,25 @@ class Axis:
         self.current_steps = 0
         self.END_STOP_PIN = endstop_pins
 
-        GPIO.setup(self.pin_step, GPIO.OUT)
-        GPIO.setup(self.pin_dir, GPIO.OUT)
-        if self.pin_en is not None:
-            GPIO.setup(self.pin_en, GPIO.OUT)
-            GPIO.output(self.pin_en, GPIO.LOW)  # Enable aktiv LOW
+        if not is_simulation():
+            GPIO.setup(self.pin_step, GPIO.OUT)
+            GPIO.setup(self.pin_dir, GPIO.OUT)
+            if self.pin_en is not None:
+                GPIO.setup(self.pin_en, GPIO.OUT)
+                GPIO.output(self.pin_en, GPIO.LOW)  # Enable aktiv LOW
+        else:
+            sim_print(f"Axis '{self.name}' initialisiert (Simulation)")
             
     def _set_dir(self, direction: bool):
         """
         direction = True  -> "positiv"
         direction = False -> "negativ"
         """
-        if self.dir_high_is_positive:
-            GPIO.output(self.pin_dir, GPIO.HIGH if direction else GPIO.LOW)
-        else:
-            GPIO.output(self.pin_dir, GPIO.LOW if direction else GPIO.HIGH)
+        if not is_simulation():
+            if self.dir_high_is_positive:
+                GPIO.output(self.pin_dir, GPIO.HIGH if direction else GPIO.LOW)
+            else:
+                GPIO.output(self.pin_dir, GPIO.LOW if direction else GPIO.HIGH)
     
 
 
@@ -54,6 +59,19 @@ class Axis:
 
     def _do_step(self, steps: int, direction: bool):
         if steps <= 0:
+            return
+
+        if is_simulation():
+            old_pos = self.current_steps
+            if direction:
+                self.current_steps += steps
+            else:
+                self.current_steps -= steps
+            sim_print(f"\n{'='*50}")
+            sim_print(f"MOTOR: {self.name}")
+            sim_print(f"Schritte: {steps} | Richtung: {'VORWÄRTS (von Home weg)' if direction else 'RÜCKWÄRTS (zu Home hin)'}")
+            sim_print(f"Position: {old_pos} → {self.current_steps} Schritte")
+            sim_print(f"{'='*50}")
             return
 
         self._set_dir(direction)
@@ -103,6 +121,20 @@ class Axis:
     def do_step_linear(self, steps: int, direction: bool):
         if steps <= 0:
             return
+            
+        if is_simulation():
+            old_pos = self.current_steps
+            if direction:
+                self.current_steps += steps
+            else:
+                self.current_steps -= steps
+            sim_print(f"\n{'='*50}")
+            sim_print(f"MOTOR LINEAR: {self.name}")
+            sim_print(f"Schritte: {steps} | Richtung: {'VORWÄRTS' if direction else 'RÜCKWÄRTS'}")
+            sim_print(f"Position: {old_pos} → {self.current_steps} Schritte")
+            sim_print(f"{'='*50}")
+            return
+            
         self._set_dir(direction)
         for _ in range(steps):
             endstop = False

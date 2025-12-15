@@ -48,7 +48,7 @@ def ersteReinigung(hubtisch_controller, linearfuehrung_controller, spritzkopf_co
     linearfuehrung_controller.move_linear_to_index(1)  # Anfangsposition
     print("\n=== SYSTEM: REINIGUNG ABGESCHLOSSEN ===")
 
-def Verdünnen(hubtisch_controller, linearfuehrung_controller, spritzkopf_controller, pumpen_controller, Stammreihe: int, Reihe: int, StammLsg: float, VerdLsg: float, aktivePumpe: list):
+def Verduennen(hubtisch_controller, linearfuehrung_controller, spritzkopf_controller, pumpen_controller, Stammreihe: int, Reihe: int, StammLsg: float, VerdLsg: float, aktivePumpe: list):
     print("\n=== SYSTEM: PROBENVERDÜNNUNG DURCHFÜHREN ===")
     hubtisch_controller.home()
     linearfuehrung_controller.move_linear_to_index(Stammreihe)  # Verdünnungsreihe

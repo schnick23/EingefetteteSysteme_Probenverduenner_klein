@@ -3,6 +3,7 @@ import RPi.GPIO as GPIO
 import time
 
 from motorcontroller import Axis
+from simulation_mode import is_simulation, sim_print
 
 
 class SyringeHead:
@@ -99,18 +100,30 @@ class SyringeHead:
         Zieht volume_ml in die Spritze (ml werden hinzugefügt).
         Begrenzung: max_volume_ml.
         """
-        print(f"[SYRINGE] Aspirate: +{volume_ml} ml")
+        if is_simulation():
+            sim_print(f"\n>>> SPRITZKOPF: Aufziehen {volume_ml} ml <<<")
+        else:
+            print(f"[SYRINGE] Aspirate: +{volume_ml} ml")
         self._move_relative_ml(volume_ml)
-        print(f"[SYRINGE] Aktuelles Volumen: {self.current_volume_ml:.3f} ml")
+        if is_simulation():
+            sim_print(f">>> Aktuelles Volumen: {self.current_volume_ml:.3f} ml <<<")
+        else:
+            print(f"[SYRINGE] Aktuelles Volumen: {self.current_volume_ml:.3f} ml")
 
     def dispense(self, volume_ml: float):
         """
         Gibt volume_ml aus der Spritze ab (ml werden reduziert).
         Begrenzung: minimal 0 ml.
         """
-        print(f"[SYRINGE] Dispense: -{volume_ml} ml")
+        if is_simulation():
+            sim_print(f"\n>>> SPRITZKOPF: Ausdrücken {volume_ml} ml <<<")
+        else:
+            print(f"[SYRINGE] Dispense: -{volume_ml} ml")
         self._move_relative_ml(-volume_ml)
-        print(f"[SYRINGE] Aktuelles Volumen: {self.current_volume_ml:.3f} ml")
+        if is_simulation():
+            sim_print(f">>> Aktuelles Volumen: {self.current_volume_ml:.3f} ml <<<")
+        else:
+            print(f"[SYRINGE] Aktuelles Volumen: {self.current_volume_ml:.3f} ml")
 
     def go_to_volume(self, target_volume_ml: float):
         """

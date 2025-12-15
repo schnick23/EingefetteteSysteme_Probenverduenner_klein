@@ -3,6 +3,7 @@ import RPi.GPIO as GPIO
 import time
 
 from motorcontroller import Axis
+from simulation_mode import is_simulation, sim_print
 
 class LinearFuehrung:
 
@@ -51,8 +52,21 @@ class LinearFuehrung:
         delta = target_steps - self.AXIS.current_steps
 
         if delta == 0:
-            print(f"[{self.AXIS.name}] Bereits an der Zielposition ({target_steps} Schritte).")
+            msg = f"[{self.AXIS.name}] Bereits an der Zielposition ({target_steps} Schritte)."
+            if is_simulation():
+                sim_print(msg)
+            else:
+                print(msg)
             return
+        
+        if is_simulation():
+            # Finde heraus, welche Position das ist
+            pos_name = "unbekannt"
+            for idx, steps in self.LINEAR_POSITIONS.items():
+                if steps == target_steps:
+                    pos_name = f"Index {idx}"
+                    break
+            sim_print(f"\n>>> LINEAR-ACHSE fährt zu {pos_name} ({target_steps} Schritte) <<<")
 
         direction = delta > 0
         steps = abs(delta)
