@@ -59,7 +59,7 @@ def starteAblauf(payload, simulation=False):
         syr_step= config["gpio"]["stepper_motors"]["syringe"]["step_pin"]
         syr_dir= config["gpio"]["stepper_motors"]["syringe"]["dir_pin"]
         syr_en= config["gpio"]["stepper_motors"]["syringe"]["en_pin"]
-        syr_axis = Axis("Spritzkopf_Achse", syr_step, syr_dir, syr_en)
+        syr_axis = Axis("Spritzkopf_Achse", syr_step, syr_dir, syr_en, home_towards_positive=False)
         syr_endtaster_left = config["gpio"]["endstops"]["syringe_links"]
         syr_endtaster_right = config["gpio"]["endstops"]["syringe_rechts"]
         syr_steps_per_ml = config["positions"]["syringe"]["steps_per_ml"]
