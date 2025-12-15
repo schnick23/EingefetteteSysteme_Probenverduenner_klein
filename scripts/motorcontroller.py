@@ -76,9 +76,11 @@ class Axis:
 
         if self.home_towards_positive:
             direction = direction
-        if not self.home_towards_positive:
+        else:
             direction = not direction
-        
+
+        # Echtbetrieb: Start-Log
+        print(f"[{self.name}] Starte Bewegung: {steps} Schritte, Richtung: {'vorwärts' if direction else 'rückwärts'}")
         self._set_dir(direction)
 
         # Nutze die globalen Konstanten
@@ -121,6 +123,8 @@ class Axis:
                 self.current_steps += 1
             else:
                 self.current_steps -= 1
+        # Echtbetrieb: End-Log
+        print(f"[{self.name}] Bewegung abgeschlossen. Neue Position: {self.current_steps} Schritte")
             
     
     def do_step_linear(self, steps: int, direction: bool):
@@ -143,8 +147,10 @@ class Axis:
         
         if self.home_towards_positive:
             direction = direction
-        if not self.home_towards_positive:
+        else:
             direction = not direction
+        # Echtbetrieb: Start-Log
+        print(f"[{self.name}] Starte lineare Bewegung: {steps} Schritte, Richtung: {'vorwärts' if direction else 'rückwärts'}")
         self._set_dir(direction)
         for _ in range(steps):
             endstop = False
@@ -163,3 +169,5 @@ class Axis:
                 self.current_steps += 1
             else:
                 self.current_steps -= 1
+        # Echtbetrieb: End-Log
+        print(f"[{self.name}] Lineare Bewegung abgeschlossen. Neue Position: {self.current_steps} Schritte")
