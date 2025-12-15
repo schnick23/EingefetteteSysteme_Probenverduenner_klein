@@ -51,7 +51,7 @@ def Verduennen(hubtisch_controller, linearfuehrung_controller, spritzkopf_contro
     print("\n=== SYSTEM: PROBENVERDÜNNUNG DURCHFÜHREN ===")
     hubtisch_controller.home()
     linearfuehrung_controller.move_linear_to_index(Stammreihe)  # Verdünnungsreihe
-    spritzkopf_controller.go_to_volume(0.4) # luftblase aufziehen
+    spritzkopf_controller.go_to_volume(1) # luftblase aufziehen
     hubtisch_controller.move_hub_to_top()
     spritzkopf_controller.go_to_volume(StammLsg)  # Spritzkopf aufziehen um die Stammlösung ml
     hubtisch_controller.home()
@@ -67,7 +67,7 @@ def ZwischenReinigung(hubtisch_controller, linearfuehrung_controller, spritzkopf
     for cycle in range(1,2):
         print(f"\n--- REINIGUNGSZYKLUS {cycle} ---")
         hubtisch_controller.home()
-        spritzkopf_controller.go_to_volume(0.4)  # Luftblase aufziehen
+        spritzkopf_controller.go_to_volume(1)  # Luftblase aufziehen
         linearfuehrung_controller.move_linear_to_index(Stammreihe)
         hubtisch_controller.move_hub_to_top()
         spritzkopf_controller.go_to_volume(StammLsg + 0.9)  # Spritzkopf aufziehen (Stammlösungsmenge + 0.5 + Luftblase)
