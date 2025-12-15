@@ -16,7 +16,7 @@ class Axis:
         pin_en,
         run_delay = 0.0001, #delay zwischen den Schritten (Default: 0.0001)     
         dir_high_is_positive=True,
-        home_towards_positive=False,
+        home_towards_positive=True,
         endstop_pins: list[int] = None
     
     ):
