@@ -130,17 +130,30 @@ class Pumpen:
                 sim_print(f"  Pumpe {pid}: {ml} ml in {wait_time:.2f} Sekunden")
             sim_print(f"{'='*50}")
             return
-            
-        self.all_on(pump_ids)
-        current_time = 0.0
-        for pid, spm in seconds_per_ml_list:
-            wait_time = spm * ml
-            print(f"Pumpe {pid} pumpt {ml} ml (Dauer: {wait_time:.2f} s)")
-            time.sleep(wait_time-current_time)
-            GPIO.output(self.PUMP_PINS[pid], self.RELAY_INACTIVE_STATE)
-            current_time = spm * ml
-            print(f"Pumpe {pid} fertig.")
-        self.all_off()
+        for _ in range(int(ml)):
+            self.all_on(pump_ids)
+            current = 0.0
+            for pid, spm in seconds_per_ml_list:
+                wait_time = spm - current
+                print(f"Pumpe {pid} pumpt {ml} ml (Dauer: {wait_time:.2f} s)")
+                time.sleep(wait_time)
+                current = spm
+                GPIO.output(self.PUMP_PINS[pid], self.RELAY_INACTIVE_STATE)
+                print(f"Pumpe {pid} fertig.")
+            self.all_off()
+            time.sleep(1)  # kurzes Pause zwischen ganzen ml
+        if ml % 1 > 0:
+            fractional_ml = ml % 1
+            self.all_on(pump_ids)
+            current = 0.0
+            for pid, spm in seconds_per_ml_list:
+                wait_time = spm * fractional_ml - current
+                print(f"Pumpe {pid} pumpt {fractional_ml:.2f} ml (Dauer: {wait_time:.2f} s)")
+                time.sleep(wait_time)
+                current = spm * fractional_ml
+                GPIO.output(self.PUMP_PINS[pid], self.RELAY_INACTIVE_STATE)
+                print(f"Pumpe {pid} fertig.")
+            self.all_off()
 
     def changeDir(self, dir: bool): 
         """
