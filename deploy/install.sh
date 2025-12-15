@@ -43,11 +43,13 @@ echo "[4/5] Configuring Autostart (Systemd)..."
 
 SERVICE_NAME="probenverduenner.service"
 SERVICE_PATH="/etc/systemd/system/$SERVICE_NAME"
-CURRENT_DIR=$(pwd)
+# Always use the parent directory (project root), not deploy/
+SCRIPT_DIR=$(cd "$(dirname "$0")" && pwd)
+PROJECT_ROOT=$(cd "$SCRIPT_DIR/.." && pwd)
 USER_NAME=$(whoami)
 
 # Create service file content dynamically to match current path and user
-# We use the python from the venv
+# We use the python from the venv in project root
 cat <<EOF | sudo tee $SERVICE_PATH
 [Unit]
 Description=Probenverduenner Webserver
@@ -56,8 +58,8 @@ After=network.target
 [Service]
 Type=simple
 User=$USER_NAME
-WorkingDirectory=$CURRENT_DIR
-ExecStart=$CURRENT_DIR/.venv/bin/python -m app.main
+WorkingDirectory=$PROJECT_ROOT
+ExecStart=$PROJECT_ROOT/.venv/bin/python -m app.main
 Restart=always
 RestartSec=5
 Environment=PYTHONUNBUFFERED=1
