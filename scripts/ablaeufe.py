@@ -50,9 +50,10 @@ def Verduennen(hubtisch_controller, linearfuehrung_controller, spritzkopf_contro
     print("\n=== SYSTEM: PROBENVERDÜNNUNG DURCHFÜHREN ===")
     hubtisch_controller.home()
     linearfuehrung_controller.move_linear_to_index(Stammreihe)  # Verdünnungsreihe
-    spritzkopf_controller.go_to_volume(1) # luftblase aufziehen
+    spritzkopf_controller.go_to_volume(1) # Luftblase aufziehen
     hubtisch_controller.move_hub_to_top()
-    spritzkopf_controller.go_to_volume(StammLsg)  # Spritzkopf aufziehen um die Stammlösung ml
+    # Robust: explizit aufziehen statt absolut fahren, falls Zustand bereits korrekt war
+    spritzkopf_controller.aspirate(StammLsg)  # Spritzkopf aufziehen um die Stammlösung ml
     hubtisch_controller.home()
     linearfuehrung_controller.move_linear_to_index(Reihe)  # Verdünnungsreihe
     hubtisch_controller.move_hub_to_top()
