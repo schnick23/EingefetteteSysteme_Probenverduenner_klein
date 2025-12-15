@@ -151,9 +151,19 @@ class SyringeHead:
         print(f"[{self.AXIS.name}] Homing...")
         
         # In Richtung Homing fahren, bis Endstopp erreicht
-        direction = True
+        # Homing soll zur Entleerung (0 ml) fahren -> Gegenrichtung zur Aufzieh-Richtung
+        direction_to_empty = not self.draw_towards_positive
+
+        # Ziel-Endschalter passend zur Richtung wählen
+        if direction_to_empty is False:  # wir fahren nach 'links'
+            target_pin = self.END_STOP_PIN_LINKS if self.END_STOP_PIN_LINKS is not None else self.END_STOP_PIN_RECHTS
+            direction = False
+        else:  # wir fahren nach 'rechts'
+            target_pin = self.END_STOP_PIN_RECHTS if self.END_STOP_PIN_RECHTS is not None else self.END_STOP_PIN_LINKS
+            direction = True
+
         while GPIO.input(self.END_STOP_PIN_RECHTS) == GPIO.HIGH or GPIO.input(self.END_STOP_PIN_LINKS) == GPIO.HIGH:
-            self.AXIS.do_step_linear(10, direction)
+                self.AXIS.do_step_linear(10, direction)
 
         # Position auf 0 setzen
         self.AXIS.current_steps = 0
