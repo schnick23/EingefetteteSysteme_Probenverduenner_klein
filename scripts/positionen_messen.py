@@ -116,21 +116,11 @@ def measure_positions(element):
                     print("Ungültige Eingabe. Bitte eine Zahl eingeben.")
         
         except KeyboardInterrupt:
-            GPIO.cleanup()
             print("❌ Manuell abgebrochen.")
             break
         
 
-
-GPIO.cleanup()
-
-print("GPIO cleaned up.")
-
-
-    
-    
-
-GPIO.cleanup()
+GPIO.setwarnings(False)
 GPIO.setmode(GPIO.BCM)
 with open('config.json', 'r') as f:
     config = json.load(f)
@@ -223,6 +213,9 @@ elif command.lower() == 'lin':
     measure_positions(linear_fuehrung)
 elif command.lower() == 'syr':
     measure_positions(spritzkopf)
+
+GPIO.cleanup()
+print("Programm beendet & GPIO cleaned up.")
 
 
 

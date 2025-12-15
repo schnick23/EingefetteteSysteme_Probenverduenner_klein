@@ -118,7 +118,7 @@ class Pumpen:
             GPIO.output(self.PUMP_PINS[pid], self.RELAY_INACTIVE_STATE)
             current_time = spm * ml
             print(f"Pumpe {pid} fertig.")
-        self.all_off(self)
+        self.all_off()
 
     def changeDir(self, dir: bool): 
         """
