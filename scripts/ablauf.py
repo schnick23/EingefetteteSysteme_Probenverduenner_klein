@@ -225,7 +225,7 @@ def starteAblauf(payload, simulation=False, report=None):
                     if pump_active and well_active:
                         active_pumps.append(pump_id)
                 
-                print(f"Starte Verdünnung für Reihe {ziel_reihe} (von {stamm_reihe}). Aktive Pumpen: {active_pumps}")
+                print(f"Starte Verdünnung für Reihe.")
                 
                 
                 _report("Zwischenreinigung…", 15 + i*20)
@@ -247,7 +247,7 @@ def starteAblauf(payload, simulation=False, report=None):
                     StammLsg=stamm_lsg
                 )
 
-                _report(f"Verdünnung: Reihe {ziel_reihe} (von {stamm_reihe})…", 20 + i*20)
+                _report(f"Verdünnung Reihe {ziel_reihe} (von {stamm_reihe})…", 20 + i*20)
                 ablaeufe.Verduennen(
                     hubtisch_controller, 
                     linearfuehrung_controller, 

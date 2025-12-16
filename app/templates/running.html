@@ -193,8 +193,10 @@
                 hasCover = true;
                 btnRemoveCover.classList.add('show');
               } else {
-                // Kein Cover oder cover=false: Zurück-Button anzeigen
-                btnBack.classList.add('show');
+                // Kein Cover oder cover=false: Zurück zur Startseite nach 3 Sekunden
+                setTimeout(() => {
+                  window.location.href = '/';
+                }, 3000);
               }
             } else {
               title.innerHTML = 'Fehler';
@@ -239,6 +241,10 @@
               msg.classList.remove('error');
               msg.classList.add('done');
               btnRemoveCover.textContent = 'Abdeckung entfernt ✓';
+              // Weiterleitung zur Startseite nach 2 Sekunden
+              setTimeout(() => {
+                window.location.href = '/';
+              }, 2000);
             } else {
               msg.textContent = 'Fehler: ' + (data.error || 'Unbekannter Fehler');
               msg.classList.add('error');
