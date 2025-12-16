@@ -184,11 +184,17 @@ def starteAblauf(payload, simulation=False, report=None):
         _report("Erste Reinigung…", 10)
         ablaeufe.ersteReinigung(hubtisch_controller, linearfuehrung_controller, spritzkopf_controller, pumpen_controller)
         # Iteriere über die Reihen 1 bis 3 (Row 0 ist Stammlösung)
+        # Frontend sendet enabledRows mit Keys 0-2 für Verdünnungsreihen und 3 für Stammlösung
+        # Backend-Mapping: Frontend-Reihe 0 -> Backend-Reihe 1, Frontend-Reihe 1 -> Backend-Reihe 2, Frontend-Reihe 2 -> Backend-Reihe 3
         for i in range(1, 4):
-            row_key = str(i)
+            frontend_row_key = str(i - 1)  # Frontend: 0-2 für Verdünnungsreihen
             # Prüfen ob Reihe aktiviert ist (Keys können str oder int sein)
             enabled_rows = payload.get('enabledRows', {})
-            is_enabled = enabled_rows.get(row_key) or enabled_rows.get(i)
+            is_enabled = enabled_rows.get(frontend_row_key) or enabled_rows.get(i - 1)
+            
+            print(f"\n=== DEBUG: Prüfe Backend-Reihe {i} (Frontend-Reihe {frontend_row_key}) ===")
+            print(f"enabledRows: {enabled_rows}")
+            print(f"is_enabled: {is_enabled}")
             
             if is_enabled:
                 info_key = f"info{i}"
@@ -248,7 +254,7 @@ def starteAblauf(payload, simulation=False, report=None):
                     StammLsg=stamm_lsg
                 )
 
-                _report(f"Verdünnung Reihe {ziel_reihe} (von {stamm_reihe})…", 20 + i*20)
+                _report(f"Verdünnung Reihenverdünnung…", 20 + i*20)
                 ablaeufe.Verduennen(
                     hubtisch_controller, 
                     linearfuehrung_controller, 
