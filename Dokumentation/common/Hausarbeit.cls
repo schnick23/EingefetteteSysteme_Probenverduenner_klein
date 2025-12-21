@@ -1,6 +1,6 @@
-% hausarbeit.cls – Minimal-Layout für Dokumente
+% Hausarbeit.cls – Minimal-Layout für Dokumente
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{common/hausarbeit}[2025/08/12 v1.1 Minimal-Layout]
+\ProvidesClass{common/Hausarbeit}[2025/08/12 v1.1 Minimal-Layout]
 
 % Alle unbekannten Optionen an article weiterreichen (z.B. 12pt, twocolumn, etc.)
 \DeclareOption*{\PassOptionsToClass{\CurrentOption}{article}}
@@ -12,7 +12,7 @@
 % Schriften, Sprache, Mikrotypografie
 \RequirePackage[utf8]{inputenc} % nur bei pdfLaTeX
 \RequirePackage[T1]{fontenc}
-\RequirePackage[ngerman,english]{babel} % deutsche & englische Texte
+\RequirePackage[ngerman]{babel} % deutsche & englische Texte
 
 % Arial-ähnliche Schrift (über Paket helvet)
 %\RequirePackage[scaled]{helvet} % Helvetica (Arial-ähnlich)
@@ -55,12 +55,12 @@
 \RequirePackage{makecell}    % (optional) für Zeilenumbrüche in Tabellenköpfen
 
 % Quellenverzeichnis
-\RequirePackage[
-  backend=biber,
-  style=ieee, % oder numeric, apa, ieee
-  sorting=nyt
-]{biblatex}
-\DeclareLanguageMapping{ngerman}{ngerman-apa}
+% \RequirePackage[
+%   backend=biber,
+%   style=ieee, % oder numeric, apa, ieee
+%   sorting=nyt
+% ]{biblatex}
+% \DeclareLanguageMapping{ngerman}{ngerman-apa}
 % Beispiel: \addbibresource{literatur.bib}
 
 % Sonstiges
@@ -193,11 +193,16 @@
 \RequirePackage{acronym}
 
 
+\addto\extrasngerman{%
+    \renewcommand{\sectionautorefname}{Kapitel}%
+    \renewcommand{\subsectionautorefname}{Kapitel}%
+    \renewcommand{\subsubsectionautorefname}{Kapitel}%
+}
 
 
 
-
-
+\RequirePackage{wrapfig} % Bilder mit Textumfluss
+ 
 
 
 
