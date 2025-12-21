@@ -8,8 +8,69 @@ Um eine Verdünnung von bis zu 1000-fach zu erreichen, nutzt der Probenverdünne
     \caption{Ablaufdiagramm}
     \label{fig:Ablaufdiagramm}
 \end{figure}
-Anhand des Ablaufdiagramms in \autoref{fig:Ablaufdiagramm} wird der generelle Ablauf eines Verdünnungsvorgangs beschrieben. Zunächst muss der Falcontubeständer, die Schottflasche ggf. der Abfall- und der Reinigungsbehälter platziert werden. Danach werden die benötigten Daten in der grafischen Oberfläche eingegeben werden. Dazu gehört die "Probenspalten"-Auswahl, das gewünschte Verdünnungsverhältnis für jede Probe, sowie die Volumina der Stammlösung und des Endvolumens. Nach der Eingabe der Daten und der Platzierung der Probenbehälter im Gerät, wird der Verdünnungsvorgang gestartet. Das System fährt zunächst die Startposition an und führt eine initiale Reinigung mit der Verdünnungslösung durch, um sicherzustellen, dass alle Schläuche und Spritzen frei von Verunreinigungen sind. Daraufhin findet die Zwischenreiningung statt, indem die Spritzen die zu verdünnende Lösung plus 0.5 ml aufziehen und in den Abfallbehälter entsorgen. Anschließend beginnt der eigentliche Verdünnungsschritt, bei dem die Proben entsprechend den eingegebenen Daten verdünnt werden. Während des Prozesses werden auch zwischendurch Reinigungsschritte durchgeführt, um Kreuzkontaminationen zu vermeiden. Dieser Vorgang wird wiederholt, bis die letzte Verdünnung erreicht wurde. Am Ende des Verdünnungsvorgangs erfolgt eine Entleerung, bei der alle Schläuche in die entgegesetze Pumprichtung Luft aufziehen. Optional wird der Falcontubeständer abgedeckt, um die Proben vor der Verdünstung zu schützen. Falls die Abdeckung nicht erfolgt, können die Proben manuell entnommen werden, fährt der Spritzenkopf nach hinten in seine Anfangsposition. Sollten die Falcuntubes abgedeckt worden sein, muss auf der Website der Abdeckungsentfernen-Vorgang gestartet werden, bevor die Proben entnommen werden können. Zuletzt sollten der Abfall- und der Reinigungsbehälter geleert werden, um das Gerät für den nächsten Einsatz vorzubereiten.
-Wurde der Prozess durch den Not-Aus unterbrochen, muss das System zunächst durch Drücken des Reset-Buttons in der grafischen Oberfläche zurückgesetzt werden. Danach kann der der Ablauf von Anfang an durchgeführt werden.
+
+
+\begin{figure}[h!]
+    \centering
+    \begin{minipage}[t]{0.6\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{aufbauaufHubtisch.png}
+        \caption{Positionierung der Komponenten auf dem Hubtisch}
+        \label{fig:Hubpositionierung}
+    \end{minipage}\hfill
+    \begin{minipage}[t]{0.35\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{schottflasche.png}
+        \caption{Positionierung der Schottflasche}
+        \label{fig:Schottflaschepositionierung}
+    \end{minipage}\hfill
+    \begin{minipage}[t]{0.6\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{falconTop.png}
+        \caption{Positionierung der Falcontubes}
+        \label{fig:Falcontubespositionierung}
+    \end{minipage}
+\end{figure}
+
+
+
+
+Anhand des Ablaufdiagramms in \autoref{fig:Ablaufdiagramm} wird der generelle Ablauf eines Verdünnungsvorgangs beschrieben. Zunächst muss der Falcontubeständer, die Schottflasche ggf. der Abfall- und der Reinigungsbehälter platziert werden, wie in \autoref{fig:Hubpositionierung}, \autoref{fig:Schottflaschepositionierung} und \autoref{fig:Falcontubespositionierung} zu sehen. 
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.8\textwidth]{homepage.png}
+    \caption{GUI Startseite zur Eingabe der Verdünnungsparameter}
+    \label{fig:GUIerklaerung}
+\end{figure}
+
+Danach werden die benötigten Daten in der grafischen Oberfläche eingegeben. Dazu gehört die "Probenspalten"- und "Probenreihen"-Auswahl, das gewünschte Verdünnungsverhältnis für jede Probe, sowie die Volumina der Stammlösung und des Endvolumens, siehe \autoref{fig:GUIerklaerung}. \\\\\\
+
+Nach der Eingabe der Daten und der Platzierung der Probenbehälter im Gerät, wird der Verdünnungsvorgang gestartet. Das System fährt zunächst die Startposition an und führt eine initiale Reinigung mit der Verdünnungslösung durch, um sicherzustellen, dass alle Schläuche und Spritzen frei von Verunreinigungen sind. 
+
+Daraufhin findet die Zwischenreiningung statt, indem die Spritzen die zu verdünnende Lösung plus 0.5 ml aufziehen und in den Abfallbehälter entsorgen. Anschließend beginnt der eigentliche Verdünnungsschritt, bei dem die Proben entsprechend den eingegebenen Daten verdünnt werden. 
+
+Während des Prozesses werden auch zwischendurch Reinigungsschritte durchgeführt, um Kreuzkontaminationen zu vermeiden. Dieser Vorgang wird wiederholt, bis die letzte Verdünnung erreicht wurde. 
+
+Am Ende des Verdünnungsvorgangs erfolgt eine Entleerung, bei der alle Schläuche in die entgegesetze Pumprichtung Luft aufziehen. 
+
+Optional wird der Falcontubeständer abgedeckt, um die Proben vor der Verdünstung zu schützen. 
+
+Falls die Abdeckung nicht erfolgt, fährt der Spritzenkopf nach hinten in seine Anfangsposition und die Proben können manuell entnommen werden. 
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{abdeckungentfernen.png}
+    \caption{GUI Abdeckungsentfernen Seite}
+    \label{fig:GUIabdeckungentfernen}
+\end{figure}
+
+Sollten die Falcuntubes abgedeckt worden sein, muss auf der Website der Abdeckungsentfernen-Vorgang gestartet werden, siehe \autoref{fig:GUIabdeckungentfernen}, bevor die Proben entnommen werden können.
+
+Zuletzt sollten der Abfall- und der Reinigungsbehälter geleert werden, um das Gerät für den nächsten Einsatz vorzubereiten.
+
+Wurde der Prozess durch den Not-Aus unterbrochen, muss das System zunächst durch Drücken des Reset-Buttons in der grafischen Oberfläche zurückgesetzt werden, siehe \autoref{fig:start}. Danach kann der Ablauf von Anfang an durchgeführt werden.\\
+
 
 Im folgenden werden noch Ablaufdiagramme der Initialreinigung, der Zwischenreinigung und des Verdünnungsvorgangs dargestellt. Dabei ist die Reihe i, wo die Probenverdünnung stattfinden soll, und die Position wie im Code bestimmt, genauer:
 \begin{itemize}
