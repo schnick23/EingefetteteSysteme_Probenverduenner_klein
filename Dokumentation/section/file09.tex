@@ -1,27 +1,77 @@
 \section{Technische Dokumentation (Anhang)}
 \subsection{Schaltplan}
+\vspace{-0.8cm}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1.4\textwidth,angle=90]{Erstes_Schaltungsbild.pdf}
+    \vspace{-0.75cm}
+    \caption{Übersicht Schaltplan Probenverdünner}
+    \label{schaltplan}
+\end{figure}
+
+
 \subsection{3D-Druck-Pläne}
+Alle 3D-Druck-Pläne sind unter dem Ordner \href{https://github.com/schnick23/EingefetteteSysteme_Probenverduenner_klein/tree/main/3D-Drucke}{\textit{3D-Drucke}} im GitHub-Repository zu finden.
+
 \subsection{Stückliste} \label{Materialien}
 In der folgenden Tabelle sind alle im Probenverdünner verwendeten Materialien und deren Eigenschaften aufgelistet. 
 
-\begin{table}[H]
-    \centering
-    \begin{tabular}{|l|l|l|}
+\begin{longtable}{|l|l|}
+        \caption{Stückliste des Probenverdünners}
+        \label{tab:Bauteile}\\
         \hline
-        \textbf{Bauteil} & \textbf{Material} & \textbf{Bemerkungen} \\
-        \hline
-        Aluprofil & Aluminium & 9x440mm; \\
-        \hline
-        Spritzen & Polypropylen (PP) & Beständig gegen viele Chemikalien \\
-        \hline
-        3D-gedruckte Teile & PLA (Polylactid) & Eingeschränkt beständig \\
-        \hline
-        Gehäuse & Aluminium & Beständig gegen Korrosion \\
-        \hline
-        Dichtungen & Nitrilkautschuk (NBR) & Beständig gegen Öle und Fette \\
-        \hline
-    \end{tabular}
-    \caption{Materialien und deren chemische Beständigkeit im Probenverdünner}
-    \label{tab:materialien}
+        \textbf{Bauteil} & \textbf{Bemerkungen} \\
 
-\end{table}
+        \hline
+        \multicolumn{2}{|l|}{\textbf{Gehäuse}}\\
+        \hline
+        Aluprofil & 30x30mm; Länge: 440mm, 550mm; NUT 8; B-Typ\\
+        Aluprofilinnenverbinder & NUT 8 \\
+        Nutensteine & NUT 8 \\
+        Aluplatte & 500x500mm \\
+
+        \hline
+        \multicolumn{2}{|l|}{\textbf{Linearführung}}\\
+        \hline
+        Linearantrieb & NEMA 23 Schrittmotor\\
+        Schrittmotortreiber NEMA 23 & Für den Schrittmotor\\
+        Linearschienen & \\
+
+        \hline
+        \multicolumn{2}{|l|}{\textbf{Pumpen}}\\
+        \hline
+        Peristaltikpumpen & ID: 1mm, AD: 3,3mm; 12V 1,5A\\
+        Relais Modul & DC 12V, 8 Kanal \\
+        Schläuche & ID: 3mm, AD: 5mm; Platinvernetztes Silikonmaterial \\
+
+        \hline
+        \multicolumn{2}{|l|}{\textbf{Spritzen}}\\
+        \hline
+        NEMA 17 Schrittmotor & \\
+        Schrittmotortreiber NEMA 17 & Für den Schrittmotor\\
+        Spritzen & 5ml; Luer-Lock-Spritzen\\
+        Spritzenköpfe & 117mm; 18G\\
+        Wellenkupelung & ID: 5mm und 8mm \\
+
+        \hline
+        \multicolumn{2}{|l|}{\textbf{Hubtisch}}\\
+        \hline
+        Hubtisch & 200x200mm; Hubhöhenbereich: 85-280mm; Max. 15kg\\
+        NEMA 17 Schrittmotor & \\
+        Schrittmotortreiber NEMA 17 & Für den Schrittmotor\\
+        Wellenkupelung & ID: 5mm und 8mm \\
+        Expandierseil & Mit Haken; 0,6m lang \\
+
+        \hline
+        \multicolumn{2}{|l|}{\textbf{Sonstige Hardware}}\\
+        \hline
+        Not-Aus Knopf & \\
+        Raspberry Pi 4 Model b & \\
+        Endtaster & 125V 1A PDT-Grenzwert-Mikroschalter \\
+        Netzteile & 12V 10A 120W; 24V 6A 150W \\
+        Converter & 12V auf 5V 3A \\
+        Schrauben & Dieverse Größen und Längen \\
+        Muttern & Diverse Größen\\
+        Litzen & Diverse Längen und Querschnitte \\
+        \hline
+\end{longtable}
