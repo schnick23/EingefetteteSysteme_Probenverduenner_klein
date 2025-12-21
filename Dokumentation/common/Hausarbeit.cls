@@ -41,6 +41,7 @@
 \RequirePackage{mathtools} % Erweiterung zu amsmath
 
 % Bilder, Tabellen
+\RequirePackage{placeins} 
 \RequirePackage{graphicx} % Bilder einfügen
 \RequirePackage{float} % genaues Platzieren mit [H]
 \RequirePackage{booktabs} % schönere Tabellen
