@@ -46,25 +46,25 @@ Nach erfolgreicher SSH-Verbindung kann optional eine WLAN-Verbindung eingerichte
 \subsubsection{Schritt 1: Neue WLAN-Verbindung anlegen}
 
 \begin{verbatim}
-sudo nmcli connection add type wifi ifname wlan0 con-name mywifi ssid "DEIN_WLAN"
+sudo nmcli connection add type wifi ifname wlan0 con-name tuwifi ssid "DEIN_WLAN"
 \end{verbatim}
 
 \subsubsection{Schritt 2: Sicherheit explizit festlegen (WPA2)}
 
 \begin{verbatim}
-sudo nmcli connection modify mywifi wifi-sec.key-mgmt wpa-psk
+sudo nmcli connection modify tuwifi wifi-sec.key-mgmt wpa-psk
 \end{verbatim}
 
 \subsubsection{Schritt 3: WLAN-Passwort setzen}
 
 \begin{verbatim}
-sudo nmcli connection modify mywifi wifi-sec.psk "DEIN_PASSWORT"
+sudo nmcli connection modify tuwifi wifi-sec.psk "DEIN_PASSWORT"
 \end{verbatim}
 
 \subsubsection{Schritt 4: WLAN-Verbindung aktivieren}
 
 \begin{verbatim}
-sudo nmcli connection up mywifi
+sudo nmcli connection up tuwifi
 \end{verbatim}
 
 \subsection{Fehlerbehebung bei Nichterreichbarkeit}
