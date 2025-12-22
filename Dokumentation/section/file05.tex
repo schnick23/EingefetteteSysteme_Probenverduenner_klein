@@ -1,19 +1,102 @@
-\section{Ersteinrichtung \& Inbetriebnahme}
-\subsection{Mechanische Vorbereitung}
-Aufstellung\\
-- Gerät auf ebenen, stabilen Untergrund stellen\\
-- Platzbedarf beachten\\
-- Orientierung des Geräts (Zugang zu Bedienelementen, Wartungspunkten)
-(Kontrolle beweglicher Teile)\\
-Auf Sicherheitshinweise achten\\
-\subsection{Elektrische Inbetriebnahme}
-Anschluss an die Stromversorgung\\
-Anschlusskontrolle (Erdung, Absicherung)\\
-Anschalter tätigen\\
-\subsection{Netzwerkeinrichtung}
-LAN-Ersteinrichtung\\
-ssh-Zugang\\
-WLAN-Konfiguration (falls gewünscht) --> Nicks Screenshots als Code einfügen\\
-\subsection{Software-Initialisierung}
-Ersteinrichtung der Software\\
-Erststart-Prozedur\\
+\section{Erstinbetriebnahme des Probenverdünners}
+
+\subsection{Anschluss und Start}
+
+Für die erste Inbetriebnahme des Probenverdünners gehen Sie bitte wie folgt vor:
+
+\begin{enumerate}
+    \item Schließen Sie ein \textbf{LAN-Kabel} an den Probenverdünner an.
+    \item Verbinden Sie das Gerät mit dem Stromnetz, indem Sie den \textbf{Kaltgerätestecker} einstecken.
+    \item Schalten Sie den Probenverdünner über den \textbf{Netzschalter} ein.
+\end{enumerate}
+
+Das System startet anschließend automatisch. Nach einer Hochfahrzeit von ca. \textbf{30 Sekunden} sollte das Programm vollständig laufen und der Probenverdünner im Netzwerk erreichbar sein.
+
+\subsection{Zugriff über das Netzwerk}
+
+Sobald das Gerät gestartet ist, kann von einem Rechner im \textbf{gleichen Netzwerk} auf den Probenverdünner zugegriffen werden.  
+Empfohlen wird zunächst ein Test der SSH-Verbindung.
+
+\subsubsection{SSH-Verbindung herstellen}
+
+Öffnen Sie auf Ihrem Rechner ein Terminal und führen Sie folgenden Befehl aus:
+
+\begin{verbatim}
+ssh pi@pinkler.local
+\end{verbatim}
+
+Das Standardpasswort lautet:
+
+\begin{verbatim}
+pi
+\end{verbatim}
+
+Wenn die Verbindung erfolgreich hergestellt werden kann, ist das Gerät korrekt im Netzwerk eingebunden.
+
+\subsection{Einrichtung einer WLAN-Verbindung}
+
+Nach erfolgreicher SSH-Verbindung kann optional eine WLAN-Verbindung eingerichtet werden. Dies erfolgt über die Kommandozeile mit Hilfe von \texttt{nmcli}.
+
+\subsubsection{Schritt 1: Neue WLAN-Verbindung anlegen}
+
+\begin{verbatim}
+sudo nmcli connection add type wifi ifname wlan0 con-name mywifi ssid "DEIN_WLAN"
+\end{verbatim}
+
+\subsubsection{Schritt 2: Sicherheit explizit festlegen (WPA2)}
+
+\begin{verbatim}
+sudo nmcli connection modify mywifi wifi-sec.key-mgmt wpa-psk
+\end{verbatim}
+
+\subsubsection{Schritt 3: WLAN-Passwort setzen}
+
+\begin{verbatim}
+sudo nmcli connection modify mywifi wifi-sec.psk "DEIN_PASSWORT"
+\end{verbatim}
+
+\subsubsection{Schritt 4: WLAN-Verbindung aktivieren}
+
+\begin{verbatim}
+sudo nmcli connection up mywifi
+\end{verbatim}
+
+\subsection{Fehlerbehebung bei Nichterreichbarkeit}
+
+Sollte der Probenverdünner nicht per SSH erreichbar sein, wenden Sie sich bitte an die zuständige \textbf{lokale IT-Abteilung}.  
+Diese kann mithilfe von Netzwerkwerkzeugen (z.\,B. \texttt{nmap} oder über die Netzwerkeinstellungen) die IP-Adresse des Geräts ermitteln und gegebenenfalls einen DNS-Eintrag setzen.
+
+\subsection{Aufruf der grafischen Benutzeroberfläche}
+
+Nach erfolgreicher Netzwerkeinbindung kann die grafische Benutzeroberfläche (GUI) im Webbrowser aufgerufen werden:
+
+\begin{itemize}
+    \item \texttt{http://pinkler.local:5000}
+    \item oder alternativ \texttt{http://IP-ADRESSE:5000}
+\end{itemize}
+
+\subsection{Überprüfung des Systemdienstes}
+
+Falls die GUI nicht erreichbar sein sollte, stellen Sie erneut eine SSH-Verbindung her und überprüfen Sie den Status des Systemdienstes:
+
+\begin{verbatim}
+sudo systemctl status probenverduenner.service
+\end{verbatim}
+
+Falls der Dienst nicht läuft, kann er manuell gestartet werden:
+
+\begin{verbatim}
+sudo systemctl start probenverduenner.service
+\end{verbatim}
+
+\subsection{Neuinstallation der Software}
+
+Sollte der Dienst wider Erwarten weiterhin nicht funktionieren, führen Sie bitte folgende Befehle aus, um die Software neu zu installieren:
+
+\begin{verbatim}
+cd /home/pi/EingefetteteSysteme_Probenverduenner_klein/deploy
+./install.sh
+\end{verbatim}
+
+Nach Abschluss der Installation starten Sie das Gerät neu.  
+In der Regel sollte der Probenverdünner anschließend wieder ordnungsgemäß funktionieren. Sollte dies nicht der Fall sein, kontaktieren Sie bitte den Support.
