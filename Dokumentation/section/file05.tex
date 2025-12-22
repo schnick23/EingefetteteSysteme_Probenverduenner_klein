@@ -9,6 +9,12 @@ Für die erste Inbetriebnahme des Probenverdünners gehen Sie bitte wie folgt vo
     \item Verbinden Sie das Gerät mit dem Stromnetz, indem Sie den \textbf{Kaltgerätestecker} einstecken.
     \item Schalten Sie den Probenverdünner über den \textbf{Netzschalter} ein.
 \end{enumerate}
+\begin{figure}[H] % r = rechts, l = links
+    \centering
+    \includegraphics[width=0.5\textwidth]{images/Stecker.png}
+    \caption{Anschlüsse des Probenverdünners}
+    \label{fig:anschluss}
+\end{figure}
 
 Das System startet anschließend automatisch. Nach einer Hochfahrzeit von ca. \textbf{30 Sekunden} sollte das Programm vollständig laufen und der Probenverdünner im Netzwerk erreichbar sein.
 
@@ -71,8 +77,8 @@ Diese kann mithilfe von Netzwerkwerkzeugen (z.\,B. \texttt{nmap} oder über die 
 Nach erfolgreicher Netzwerkeinbindung kann die grafische Benutzeroberfläche (GUI) im Webbrowser aufgerufen werden:
 
 \begin{itemize}
-    \item \texttt{http://pinkler.local:5000}
-    \item oder alternativ \texttt{http://IP-ADRESSE:5000}
+    \item \texttt{http://pinkler.local:5001}
+    \item oder alternativ \texttt{http://IP-ADRESSE:5001}
 \end{itemize}
 
 \subsection{Überprüfung des Systemdienstes}
@@ -95,6 +101,7 @@ Sollte der Dienst wider Erwarten weiterhin nicht funktionieren, führen Sie bitt
 
 \begin{verbatim}
 cd /home/pi/EingefetteteSysteme_Probenverduenner_klein/deploy
+
 ./install.sh
 \end{verbatim}
 
