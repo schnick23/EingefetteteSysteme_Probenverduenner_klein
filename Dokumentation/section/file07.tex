@@ -1,11 +1,11 @@
 \section{Wartung und Reinigung}\label{WartungUndReinigung}
 Um einen dauerhaft zuverlässigen, sicheren und reproduzierbaren Betrieb des Probenverdünners sicherzustellen, sind regelmäßige Pflege- und Wartungsmaßnahmen erforderlich. Diese dienen sowohl der Funktionssicherheit als auch der Vermeidung von Verschleiß, Kontaminationen und ungeplanten Ausfällen.\\
 
-Nach Abschluss eines Verdünnungsvorgangs sind die verwendeten Schottflaschen aus dem Gerät zu entnehmen. Die enthaltenen Proben können je nach weiterem Arbeitsablauf entnommen oder vorübergehend unter der vorgesehenen Abdeckung im Gerät belassen werden, um sie vor äußeren Einflüssen wie Staub oder mechanischer Einwirkung zu schützen.\\
+Nach Abschluss eines Verdünnungsvorgangs ist die verwendete Schottflasch aus dem Gerät zu entnehmen. Die enthaltenen Proben können je nach weiterem Arbeitsablauf entnommen oder vorübergehend unter der vorgesehenen Abdeckung im Gerät belassen werden, um sie vor äußeren Einflüssen wie Staub oder mechanischer Einwirkung zu schützen.\\
 
 Ein besonderer Fokus der Wartung liegt auf den fluidführenden Komponenten. Schläuche sollten in regelmäßigen Abständen visuell auf Verfärbungen, Versprödung oder Undichtigkeiten kontrolliert werden. Zusätzlich empfiehlt es sich, die Schläuche gelegentlich mit einer geeigneten Reinigungsflüssigkeit durchzuspülen, um Rückstände zu entfernen und Ablagerungen sowie Kreuzkontaminationen zwischen unterschiedlichen Proben zu vermeiden.\\
 
-Auch die verwendeten Spritzen unterliegen einem natürlichen Verschleiß. Bei schwergängigem Lauf, sichtbaren Beschädigungen oder Undichtigkeiten sind diese auszutauschen. Der Austausch erfolgt durch Lösen der mechanischen Fixierung am Spritzenhalter, das vorsichtige Entfernen der alten Spritze sowie das anschließende Einsetzen und sichere Befestigen der neuen Spritze. Nach dem Austausch ist eine Funktionsprüfung durchzuführen, um einen korrekten Sitz und eine einwandfreie Förderbewegung sicherzustellen. Zu der Funktionsprüfung gehört auch sicherzustellen, dass die neuen Spritzen auch kompatibel mit den eingestellten Positionen sind. Dazu kann das Skript \texttt{positionen\_messen.py} genutzt werden, welches nur über eine SSH-Verbindung (\autoref{SSH}) und Konsolenaufruf folgendermaßen gestartet werden kann:
+Auch die verwendeten Spritzen unterliegen einem natürlichen Verschleiß. Bei schwergängigem Lauf, sichtbaren Beschädigungen oder Undichtigkeiten sind diese auszutauschen. Der Austausch erfolgt durch Lösen der mechanischen Fixierung am Spritzenhalter, das vorsichtige Entfernen der alten Spritze sowie das anschließende Einsetzen und sichere Befestigen der neuen Spritze. Nach dem Austausch ist eine Funktionsprüfung durchzuführen, um einen korrekten Sitz und eine einwandfreie Förderbewegung sicherzustellen. Zu der Funktionsprüfung gehört auch sicherzustellen, dass die neuen Spritzen auch kompatibel mit den eingestellten Positionen sind. Dazu kann das Skript\;\texttt{positionen\_messen.py}\;genutzt werden, welches nur über eine SSH-Verbindung (\autoref{SSH}) und Konsolenaufruf folgendermaßen gestartet werden kann:
 
 \begin{verbatim}
 cd /home/pi/EingefetteteSysteme_Probenverduenner_klein/scripts/
@@ -24,7 +24,7 @@ w
 
 # Schrittanzahl
 \end{verbatim}
-Um die einzelnen Positionen zu testen, müssen folgende Anzahl Schritte, von der Home-Possition, ausgeführt werden:\\
+Um die einzelnen Positionen zu testen, müssen folgende Anzahl an Schritten, von der Home-Possition, ausgeführt werden:\\
 
 \begin{table}[H]
     \centering
@@ -40,7 +40,7 @@ Um die einzelnen Positionen zu testen, müssen folgende Anzahl Schritte, von der
     \end{tabular}
 \end{table}
 
-\TODO{Bei diesem Skript ist der vordere Endtaster deaktiviert. Nach jedem Vorwärtsschritt ist durch $h$ zu homen. Im Notfall kann durch} \texttt{strg + c} \TODO{abgebrochen werden. Der Hubtisch muss vor dem Start auch in der Home-Position stehen (ganz unten).}\\
+{\color{red}{Bei diesem Skript ist der vordere Endtaster deaktiviert. Nach jedem Vorwärtsschritt ist durch $h$ zu homen. Im Notfall kann durch \textbf{\texttt{strg + c}} abgebrochen werden. Der Hubtisch muss vor dem Start auch in der Home-Position stehen (ganz unten).}}\\
 
 Mechanische Komponenten wie das Gewinde des Spritzenkopfs, die Linearführungen sowie der Hubtisch sind regelmäßig auf Verschmutzungen zu prüfen. Bei Bedarf sind diese zu reinigen und mit einem geeigneten Schmier- oder Gleitmittel leicht zu fetten, um einen gleichmäßigen, verschleißarmen Bewegungsablauf zu gewährleisten. Dabei ist darauf zu achten, dass keine Schmierstoffe in den Probenbereich oder in fluidführende Bauteile gelangen.\\
 
